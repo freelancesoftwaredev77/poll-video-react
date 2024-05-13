@@ -3,6 +3,10 @@ import { memo } from 'react';
 import Select from 'react-select';
 import customStylesMain from '@/helpers/select-style';
 
+export interface SelectType {
+  label: string;
+  value: string;
+}
 interface CustomSelectProps {
   options: any;
   isMulti?: boolean;
@@ -26,15 +30,16 @@ export function CustomSelect({
 }: CustomSelectProps) {
   const [field, meta, helpers] = useField(name);
 
-  const handleChange = (selectedOptions: any) => {
-    helpers.setValue(selectedOptions);
+  const handleChange = (selectedOptions: SelectType) => {
+    const selectedValue = selectedOptions.value;
+    helpers.setValue(selectedValue);
   };
 
   return (
     <div className={`mb-4 ${className}`}>
       <div className="relative inline-block">
         <label
-          className={`font-semibold text-xs  text-secondary block `}
+          className="font-semibold text-xs text-secondary block"
           htmlFor={field.name}
         >
           {label}
@@ -48,9 +53,11 @@ export function CustomSelect({
       </div>
       <Select
         className="flex-1 mt-2"
-        options={options ?? []}
+        options={options.map((option: SelectType) => ({
+          label: option.label,
+          value: option.value,
+        }))}
         onChange={onChange ?? handleChange}
-        value={field.value}
         isMulti={isMulti}
         placeholder={placeholder}
         classNamePrefix="react-select"
@@ -64,6 +71,7 @@ export function CustomSelect({
           },
         })}
       />
+
       {meta.touched && meta.error ? <div>{meta.error}</div> : null}
     </div>
   );

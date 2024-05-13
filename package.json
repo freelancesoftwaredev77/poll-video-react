@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3000",
+    "dev": "HTTPS=true vite --port=3000",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "prepare": "husky install",
@@ -15,13 +15,17 @@
     "test:all": "yarn check:types && yarn format:check && yarn lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.43.1",
     "axios": "^1.6.5",
     "formik": "^2.4.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-icons": "^4.12.0",
+    "react-player": "^2.16.0",
     "react-router-dom": "^6.21.1",
     "react-select": "^5.8.0",
+    "react-webcam": "^7.2.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
@@ -30,11 +34,11 @@
     "@types/node": "^20.10.7",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.47.0",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^9.1.0",

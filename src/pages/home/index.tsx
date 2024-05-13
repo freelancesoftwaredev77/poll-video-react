@@ -1,74 +1,39 @@
-import * as React from 'react';
-import { Form, Formik } from 'formik';
-import { IoIosPlay } from 'react-icons/io';
-import { Button, SearchSelect, TextField } from '@/components';
-import { genderData, locationData } from '@/static-data';
+import { Button, VideoPlayer } from '@/components';
 import { Footer, Layout } from '@/container';
+import * as React from 'react';
+import { IoIosPlay } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 interface IProps {}
 
-interface FromValue {
-  date: string;
-  location: string;
-  gender: string;
-  studii: string;
-}
-
 const Home: React.FC<IProps> = ({}) => {
-  const initValues = {
-    date: '',
-    location: '',
-    gender: '',
-    studii: '',
-  };
-  const handleSubmit = (val: FromValue) => {
-    console.log('Values', val);
-  };
+  console.log('Values');
   return (
-    <Layout title="Formular">
-      <Formik initialValues={initValues} onSubmit={handleSubmit}>
-        <Form>
-          <TextField name="date" type="date" label="Data nasterii" />
-          <SearchSelect
-            name="location"
-            options={locationData ?? []}
-            label="Localitate"
-            placeholder="Select"
-          />
+    <Layout>
+      <h6 className="text-center my-5 font-bold text-[22px]">Welcome</h6>
 
-          <SearchSelect
-            name="sex"
-            options={genderData ?? []}
-            label="Sex"
-            placeholder="Select"
-          />
+      <VideoPlayer url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
+      <Footer>
+        <div className="flex items-center gap-3 mt-4 justify-end">
+          <Link to="/congratulations" className="w-full">
+            <Button
+              text="Start Poll"
+              type="button"
+              variant="primary"
+              icon={<IoIosPlay size={20} color="#fff" />}
+              className="px-4 py-2"
+              hasIcon
+            />
+          </Link>
 
-          <SearchSelect
-            name="studii"
-            options={locationData ?? []}
-            label="Studii"
-            placeholder="Select"
+          <Button
+            text="Demo"
+            type="button"
+            variant="outline"
+            className="px-4 py-2"
           />
-          <Footer>
-            <div className="flex items-center gap-3 mt-4 justify-end ">
-              <Button
-                text="Back"
-                type="button"
-                variant="outline"
-                className="px-4 py-2"
-              />
-              <Button
-                text="Submit"
-                type="submit"
-                variant="primary"
-                icon={<IoIosPlay size={20} color="#fff" />}
-                className="px-4 py-2"
-                hasIcon
-              />
-            </div>
-          </Footer>
-        </Form>
-      </Formik>
+        </div>
+      </Footer>
     </Layout>
   );
 };
