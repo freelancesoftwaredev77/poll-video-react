@@ -45,7 +45,7 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
           file: {
             attributes: {
               autoPlay: true,
-              muted: true,
+              muted: false,
             },
           },
         }}
