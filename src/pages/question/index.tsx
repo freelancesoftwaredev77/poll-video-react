@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable import/no-extraneous-dependencies */
 import * as React from 'react';
 import { IoVideocamOutline } from 'react-icons/io5';
@@ -13,12 +15,13 @@ interface IProps {}
 
 const Question: React.FC<IProps> = ({}) => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [showRecordingScreen, setShowRecordingScreen] = React.useState(false);
   const [recordedChunks, setRecordedChunks] = React.useState([]);
   const [isFinishedRecording, setIsFinishedRecording] = React.useState(false);
   const [capture, setCapturing] = React.useState(false);
-  const [blockface, SetBlockFace] = React.useState(false);
+  const [blockface, setBlockFace] = React.useState(false);
   const [step, setStep] = React.useState(1);
 
   const [videoQuestions, setVideoQuestion] = React.useState<
@@ -45,10 +48,61 @@ const Question: React.FC<IProps> = ({}) => {
     fetchQuestion();
   }, []);
 
-  const handleNext = () => {
-    setCurrentIndex(
-      (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
-    );
+  const handleNext = async () => {
+    setIsSubmitting(true);
+    const blob = new Blob(recordedChunks, {
+      type: 'video/webm',
+    });
+
+    const { data: videoUploadResponse, error } = await supabase.storage
+      .from('videos/uploads')
+      .upload(
+        `${String(videoQuestions[currentIndex].id)} ${Math.random().toString()}.mp4`,
+        blob
+      );
+
+    if (videoUploadResponse) {
+      setRecordedChunks([]);
+      setCapturing(false);
+      setShowRecordingScreen(false);
+      setIsFinishedRecording(false);
+      setStep(1);
+      setIsSubmitting(false);
+      setCurrentIndex(
+        (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
+      );
+    }
+
+    // if (videoUploadResponse) {
+    //   try {
+    //     const videoResponse = await fetch(
+    //       `https://cibcn18zd8.execute-api.eu-central-1.amazonaws.com/dev/video-transcribe/`,
+    //       {
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //           video_response_id: videoUploadResponse?.id,
+    //         }),
+    //       }
+    //     );
+
+    //     const response = await videoResponse.json();
+    //     console.log('🚀 ~ handleNext ~ response:', response);
+
+    //     // await Service.post('transcribe-video/', {
+    //     //   // @ts-ignore
+    //     //   video_response_id: videoUploadResponse?.id ?? '',
+    //     // });
+    //     setIsSubmitting(false);
+    //   } catch (err: any) {
+    //     console.log('🚀 ~ handleNext ~ error:', err?.response);
+    //     setIsSubmitting(false);
+    //   }
+    // }
+
+    if (error) {
+      toastAlert('error', 'Something went wrong');
+      setIsSubmitting(false);
+    }
   };
 
   const handleShowRecordingScreen = () => {
@@ -58,12 +112,14 @@ const Question: React.FC<IProps> = ({}) => {
 
   const handleRecordAgain = () => {
     setRecordedChunks([]);
-    SetBlockFace(false);
+    setBlockFace(false);
     setIsFinishedRecording(!isFinishedRecording);
     setStep(step - 1);
   };
 
-  const handleBlockFace = () => SetBlockFace(!blockface);
+  const handleBlockFace = () => setBlockFace(!blockface);
+
+  console.log('step ', step);
 
   // const handleNavigate = () => {};
 
@@ -114,6 +170,7 @@ const Question: React.FC<IProps> = ({}) => {
               className="px-4 py-2"
               hasIcon
               onClick={handleNext}
+              isSubmitting={isSubmitting}
             />
           </div>
         );
@@ -133,7 +190,13 @@ const Question: React.FC<IProps> = ({}) => {
     }
   };
   return (
-    <Layout title={`Question ${currentIndex + 1}`}>
+    <Layout>
+      {step === 1 && (
+        <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
+          {`Question ${currentIndex + 1}`}
+        </h1>
+      )}
+
       {isLoading ? (
         <VideoSkeleton />
       ) : showRecordingScreen ? (

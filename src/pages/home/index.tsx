@@ -1,39 +1,43 @@
-import { Button, VideoPlayer } from '@/components';
-import { Footer, Layout } from '@/container';
 import * as React from 'react';
-import { IoIosPlay } from 'react-icons/io';
-import { Link } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { VideoPlayer } from '@/components';
+import { Layout } from '@/container';
+import { IntroDataType } from '@/types';
+import { supabase } from '@/utils/supabase';
+import toastAlert from '@/utils/toastAlert';
 
 interface IProps {}
 
 const Home: React.FC<IProps> = ({}) => {
-  console.log('Values');
+  const [introData, setIntroData] = React.useState<IntroDataType[]>([]);
+  const navigate: NavigateFunction = useNavigate();
+
+  const handleEndVideo = () => navigate('/demo');
+
+  const fetchIntro = async () => {
+    const { data: polls, error } = await supabase.from('polls').select('*');
+    if (polls) {
+      setIntroData(polls);
+    }
+    if (error) {
+      toastAlert('error', 'Something went wrong');
+    }
+  };
+  React.useEffect(() => {
+    fetchIntro();
+  }, []);
+
   return (
     <Layout>
       <h6 className="text-center my-5 font-bold text-[22px]">Welcome</h6>
 
-      <VideoPlayer url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
-      <Footer>
-        <div className="flex items-center gap-3 mt-4 justify-end">
-          <Link to="/congratulations" className="w-full">
-            <Button
-              text="Start Poll"
-              type="button"
-              variant="primary"
-              icon={<IoIosPlay size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-            />
-          </Link>
-
-          <Button
-            text="Demo"
-            type="button"
-            variant="outline"
-            className="px-4 py-2"
-          />
-        </div>
-      </Footer>
+      <VideoPlayer
+        url={introData.length > 0 ? introData[0].demo_video : ''}
+        handleEndVideo={handleEndVideo}
+      />
+      <h6 className="text-center mt-5 font-bold">
+        {introData && introData[0]?.title}
+      </h6>
     </Layout>
   );
 };

@@ -4,3 +4,10 @@ export interface VideoQuestionType {
   poll_id: number;
   prompt: string;
 }
+
+export interface IntroDataType {
+  id: string;
+  created_at: string;
+  title: string;
+  demo_video: string;
+}

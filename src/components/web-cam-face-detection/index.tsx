@@ -31,9 +31,12 @@ const WebcamDemo: React.FC<IProps> = ({
   const [timer, setTimer] = useState(0);
   const webcamRef: any = React.useRef<Webcam | null>(null);
 
+  console.log('inner hight', window.innerHeight);
+  console.log('inner hight', window.innerWidth / (window.innerHeight - 1));
+
   const videoConstraints = {
-    aspectRatio: 0.7777777,
     facingMode: cameraMode,
+    aspectRatio: window.innerWidth / window.innerHeight,
   };
 
   const mediaRecorderRef = useRef<any>(null);
@@ -87,7 +90,9 @@ const WebcamDemo: React.FC<IProps> = ({
   //     .upload('new-added.mp4', blob);
   // };
   const handleSwitchCamera = () =>
-    setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
+    setCameraMode((prev: string): 'user' | 'environment' =>
+      prev === 'user' ? 'environment' : 'user'
+    );
 
   // userid + - + questionId
 
@@ -116,7 +121,7 @@ const WebcamDemo: React.FC<IProps> = ({
       />
     </div>
   ) : (
-    <div className="relative">
+    <div className="relative ">
       {blockFace && (
         <div className="absolute top-20 left-[25%]">
           <img src="/face-cover.png" alt="face-cover" />
@@ -128,7 +133,8 @@ const WebcamDemo: React.FC<IProps> = ({
         videoConstraints={videoConstraints}
         mirrored={false}
         audio
-        className="w-full h-full"
+        muted
+        className={capturing ? 'w-full h-full' : 'w-full'}
       />
       {capturing ? (
         <button

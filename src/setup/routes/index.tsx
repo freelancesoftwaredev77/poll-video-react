@@ -1,4 +1,4 @@
-import { Congratulations, Form, Home, Question } from '@/pages';
+import { Congratulations, Demo, Form, Home, Question } from '@/pages';
 
 const routesData = [
   {
@@ -8,7 +8,7 @@ const routesData = [
   },
   {
     id: 1,
-    path: '/congratulations',
+    path: '/congratulation',
     element: <Congratulations />,
   },
   {
@@ -21,6 +21,11 @@ const routesData = [
     id: 3,
     path: '/form',
     element: <Form />,
+  },
+  {
+    id: 4,
+    path: '/demo',
+    element: <Demo />,
   },
 ];
 

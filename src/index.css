@@ -143,4 +143,5 @@ li {
   left: 0;
   right: 0;
   object-fit: cover;
+  border-radius: 8px;
 }
