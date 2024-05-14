@@ -33,6 +33,7 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
 
   const handleBuffer = () => setLoading(true);
   const handleBufferEnd = () => setLoading(false);
+  console.log('is pauased', isPaused);
 
   return (
     <div className="relative h-[78vh] rounded-lg" onClick={handleControls}>
