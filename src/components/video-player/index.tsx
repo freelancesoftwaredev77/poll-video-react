@@ -37,10 +37,18 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
         url={url}
         controls={false}
         onBuffer={handleBuffer}
-        playing={!isPaused} // Autoplay if !isPaused
+        playing={!isPaused}
         onBufferEnd={handleBufferEnd}
         className="react-player"
         onEnded={handleEndVideo}
+        config={{
+          file: {
+            attributes: {
+              autoPlay: true,
+              muted: true,
+            },
+          },
+        }}
         style={{ paddingTop: '100%', width: '100%', maxWidth: '100%' }}
       />
       {showControls && !loading && (
