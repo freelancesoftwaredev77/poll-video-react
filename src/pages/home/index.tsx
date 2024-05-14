@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { VideoPlayer } from '@/components';
 import { Layout } from '@/container';
 import { IntroDataType } from '@/types';
@@ -10,9 +10,9 @@ interface IProps {}
 
 const Home: React.FC<IProps> = ({}) => {
   const [introData, setIntroData] = React.useState<IntroDataType[]>([]);
-  // const navigate: NavigateFunction = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
 
-  // const handleEndVideo = () => navigate('/demo');
+  const handleEndVideo = () => navigate('/demo');
 
   const fetchIntro = async () => {
     const { data: polls, error } = await supabase.from('polls').select('*');
@@ -33,7 +33,7 @@ const Home: React.FC<IProps> = ({}) => {
 
       <VideoPlayer
         url={introData.length > 0 ? introData[0].demo_video : ''}
-        // handleEndVideo={handleEndVideo}
+        handleEndVideo={handleEndVideo}
       />
       <h6 className="text-center mt-5 font-bold">
         {introData && introData[0]?.title}
