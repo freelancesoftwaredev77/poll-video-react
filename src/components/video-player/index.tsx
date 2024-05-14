@@ -45,7 +45,7 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
         url={url}
         controls={false}
         onBuffer={handleBuffer}
-        playing={isPaused}
+        playing={isPaused ?? true}
         onBufferEnd={handleBufferEnd}
         className="react-player"
         onEnded={handleEndVideo}
