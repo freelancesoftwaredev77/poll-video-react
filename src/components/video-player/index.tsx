@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import * as React from 'react';
 import ReactPlayer from 'react-player';
 import Spinner from '../spinner';
@@ -33,7 +35,6 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
   const handleBufferEnd = () => setLoading(false);
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div className="relative h-[78vh] rounded-lg" onClick={handleControls}>
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
