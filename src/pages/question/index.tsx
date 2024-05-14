@@ -191,11 +191,9 @@ const Question: React.FC<IProps> = ({}) => {
   };
   return (
     <Layout>
-      {step === 1 && (
-        <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
-          {`Question ${currentIndex + 1}`}
-        </h1>
-      )}
+      <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
+        {`Question ${currentIndex + 1}`}
+      </h1>
 
       {isLoading ? (
         <VideoSkeleton />

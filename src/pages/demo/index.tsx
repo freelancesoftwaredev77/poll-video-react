@@ -113,11 +113,7 @@ const Question: React.FC<IProps> = ({}) => {
   };
   return (
     <Layout>
-      {step === 1 && (
-        <h5 className="text-center text-2xl font-bold mt-5 mb-10">
-          Instruction
-        </h5>
-      )}
+      <h5 className="text-center text-2xl font-bold mt-5 mb-10">Instruction</h5>
       {showRecordingScreen ? (
         <WebcamDemo
           blockFace={blockface}

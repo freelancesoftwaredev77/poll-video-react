@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useRef, useState, useEffect } from 'react';
@@ -31,13 +32,37 @@ const WebcamDemo: React.FC<IProps> = ({
   const [timer, setTimer] = useState(0);
   const webcamRef: any = React.useRef<Webcam | null>(null);
 
-  console.log('inner hight', window.innerHeight);
-  console.log('inner hight', window.innerWidth / window.innerHeight);
-
-  const videoConstraints = {
-    facingMode: cameraMode,
-    aspectRatio: window.innerWidth / window.innerHeight,
+  const calculateVideoDimensions = () => {
+    const width = window.innerWidth * 0.8;
+    const height = window.innerHeight * 0.8;
+    return {
+      width,
+      height,
+      aspectRatio: width / height,
+    };
   };
+
+  let videoConstraints = {
+    facingMode: cameraMode,
+    ...calculateVideoDimensions(),
+  };
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      if (!capturing) {
+        videoConstraints = {
+          facingMode: cameraMode,
+          ...calculateVideoDimensions(),
+        };
+      }
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, [capturing, cameraMode]);
 
   const mediaRecorderRef = useRef<any>(null);
 
