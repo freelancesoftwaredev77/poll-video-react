@@ -11,29 +11,20 @@ interface IProps {
 
 const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
   const [loading, setLoading] = React.useState(true);
-  const [isPaused, setIsPaused] = React.useState(true);
+  const [isPaused, setIsPaused] = React.useState(false); // Autoplay by default
   const [showControls, setShowControls] = React.useState(false);
 
-  const handleControls: () => void = (): void => {
+  const handleControls = () => {
     setShowControls(true);
   };
-  const handlePlayPause: () => void = (): void => {
-    if (isPaused) {
-      setIsPaused(false);
-      setShowControls(true);
-      return;
-    }
-    setTimeout((): void => setShowControls(false), 2000);
-    setIsPaused(true);
-  };
-  const handlePlay: () => void = (): void => {
-    setTimeout((): void => setShowControls(false), 500);
-    setIsPaused(true);
+
+  const handlePlayPause = () => {
+    setIsPaused((prevPaused) => !prevPaused);
+    setShowControls(true);
   };
 
   const handleBuffer = () => setLoading(true);
   const handleBufferEnd = () => setLoading(false);
-  console.log('is pauased', isPaused);
 
   return (
     <div className="relative h-[78vh] rounded-lg" onClick={handleControls}>
@@ -46,7 +37,7 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
         url={url}
         controls={false}
         onBuffer={handleBuffer}
-        playing={isPaused ?? true}
+        playing={!isPaused} // Autoplay if !isPaused
         onBufferEnd={handleBufferEnd}
         className="react-player"
         onEnded={handleEndVideo}
@@ -55,23 +46,13 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
       {showControls && !loading && (
         <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-lg">
           <div className="absolute z-50 top-[45%] left-[45%]">
-            {!isPaused ? (
-              <button onClick={handlePlay}>
-                <img
-                  src="/play.png"
-                  alt="play-button"
-                  className="w-16 h-16 object-cover"
-                />
-              </button>
-            ) : (
-              <button onClick={handlePlayPause}>
-                <img
-                  src="/pause.png"
-                  alt="play-button"
-                  className="w-16 h-16 object-cover"
-                />
-              </button>
-            )}
+            <button onClick={handlePlayPause}>
+              <img
+                src={isPaused ? '/play.png' : '/pause.png'} // Toggle play/pause icon
+                alt="play-button"
+                className="w-16 h-16 object-cover"
+              />
+            </button>
           </div>
         </div>
       )}
