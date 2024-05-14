@@ -32,7 +32,7 @@ const WebcamDemo: React.FC<IProps> = ({
   const webcamRef: any = React.useRef<Webcam | null>(null);
 
   console.log('inner hight', window.innerHeight);
-  console.log('inner hight', window.innerWidth / (window.innerHeight - 1));
+  console.log('inner hight', window.innerWidth / window.innerHeight);
 
   const videoConstraints = {
     facingMode: cameraMode,
