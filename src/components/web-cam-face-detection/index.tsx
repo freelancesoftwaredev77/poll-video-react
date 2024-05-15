@@ -105,21 +105,10 @@ const WebcamDemo: React.FC<IProps> = ({
     setStep(step + 1);
   };
 
-  // const handleUpload = async () => {
-  //   const blob = new Blob(recordedChunks, {
-  //     type: 'video/webm',
-  //   });
-
-  //   const { data, error } = await supabase.storage
-  //     .from('videos/uploads')
-  //     .upload('new-added.mp4', blob);
-  // };
   const handleSwitchCamera = () =>
     setCameraMode((prev: string): 'user' | 'environment' =>
       prev === 'user' ? 'environment' : 'user'
     );
-
-  // userid + - + questionId
 
   return isFinishedRecording ? (
     <div className="relative">

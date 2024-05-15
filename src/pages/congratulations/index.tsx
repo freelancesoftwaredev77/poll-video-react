@@ -8,7 +8,7 @@ interface IProps {}
 
 const Home: React.FC<IProps> = ({}) => (
   <Layout title="">
-    <div className="mt-[40%]">
+    <div className="h-[80vh] pt-20 items-center justify-center flex flex-col">
       <img src="/go.png" alt="go" className="w-32 h-32 object-cover mx-auto" />
 
       <div className="font-bold my-3 text-center">
