@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { Congratulations, Demo, Form, Home, Question } from '@/pages';
 
 const routesData = [

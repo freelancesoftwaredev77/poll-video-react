@@ -1,22 +1,17 @@
-/* eslint-disable spaced-comment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable import/no-extraneous-dependencies */
 import * as React from 'react';
-import { IoVideocamOutline } from 'react-icons/io5';
+import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
+import { v1 as uuidv1 } from 'uuid';
+import { VideoQuestionType } from '@/types';
 import { Footer, Layout } from '@/container';
-import { Button, VideoSkeleton } from '@/components';
+import { VideoBottomBar, VideoSkeleton } from '@/components';
 import WebcamDemo from '@/components/web-cam-face-detection';
 import QuestionDisplay from '@/components/quesiton-display';
 import { supabase } from '@/utils/supabase';
-import { VideoQuestionType } from '@/types';
 import toastAlert from '@/utils/toastAlert';
-import { v1 as uuidv1 } from 'uuid';
-import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 
-interface IProps {}
-
-const Question: React.FC<IProps> = ({}) => {
+const Question: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -74,7 +69,7 @@ const Question: React.FC<IProps> = ({}) => {
         .from('video_responses')
         .insert([
           {
-            //@ts-ignore
+            // @ts-ignore
             response_video_url: videoUploadResponse?.fullPath,
             question_id: videoQuestions[currentIndex]?.id,
             user_id: state?.userId,
@@ -142,72 +137,6 @@ const Question: React.FC<IProps> = ({}) => {
 
   const handleBlockFace = () => setBlockFace(!blockface);
 
-  const renderBottomNavigation = () => {
-    switch (step) {
-      case 1:
-        return (
-          <Button
-            text="Record"
-            type="button"
-            variant="primary"
-            icon={<IoVideocamOutline size={20} color="#fff" />}
-            className="px-4 py-2"
-            hasIcon
-            onClick={handleShowRecordingScreen}
-          />
-        );
-
-      case 2:
-        return (
-          <Button
-            text={blockface ? 'Block your face' : 'unblock your face'}
-            type="button"
-            isValid={!capture}
-            variant="outline"
-            className="px-4 py-2"
-            onClick={handleBlockFace}
-          />
-        );
-
-      case 3:
-        return (
-          <div className="flex items-center gap-3">
-            <Button
-              text="Record Again"
-              type="button"
-              variant="primary"
-              icon={<IoVideocamOutline size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-              onClick={handleRecordAgain}
-            />
-            <Button
-              text="Next"
-              type="button"
-              variant="outline"
-              icon={<IoVideocamOutline size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-              onClick={handleNext}
-              isSubmitting={isSubmitting}
-            />
-          </div>
-        );
-
-      default:
-        return (
-          <Button
-            text="Record"
-            type="button"
-            variant="primary"
-            icon={<IoVideocamOutline size={20} color="#fff" />}
-            className="px-4 py-2"
-            hasIcon
-            onClick={handleShowRecordingScreen}
-          />
-        );
-    }
-  };
   return (
     <Layout>
       <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
@@ -235,7 +164,18 @@ const Question: React.FC<IProps> = ({}) => {
         />
       )}
 
-      <Footer>{renderBottomNavigation()}</Footer>
+      <Footer>
+        <VideoBottomBar
+          blockface={blockface}
+          capture={capture}
+          handleBlockFace={handleBlockFace}
+          handleNext={handleNext}
+          handleRecordAgain={handleRecordAgain}
+          handleShowRecordingScreen={handleShowRecordingScreen}
+          step={step}
+          isSubmitting={isSubmitting}
+        />
+      </Footer>
     </Layout>
   );
 };

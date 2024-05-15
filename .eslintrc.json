@@ -23,8 +23,6 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "react/react-in-jsx-scope": 0,
-    "@typescript-eslint/no-unused-vars": "warn",
     "require-jsdoc": 0,
     "@typescript-eslint/no-explicit-any": "off",
     "react/require-default-props": "off",
@@ -39,10 +37,7 @@
     "react/jsx-props-no-spreading": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
     "import/order": "off",
-    "no-empty-pattern": "off",
-    "no-sparse-arrays": "off",
     "@typescript-eslint/no-unsafe-call": "off",
-    "jsx-a11y/control-has-associated-label": "off",
     "import/no-extraneous-dependencies": "off"
   }
 }

@@ -1,8 +1,5 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import * as React from 'react';
 import ReactPlayer from 'react-player';
-import Spinner from '../spinner';
 
 interface IProps {
   url: string;
@@ -10,7 +7,6 @@ interface IProps {
 }
 
 const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
-  const [loading, setLoading] = React.useState(true);
   const [isPaused, setIsPaused] = React.useState(true);
   const [showControls, setShowControls] = React.useState(true);
 
@@ -33,22 +29,18 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
     setIsPaused(true);
   };
 
-  const handleBuffer = () => setLoading(true);
-  const handleBufferEnd = () => setLoading(false);
-
   return (
-    <div className="relative h-[78vh] rounded-lg" onClick={handleControls}>
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <Spinner variant="large" align="center" />
-        </div>
-      )}
+    <div
+      className="relative h-[78vh] rounded-lg"
+      onClick={handleControls}
+      role="button"
+      tabIndex={0}
+      aria-hidden="true"
+    >
       <ReactPlayer
         url={url}
         controls={false}
-        onBuffer={handleBuffer}
         playing={!isPaused}
-        onBufferEnd={handleBufferEnd}
         className="react-player"
         onEnded={handleEndVideo}
         style={{ paddingTop: '100%', width: '100%', maxWidth: '100%' }}

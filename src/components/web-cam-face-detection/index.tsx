@@ -135,6 +135,7 @@ const WebcamDemo: React.FC<IProps> = ({
         <button
           onClick={handleStopCaptureClick}
           className="absolute bottom-8 left-[40%]"
+          aria-label="save"
         >
           <div className="border-white border-2 rounded-full w-16 h-16">
             <div className="bg-[#000000bb] h-9 w-9 rounded-md mx-auto mt-3" />
@@ -144,6 +145,7 @@ const WebcamDemo: React.FC<IProps> = ({
         <button
           onClick={handleStartCaptureClick}
           className="absolute bottom-8 left-[40%]"
+          aria-label="save"
         >
           <div className="border-white border-2 rounded-full w-16 h-16">
             <div className="bg-warning h-12 w-12 rounded-full mx-auto mt-1.5" />
@@ -160,6 +162,7 @@ const WebcamDemo: React.FC<IProps> = ({
         <button
           onClick={handleSwitchCamera}
           className="absolute bottom-8 right-10"
+          aria-label="save"
         >
           <div className="bg-[#00000080] rounded-full w-12 h-12 flex items-center justify-center">
             <FiRefreshCw color="#fff" className="hover:rotate-180" />

@@ -1,119 +1,51 @@
 import * as React from 'react';
-import { IoVideocamOutline } from 'react-icons/io5';
-import { Footer, Layout } from '@/container';
-import { Button, VideoPlayer } from '@/components';
-import WebcamDemo from '@/components/web-cam-face-detection';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { IoIosPlay } from 'react-icons/io';
+import { Footer, Layout } from '@/container';
+import { VideoBottomBar, VideoPlayer } from '@/components';
+import WebcamDemo from '@/components/web-cam-face-detection';
 
-interface IProps {}
-
-const Question: React.FC<IProps> = ({}) => {
-  // const [isLoading, setIsLoading] = React.useState(false);
-  const [showRecordingScreen, setShowRecordingScreen] = React.useState(false);
-  const [recordedChunks, setRecordedChunks] = React.useState([]);
-  const [isFinishedRecording, setIsFinishedRecording] = React.useState(false);
-  const [capture, setCapturing] = React.useState(false);
-  const [blockface, setBlockFace] = React.useState(false);
-  const [step, setStep] = React.useState(1);
+const Question: React.FC = () => {
+  const [showRecordingScreen, setShowRecordingScreen] =
+    React.useState<boolean>(false);
+  const [recordedChunks, setRecordedChunks] = React.useState<never[]>([]);
+  const [isFinishedRecording, setIsFinishedRecording] =
+    React.useState<boolean>(false);
+  const [capture, setCapturing] = React.useState<boolean>(false);
+  const [blockface, setBlockFace] = React.useState<boolean>(false);
+  const [step, setStep] = React.useState<number>(1);
 
   const navigate: NavigateFunction = useNavigate();
 
-  const handleNext = () => navigate('/congratulation');
+  const handleNext = (): void => navigate('/congratulation');
 
-  const handleShowRecordingScreen = () => {
+  const handleShowRecordingScreen = (): void => {
     setShowRecordingScreen(!showRecordingScreen);
     setStep(step + 1);
   };
 
-  const handleRecordAgain = () => {
+  const handleRecordAgain = (): void => {
     setRecordedChunks([]);
     setBlockFace(false);
     setIsFinishedRecording(!isFinishedRecording);
     setStep(step - 1);
   };
 
-  const handleBlockFace = () => setBlockFace(!blockface);
+  const handleBlockFace = (): void => setBlockFace(!blockface);
 
-  const renderBottomNavigation = () => {
-    switch (step) {
-      case 1:
-        return (
-          <div className="flex items-center gap-4">
-            <Button
-              text="Start Poll"
-              type="submit"
-              variant="primary"
-              icon={<IoIosPlay size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-              onClick={handleNext}
-            />
-            <Button
-              text="Demo"
-              type="button"
-              variant="outline"
-              icon={<IoVideocamOutline size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-              onClick={handleShowRecordingScreen}
-            />
-          </div>
-        );
-
-      case 2:
-        return (
-          <Button
-            text={blockface ? 'Block your face' : 'unblock your face'}
-            type="button"
-            isValid={!capture}
-            variant="outline"
-            className="px-4 py-2"
-            onClick={handleBlockFace}
-          />
-        );
-
-      case 3:
-        return (
-          <div className="flex items-center gap-3">
-            <Button
-              text="Record Again"
-              type="button"
-              variant="primary"
-              icon={<IoVideocamOutline size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-              onClick={handleRecordAgain}
-            />
-            <Button
-              text="Next"
-              type="button"
-              variant="outline"
-              icon={<IoVideocamOutline size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-              onClick={handleNext}
-            />
-          </div>
-        );
-
-      default:
-        return (
-          <Button
-            text="Record"
-            type="button"
-            variant="primary"
-            icon={<IoVideocamOutline size={20} color="#fff" />}
-            className="px-4 py-2"
-            hasIcon
-            onClick={handleShowRecordingScreen}
-          />
-        );
-    }
-  };
   return (
     <Layout>
-      <h5 className="text-center text-2xl font-bold mt-5 mb-10">Instruction</h5>
+      {step === 1 ? (
+        <h5 className="text-center text-2xl font-bold mt-5 mb-10">
+          Instruction
+        </h5>
+      ) : (
+        <div className="flex items-center justify-between mt-5 mb-10">
+          <h5 className="text-primary text-2xl font-bold">Question</h5>
+          <button className="bg-violet px-4 py-2.5 rounded-xl text-white font-bold">
+            Exit demo
+          </button>
+        </div>
+      )}
       {showRecordingScreen ? (
         <WebcamDemo
           blockFace={blockface}
@@ -129,7 +61,17 @@ const Question: React.FC<IProps> = ({}) => {
       ) : (
         <VideoPlayer url="https://cdn.pixabay.com/video/2023/07/10/171007-844433279_large.mp4" />
       )}
-      <Footer>{renderBottomNavigation()}</Footer>
+      <Footer>
+        <VideoBottomBar
+          blockface={blockface}
+          capture={capture}
+          handleBlockFace={handleBlockFace}
+          handleNext={handleNext}
+          handleRecordAgain={handleRecordAgain}
+          handleShowRecordingScreen={handleShowRecordingScreen}
+          step={step}
+        />
+      </Footer>
     </Layout>
   );
 };

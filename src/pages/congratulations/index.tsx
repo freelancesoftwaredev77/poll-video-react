@@ -1,12 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { IoIosPlay } from 'react-icons/io';
 import { Button } from '@/components';
 import { Footer, Layout } from '@/container';
-import { Link } from 'react-router-dom';
 
-interface IProps {}
-
-const Home: React.FC<IProps> = ({}) => (
+const Congratulations: React.FC = () => (
   <Layout title="">
     <div className="h-[80vh] pt-20 items-center justify-center flex flex-col">
       <img src="/go.png" alt="go" className="w-32 h-32 object-cover mx-auto" />
@@ -32,4 +30,4 @@ const Home: React.FC<IProps> = ({}) => (
   </Layout>
 );
 
-export default React.memo(Home);
+export default React.memo(Congratulations);

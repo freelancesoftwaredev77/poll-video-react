@@ -9,8 +9,6 @@ import { educationLevel, genderData, locationData } from '@/static-data';
 import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
 
-interface IProps {}
-
 interface FormValue {
   birthdate: string;
   location: string;
@@ -25,7 +23,7 @@ const FORM_VALIDATION = Yup.object().shape({
   education: Yup.string().required('Required'),
 });
 
-const Form: React.FC<IProps> = ({}) => {
+const Form: React.FC = () => {
   const navigate: NavigateFunction = useNavigate();
   const initValues = {
     birthdate: '',

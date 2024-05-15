@@ -1,5 +1,5 @@
+import * as React from 'react';
 import { useField } from 'formik';
-import { memo } from 'react';
 import Select from 'react-select';
 import customStylesMain from '@/helpers/select-style';
 
@@ -77,4 +77,4 @@ export function CustomSelect({
   );
 }
 
-export default memo(CustomSelect);
+export default React.memo(CustomSelect);
