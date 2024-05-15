@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useRef, useState, useEffect } from 'react';
@@ -32,37 +31,10 @@ const WebcamDemo: React.FC<IProps> = ({
   const [timer, setTimer] = useState(0);
   const webcamRef: any = React.useRef<Webcam | null>(null);
 
-  const calculateVideoDimensions = () => {
-    const width = window.innerWidth * 0.8;
-    const height = window.innerHeight * 0.8;
-    return {
-      width,
-      height,
-      aspectRatio: width / height,
-    };
-  };
-
-  let videoConstraints = {
+  const videoConstraints = {
+    aspectRatio: window.innerWidth / window.innerHeight,
     facingMode: cameraMode,
-    ...calculateVideoDimensions(),
   };
-
-  useEffect(() => {
-    const handleWindowResize = () => {
-      if (!capturing) {
-        videoConstraints = {
-          facingMode: cameraMode,
-          ...calculateVideoDimensions(),
-        };
-      }
-    };
-
-    window.addEventListener('resize', handleWindowResize);
-
-    return () => {
-      window.removeEventListener('resize', handleWindowResize);
-    };
-  }, [capturing, cameraMode]);
 
   const mediaRecorderRef = useRef<any>(null);
 
@@ -105,10 +77,19 @@ const WebcamDemo: React.FC<IProps> = ({
     setStep(step + 1);
   };
 
+  // const handleUpload = async () => {
+  //   const blob = new Blob(recordedChunks, {
+  //     type: 'video/webm',
+  //   });
+
+  //   const { data, error } = await supabase.storage
+  //     .from('videos/uploads')
+  //     .upload('new-added.mp4', blob);
+  // };
   const handleSwitchCamera = () =>
-    setCameraMode((prev: string): 'user' | 'environment' =>
-      prev === 'user' ? 'environment' : 'user'
-    );
+    setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
+
+  // userid + - + questionId
 
   return isFinishedRecording ? (
     <div className="relative">
@@ -135,7 +116,7 @@ const WebcamDemo: React.FC<IProps> = ({
       />
     </div>
   ) : (
-    <div className="relative ">
+    <div className="relative">
       {blockFace && (
         <div className="absolute top-20 left-[25%]">
           <img src="/face-cover.png" alt="face-cover" />
@@ -147,8 +128,8 @@ const WebcamDemo: React.FC<IProps> = ({
         videoConstraints={videoConstraints}
         mirrored={false}
         audio
+        className="w-full h-full"
         muted
-        className={capturing ? 'w-full h-full' : 'w-full'}
       />
       {capturing ? (
         <button
