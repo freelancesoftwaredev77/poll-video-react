@@ -1,12 +1,12 @@
+import * as React from 'react';
+import * as Yup from 'yup';
+import { Formik, Form as FormikForm } from 'formik';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { IoIosPlay } from 'react-icons/io';
 import { Button, SearchSelect, TextField } from '@/components';
 import { Footer, Layout } from '@/container';
-import * as Yup from 'yup';
 import { educationLevel, genderData, locationData } from '@/static-data';
 import { supabase } from '@/utils/supabase';
-import { Formik, Form as FormikForm } from 'formik';
-import React from 'react';
-import { IoIosPlay } from 'react-icons/io';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
 import toastAlert from '@/utils/toastAlert';
 
 interface IProps {}
@@ -45,7 +45,7 @@ const Form: React.FC<IProps> = ({}) => {
       })
       .select();
     if (data) {
-      navigate('/question');
+      navigate('/question', { state: { userId: data[0]?.id } });
     }
     if (error) {
       toastAlert('error', 'Something went wrong');

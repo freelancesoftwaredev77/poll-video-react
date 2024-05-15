@@ -26,6 +26,7 @@
     "react-router-dom": "^6.21.1",
     "react-select": "^5.8.0",
     "react-webcam": "^7.2.0",
+    "uuid": "^9.0.1",
     "yup": "^1.4.0"
   },
   "devDependencies": {
@@ -34,6 +35,7 @@
     "@types/node": "^20.10.7",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "@vitejs/plugin-react-swc": "^3.5.0",

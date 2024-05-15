@@ -1,3 +1,4 @@
+/* eslint-disable spaced-comment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -10,6 +11,8 @@ import QuestionDisplay from '@/components/quesiton-display';
 import { supabase } from '@/utils/supabase';
 import { VideoQuestionType } from '@/types';
 import toastAlert from '@/utils/toastAlert';
+import { v1 as uuidv1 } from 'uuid';
+import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 
 interface IProps {}
 
@@ -23,6 +26,8 @@ const Question: React.FC<IProps> = ({}) => {
   const [capture, setCapturing] = React.useState(false);
   const [blockface, setBlockFace] = React.useState(false);
   const [step, setStep] = React.useState(1);
+  const navigate: NavigateFunction = useNavigate();
+  const { state } = useLocation();
 
   const [videoQuestions, setVideoQuestion] = React.useState<
     VideoQuestionType[]
@@ -48,6 +53,12 @@ const Question: React.FC<IProps> = ({}) => {
     fetchQuestion();
   }, []);
 
+  React.useEffect(() => {
+    if (!state?.userId) {
+      navigate('/form');
+    }
+  }, [navigate, state?.userId]);
+
   const handleNext = async () => {
     setIsSubmitting(true);
     const blob = new Blob(recordedChunks, {
@@ -56,48 +67,60 @@ const Question: React.FC<IProps> = ({}) => {
 
     const { data: videoUploadResponse, error } = await supabase.storage
       .from('videos/uploads')
-      .upload(
-        `${String(videoQuestions[currentIndex].id)} ${Math.random().toString()}.mp4`,
-        blob
-      );
+      .upload(`${uuidv1()}.mp4`, blob);
 
     if (videoUploadResponse) {
-      setRecordedChunks([]);
-      setCapturing(false);
-      setShowRecordingScreen(false);
-      setIsFinishedRecording(false);
-      setStep(1);
-      setIsSubmitting(false);
-      setCurrentIndex(
-        (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
-      );
+      const { data: videoResponse, error: videoResponseError } = await supabase
+        .from('video_responses')
+        .insert([
+          {
+            //@ts-ignore
+            response_video_url: videoUploadResponse?.fullPath,
+            question_id: videoQuestions[currentIndex]?.id,
+            user_id: state?.userId,
+            should_block_face: blockface,
+          },
+        ])
+        .select();
+
+      if (videoResponseError) {
+        toastAlert('error', 'Something went wrong');
+      }
+
+      if (videoResponse) {
+        try {
+          const data: Response = await fetch(
+            `${import.meta.env.VITE_APP_API_BASE_URL}/video-transcribe/`,
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                video_response_id: videoResponse[0]?.id,
+              }),
+            }
+          );
+          if (data?.status !== 200) {
+            toastAlert('error', 'Something went wrong');
+            setIsSubmitting(false);
+          }
+          if (data?.status === 200) {
+            setIsSubmitting(false);
+            setRecordedChunks([]);
+            setCapturing(false);
+            setShowRecordingScreen(false);
+            setIsFinishedRecording(false);
+            setStep(1);
+            setIsSubmitting(false);
+            setBlockFace(false);
+            setCurrentIndex(
+              (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
+            );
+            setIsSubmitting(false);
+          }
+        } catch (err: any) {
+          toastAlert('error', 'Something went wrong');
+        }
+      }
     }
-
-    // if (videoUploadResponse) {
-    //   try {
-    //     const videoResponse = await fetch(
-    //       `https://cibcn18zd8.execute-api.eu-central-1.amazonaws.com/dev/video-transcribe/`,
-    //       {
-    //         method: 'POST',
-    //         body: JSON.stringify({
-    //           video_response_id: videoUploadResponse?.id,
-    //         }),
-    //       }
-    //     );
-
-    //     const response = await videoResponse.json();
-    //     console.log('🚀 ~ handleNext ~ response:', response);
-
-    //     // await Service.post('transcribe-video/', {
-    //     //   // @ts-ignore
-    //     //   video_response_id: videoUploadResponse?.id ?? '',
-    //     // });
-    //     setIsSubmitting(false);
-    //   } catch (err: any) {
-    //     console.log('🚀 ~ handleNext ~ error:', err?.response);
-    //     setIsSubmitting(false);
-    //   }
-    // }
 
     if (error) {
       toastAlert('error', 'Something went wrong');
@@ -118,10 +141,6 @@ const Question: React.FC<IProps> = ({}) => {
   };
 
   const handleBlockFace = () => setBlockFace(!blockface);
-
-  console.log('step ', step);
-
-  // const handleNavigate = () => {};
 
   const renderBottomNavigation = () => {
     switch (step) {
