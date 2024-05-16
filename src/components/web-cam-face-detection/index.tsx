@@ -32,9 +32,7 @@ const WebcamDemo: React.FC<IProps> = ({
   const webcamRef: any = React.useRef<Webcam | null>(null);
 
   const videoConstraints = {
-    width: { exact: 480, ideal: 480 },
-    height: { exact: 640, ideal: 640 },
-    aspectRatio: { exact: 0.7500000001, ideal: 0.7500000001 },
+    // aspectRatio: widthOftheScreen / heightScreen,
     facingMode: cameraMode,
   };
 
@@ -123,7 +121,7 @@ const WebcamDemo: React.FC<IProps> = ({
         videoConstraints={videoConstraints}
         mirrored={false}
         audio
-        className="w-full h-full"
+        className="w-full h-[80vh] object-fill"
         muted
       />
       {capturing ? (

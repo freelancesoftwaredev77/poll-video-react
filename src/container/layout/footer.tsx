@@ -5,7 +5,7 @@ interface IProps {
 }
 
 const Footer: React.FC<IProps> = ({ children }) => (
-  <div className="bg-white fixed -bottom-5 left-0 right-0 w-full mx-auto sm:w-[480px] md:w-[480px] xl:w-[480px] lg:w-[480px] 2xl:w-[480px] p-5 ">
+  <div className="bg-white fixed -bottom-5 left-0 right-0 w-full mx-auto sm:w-[480px] md:w-[480px] xl:w-[480px] lg:w-[480px] 2xl:w-[480px] px-5 pb-10">
     {children}
   </div>
 );

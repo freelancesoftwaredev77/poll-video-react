@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { VideoPlayer } from '@/components';
-import { Layout } from '@/container';
+import { Footer, Layout } from '@/container';
 import { IntroDataType } from '@/types';
 import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
@@ -27,15 +27,17 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <h6 className="text-center my-5 font-bold text-[22px]">Welcome</h6>
+      <h6 className="text-center mt-5 mb-10 font-bold text-[22px]">Welcome</h6>
 
       <VideoPlayer
         url={introData.length > 0 ? introData[0].demo_video : ''}
         handleEndVideo={handleEndVideo}
       />
-      <h6 className="text-center mt-5 font-bold">
-        {introData && introData[0]?.title}
-      </h6>
+      <Footer>
+        <h6 className="text-center mt-5 font-bold">
+          {introData && introData[0]?.title}
+        </h6>
+      </Footer>
     </Layout>
   );
 };
