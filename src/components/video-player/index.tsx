@@ -43,6 +43,7 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
         playing={!isPaused}
         className="react-player"
         onEnded={handleEndVideo}
+        playsinline
       />
       {showControls && (
         <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-lg mx-5">
