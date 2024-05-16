@@ -98,7 +98,7 @@ const WebcamDemo: React.FC<IProps> = ({
         disablePictureInPicture
         controls
         autoPlay
-        className="w-full h-[80vh]"
+        className="w-full h-[80vh] object-fill"
         src={
           recordedChunks.length
             ? URL.createObjectURL(
@@ -121,7 +121,7 @@ const WebcamDemo: React.FC<IProps> = ({
         videoConstraints={videoConstraints}
         mirrored={false}
         audio
-        className="w-full h-[80vh]"
+        className="w-full h-[80vh] object-fill"
         muted
       />
       {capturing ? (
