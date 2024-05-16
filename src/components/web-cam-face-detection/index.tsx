@@ -32,7 +32,9 @@ const WebcamDemo: React.FC<IProps> = ({
   const webcamRef: any = React.useRef<Webcam | null>(null);
 
   const videoConstraints = {
-    aspectRatio: window.innerWidth / window.innerHeight,
+    width: { exact: 480, ideal: 480 },
+    height: { exact: 640, ideal: 640 },
+    aspectRatio: { exact: 0.7500000001, ideal: 0.7500000001 },
     facingMode: cameraMode,
   };
 

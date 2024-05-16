@@ -8,7 +8,6 @@ import toastAlert from '@/utils/toastAlert';
 
 const Home: React.FC = () => {
   const [introData, setIntroData] = React.useState<IntroDataType[]>([]);
-
   const navigate: NavigateFunction = useNavigate();
 
   const handleEndVideo = () => navigate('/demo');

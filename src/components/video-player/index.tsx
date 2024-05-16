@@ -31,7 +31,7 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
 
   return (
     <div
-      className="relative h-[78vh] rounded-lg"
+      className="react-wrapper"
       onClick={handleControls}
       role="button"
       tabIndex={0}
@@ -43,10 +43,9 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
         playing={!isPaused}
         className="react-player"
         onEnded={handleEndVideo}
-        style={{ paddingTop: '100%', width: '100%', maxWidth: '100%' }}
       />
       {showControls && (
-        <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-lg">
+        <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-lg mx-5">
           <div className="absolute z-50 top-[45%] left-[45%]">
             {isPaused ? (
               <button onClick={handlePlayPause}>
