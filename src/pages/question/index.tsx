@@ -10,6 +10,10 @@ import WebcamDemo from '@/components/web-cam-face-detection';
 import QuestionDisplay from '@/components/quesiton-display';
 import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
+import { FFmpeg } from '@ffmpeg/ffmpeg';
+import { fetchFile } from '@ffmpeg/util';
+import coreURL from '../../../node_modules/@ffmpeg/core/dist/esm/ffmpeg-core.js?url';
+import wasmURL from '../../../node_modules/@ffmpeg/core/dist/esm/ffmpeg-core.wasm?url';
 
 const Question: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -23,6 +27,8 @@ const Question: React.FC = () => {
   const [step, setStep] = React.useState(1);
   const navigate: NavigateFunction = useNavigate();
   const { state } = useLocation();
+
+  const ffmpeg = new FFmpeg();
 
   const [videoQuestions, setVideoQuestion] = React.useState<
     VideoQuestionType[]
@@ -56,13 +62,22 @@ const Question: React.FC = () => {
 
   const handleNext = async () => {
     setIsSubmitting(true);
-    const blob = new Blob(recordedChunks, {
-      type: 'video/webm',
+    await ffmpeg.load({ coreURL, wasmURL });
+    ffmpeg.on('log', () => {});
+    const inputBlob = new Blob(recordedChunks, {
+      type: 'video/x-matroska;codecs=avc1,opus',
     });
+    const inputUrl = URL.createObjectURL(inputBlob);
+    await ffmpeg.writeFile('input.mkv', await fetchFile(inputUrl));
+    await ffmpeg.exec(['-i', 'input.mkv', 'output.mp4']);
+    const fileData = await ffmpeg.readFile('output.mp4');
+    const convertData = new Uint8Array(fileData as ArrayBuffer);
+
+    const fileName = `${uuidv1()}.mp4`;
 
     const { data: videoUploadResponse, error } = await supabase.storage
       .from('videos/uploads')
-      .upload(`${uuidv1()}.mp4`, blob);
+      .upload(fileName, new Blob([convertData.buffer], { type: 'video/mp4' }));
 
     if (videoUploadResponse) {
       const { data: videoResponse, error: videoResponseError } = await supabase
@@ -121,6 +136,7 @@ const Question: React.FC = () => {
       toastAlert('error', 'Something went wrong');
       setIsSubmitting(false);
     }
+    setIsSubmitting(false);
   };
 
   const handleShowRecordingScreen = () => {

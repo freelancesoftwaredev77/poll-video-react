@@ -53,9 +53,11 @@ const WebcamDemo: React.FC<IProps> = ({
   }, [capturing]);
 
   const handleDataAvailable = ({ data }: { data: any }) => {
+    const newRecordedData: any = [];
     if (data.size > 0) {
-      setRecordedChunks((prev) => prev.concat(data));
+      newRecordedData.push(data);
     }
+    setRecordedChunks(newRecordedData);
   };
 
   const handleStartCaptureClick = () => {
@@ -77,15 +79,6 @@ const WebcamDemo: React.FC<IProps> = ({
     setStep(step + 1);
   };
 
-  // const handleUpload = async () => {
-  //   const blob = new Blob(recordedChunks, {
-  //     type: 'video/webm',
-  //   });
-
-  //   const { data, error } = await supabase.storage
-  //     .from('videos/uploads')
-  //     .upload('new-added.mp4', blob);
-  // };
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 

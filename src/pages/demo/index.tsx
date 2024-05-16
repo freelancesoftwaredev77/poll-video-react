@@ -41,7 +41,10 @@ const Question: React.FC = () => {
       ) : (
         <div className="flex items-center justify-between mt-5 mb-10">
           <h5 className="text-primary text-2xl font-bold">Question</h5>
-          <button className="bg-violet px-4 py-2.5 rounded-xl text-white font-bold">
+          <button
+            className="bg-violet px-4 py-2.5 rounded-xl text-white font-bold"
+            onClick={handleNext}
+          >
             Exit demo
           </button>
         </div>
@@ -70,6 +73,7 @@ const Question: React.FC = () => {
           handleRecordAgain={handleRecordAgain}
           handleShowRecordingScreen={handleShowRecordingScreen}
           step={step}
+          isDemo
         />
       </Footer>
     </Layout>

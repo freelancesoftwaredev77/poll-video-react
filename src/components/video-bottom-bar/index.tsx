@@ -12,6 +12,7 @@ interface IProps {
   capture: boolean;
   step: number;
   isSubmitting?: boolean;
+  isDemo?: boolean;
 }
 
 const VideoBottomBar: React.FC<IProps> = ({
@@ -23,30 +24,45 @@ const VideoBottomBar: React.FC<IProps> = ({
   handleBlockFace,
   handleRecordAgain,
   isSubmitting,
+  isDemo = false,
 }) => {
   const renderBottomNavigation = () => {
     switch (step) {
       case 1:
         return (
           <div className="flex items-center gap-4">
-            <Button
-              text="Start Poll"
-              type="submit"
-              variant="primary"
-              icon={<IoIosPlay size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-              onClick={handleNext}
-            />
-            <Button
-              text="Demo"
-              type="button"
-              variant="outline"
-              icon={<IoVideocamOutline size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-              onClick={handleShowRecordingScreen}
-            />
+            {isDemo ? (
+              <>
+                <Button
+                  text="Start Poll"
+                  type="submit"
+                  variant="primary"
+                  icon={<IoIosPlay size={20} color="#fff" />}
+                  className="px-4 py-2"
+                  hasIcon
+                  onClick={handleNext}
+                />
+                <Button
+                  text="Demo"
+                  type="button"
+                  variant="outline"
+                  icon={<IoVideocamOutline size={20} color="#fff" />}
+                  className="px-4 py-2"
+                  hasIcon
+                  onClick={handleShowRecordingScreen}
+                />
+              </>
+            ) : (
+              <Button
+                text="Record"
+                type="button"
+                variant="primary"
+                icon={<IoVideocamOutline size={20} color="#fff" />}
+                className="px-4 py-2"
+                hasIcon
+                onClick={handleShowRecordingScreen}
+              />
+            )}
           </div>
         );
 
