@@ -30,7 +30,7 @@ const Home: React.FC = () => {
       <h6 className="text-center mt-5 mb-10 font-bold text-[22px]">Welcome</h6>
 
       <VideoPlayer
-        url={introData.length > 0 ? introData[0].demo_video : ''}
+        url={introData[0]?.demo_video ?? ''}
         handleEndVideo={handleEndVideo}
       />
       <Footer>

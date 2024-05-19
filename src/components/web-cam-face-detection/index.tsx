@@ -85,7 +85,7 @@ const WebcamDemo: React.FC<IProps> = ({
   // userid + - + questionId
 
   return isFinishedRecording ? (
-    <div className="relative">
+    <div className="relative h-[90%]">
       {blockFace && (
         <div className="absolute top-20 left-[25%] z-30">
           <img src="/face-cover.png" alt="face-cover" className="z-30" />
@@ -98,18 +98,16 @@ const WebcamDemo: React.FC<IProps> = ({
         disablePictureInPicture
         controls
         autoPlay
-        className="w-full h-[80vh] object-fill"
+        className="w-full h-full object-cover"
         src={
           recordedChunks.length
-            ? URL.createObjectURL(
-                new Blob(recordedChunks, { type: 'video/webm' })
-              )
+            ? URL.createObjectURL(new Blob(recordedChunks))
             : ''
         }
       />
     </div>
   ) : (
-    <div className="relative">
+    <div className="relative h-[90%]">
       {blockFace && (
         <div className="absolute top-20 left-[25%]">
           <img src="/face-cover.png" alt="face-cover" />
@@ -121,7 +119,7 @@ const WebcamDemo: React.FC<IProps> = ({
         videoConstraints={videoConstraints}
         mirrored={false}
         audio
-        className="w-full h-[80vh] object-fill"
+        className="w-full h-full object-cover"
         muted
       />
       {capturing ? (

@@ -1,16 +1,13 @@
-import React from 'react';
+import * as React from 'react';
 
 interface IProps {
   className?: string;
   children: React.ReactNode;
-  notPadding?: boolean;
 }
 
-const Container: React.FC<IProps> = ({ children, className, notPadding }) => (
+const Container: React.FC<IProps> = ({ children, className }) => (
   <div
-    className={`container lg:max-w-[1180px] md:max-w-[960px] sm:max-w-[720px] w-full mx-auto ${className} ${
-      !notPadding && 'py-10'
-    }`}
+    className={`${className} mx-auto sm:w-[480px] md:w-[480px] xl:w-[480px] lg:w-[480px] 2xl:w-[480px] pb-5 px-5`}
   >
     {children}
   </div>
