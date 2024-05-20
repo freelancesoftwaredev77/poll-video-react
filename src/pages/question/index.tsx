@@ -55,6 +55,8 @@ const Question: React.FC = () => {
     }
   }, [navigate, state?.userId]);
 
+  // console.log('videos state', videoQuestions.length <= currentIndex);
+
   // const handleNext = async () => {
   //   setIsSubmitting(true);
 
@@ -144,7 +146,7 @@ const Question: React.FC = () => {
 
   return (
     <Layout>
-      {videoQuestions?.length > currentIndex ? (
+      {videoQuestions?.length === currentIndex ? (
         <div className="h-[80vh] pt-20 items-center justify-center flex flex-col">
           <img
             src="/go.png"
@@ -184,6 +186,7 @@ const Question: React.FC = () => {
               userId={state?.user_id}
               setIsSubmitting={setIsSubmitting}
               isSubmitting={isSubmitting}
+              currentIdx={currentIndex}
             />
           ) : (
             <QuestionDisplay

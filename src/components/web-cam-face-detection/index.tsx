@@ -31,6 +31,7 @@ interface IProps {
   userId?: string;
   questionId?: number;
   questionLength?: number | any;
+  currentIdx?: number | any;
 }
 
 const WebcamDemo: React.FC<IProps> = ({
@@ -52,6 +53,7 @@ const WebcamDemo: React.FC<IProps> = ({
   setShowRecordingScreen,
   questionId,
   questionLength,
+  currentIdx,
 }) => {
   const [cameraMode, setCameraMode] = React.useState('user');
   const navigate: NavigateFunction = useNavigate();
@@ -163,10 +165,12 @@ const WebcamDemo: React.FC<IProps> = ({
               setStep(1);
               setIsSubmitting(false);
               setBlockFace(false);
+              // if()
               setCurrentIndex(
                 (prevIndex: number) => (prevIndex + 1) % questionLength
               );
               setIsSubmitting(false);
+              console.log('current index', currentIdx);
             }
           } catch (err: any) {
             toastAlert('error', 'Something went wrong');
