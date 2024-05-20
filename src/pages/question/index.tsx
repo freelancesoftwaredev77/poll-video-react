@@ -158,7 +158,6 @@ const Question: React.FC = () => {
           setCapturing={setCapturing}
           isFinishedRecording={isFinishedRecording}
           setIsFinishedRecording={setIsFinishedRecording}
-          recordedChunks={recordedChunks}
           setRecordedChunks={setRecordedChunks}
           step={step}
           setStep={setStep}

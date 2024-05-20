@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import { Formik, Form as FormikForm } from 'formik';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import { IoIosPlay } from 'react-icons/io';
 import { Button, SearchSelect, TextField } from '@/components';
 import { Footer, Layout } from '@/container';
@@ -83,12 +83,14 @@ const Form: React.FC = () => {
             />
             <Footer>
               <div className="flex items-center gap-3 mt-4 justify-end ">
-                <Button
-                  text="Back"
-                  type="button"
-                  variant="outline"
-                  className="px-4 py-2"
-                />
+                <Link to="/demo" className="w-full">
+                  <Button
+                    text="Back"
+                    type="button"
+                    variant="outline"
+                    className="px-4 py-2"
+                  />
+                </Link>
 
                 <Button
                   text="Submit"

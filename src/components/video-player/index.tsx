@@ -29,7 +29,6 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
     setTimeout((): void => setShowControls(false), 500);
     setIsPaused(true);
   };
-
   const handleLoading = () => setIsLoading(!isLoading);
 
   return (
@@ -44,7 +43,7 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
         url={url ?? ''}
         controls={false}
         playing={!isPaused}
-        className="!h-full !w-full px-5 custom-player"
+        className="!h-full !w-full custom-player"
         onEnded={handleEndVideo}
         playsinline
         onBufferEnd={handleLoading}
@@ -52,7 +51,7 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
       />
 
       {showControls && (
-        <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-xl mx-5 h-full">
+        <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-xl h-full">
           <div className="absolute z-50 top-[45%] left-[45%]">
             {isPaused ? (
               <button onClick={handlePlayPause}>

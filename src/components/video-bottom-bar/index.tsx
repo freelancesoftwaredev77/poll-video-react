@@ -22,8 +22,6 @@ const VideoBottomBar: React.FC<IProps> = ({
   step,
   capture,
   handleBlockFace,
-  handleRecordAgain,
-  isSubmitting,
   isDemo = false,
 }) => {
   const renderBottomNavigation = () => {
@@ -48,7 +46,6 @@ const VideoBottomBar: React.FC<IProps> = ({
                   variant="outline"
                   icon={<IoVideocamOutline size={20} color="#fff" />}
                   className="px-4 py-2"
-                  hasIcon
                   onClick={handleShowRecordingScreen}
                 />
               </>
@@ -69,7 +66,7 @@ const VideoBottomBar: React.FC<IProps> = ({
       case 2:
         return (
           <Button
-            text={blockface ? 'Block your face' : 'unblock your face'}
+            text={!blockface ? 'Block your face' : 'unblock your face'}
             type="button"
             isValid={!capture}
             variant="outline"
@@ -81,7 +78,7 @@ const VideoBottomBar: React.FC<IProps> = ({
       case 3:
         return (
           <div className="flex items-center gap-3">
-            <Button
+            {/* <Button
               text="Record Again"
               type="button"
               variant="primary"
@@ -94,12 +91,10 @@ const VideoBottomBar: React.FC<IProps> = ({
               text="Next"
               type="button"
               variant="outline"
-              icon={<IoVideocamOutline size={20} color="#fff" />}
               className="px-4 py-2"
-              hasIcon
               onClick={handleNext}
               isSubmitting={isSubmitting ?? false}
-            />
+            /> */}
           </div>
         );
 

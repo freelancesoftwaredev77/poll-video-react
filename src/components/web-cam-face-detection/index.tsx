@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useRef, useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
+import Spinner from '../spinner';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 interface IProps {
   blockFace: boolean;
@@ -10,10 +13,10 @@ interface IProps {
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
   setIsFinishedRecording: React.Dispatch<React.SetStateAction<boolean>>;
-  setRecordedChunks: React.Dispatch<React.SetStateAction<never[]>>;
-  recordedChunks: never[];
+  setRecordedChunks?: React.Dispatch<React.SetStateAction<never[]>>;
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  isDemo?: boolean;
 }
 
 const WebcamDemo: React.FC<IProps> = ({
@@ -22,17 +25,17 @@ const WebcamDemo: React.FC<IProps> = ({
   setCapturing,
   isFinishedRecording,
   setIsFinishedRecording,
-  recordedChunks,
   setRecordedChunks,
   setStep,
   step,
+  isDemo,
 }) => {
   const [cameraMode, setCameraMode] = React.useState('user');
+  const navigate: NavigateFunction = useNavigate();
   const [timer, setTimer] = useState(0);
   const webcamRef: any = React.useRef<Webcam | null>(null);
 
   const videoConstraints = {
-    // aspectRatio: widthOftheScreen / heightScreen,
     facingMode: cameraMode,
   };
 
@@ -57,7 +60,8 @@ const WebcamDemo: React.FC<IProps> = ({
     if (data.size > 0) {
       newRecordedData.push(data);
     }
-    setRecordedChunks(newRecordedData);
+    // @ts-ignore
+    return setRecordedChunks(newRecordedData);
   };
 
   const handleStartCaptureClick = () => {
@@ -73,38 +77,26 @@ const WebcamDemo: React.FC<IProps> = ({
   };
 
   const handleStopCaptureClick = () => {
-    setCapturing(!capturing);
-    setIsFinishedRecording(!isFinishedRecording);
-    mediaRecorderRef.current?.stop();
-    setStep(step + 1);
+    if (isDemo) {
+      navigate('/congratulation');
+    } else {
+      setCapturing(!capturing);
+      setIsFinishedRecording(!isFinishedRecording);
+      mediaRecorderRef.current?.stop();
+      setStep(step + 1);
+    }
   };
 
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
-  // userid + - + questionId
-
   return isFinishedRecording ? (
-    <div className="relative h-[90%]">
-      {blockFace && (
-        <div className="absolute top-20 left-[25%] z-30">
-          <img src="/face-cover.png" alt="face-cover" className="z-30" />
-        </div>
-      )}
+    <div className="h-[90%] flex items-center justify-center flex-col">
+      <Spinner variant="large" align="center" />
 
-      <video
-        controlsList="nofullscreen nodownload"
-        playsInline
-        disablePictureInPicture
-        controls
-        autoPlay
-        className="w-full h-full object-cover"
-        src={
-          recordedChunks.length
-            ? URL.createObjectURL(new Blob(recordedChunks))
-            : ''
-        }
-      />
+      <p className="mt-4 text-xs text-primary">
+        Please wait video is uploading...
+      </p>
     </div>
   ) : (
     <div className="relative h-[90%]">
@@ -145,7 +137,7 @@ const WebcamDemo: React.FC<IProps> = ({
       )}
 
       {capturing && (
-        <div className="absolute top-4 left-[50%] transform -translate-x-1/2 bg-warning px-3 py-1 rounded-full text-white font-bold">
+        <div className="absolute bottom-12 left-[20%] transform -translate-x-1/2 bg-warning px-3 py-1 rounded-full text-white font-bold">
           <p className="text-sm">00:{timer} / 45 sec</p>
         </div>
       )}

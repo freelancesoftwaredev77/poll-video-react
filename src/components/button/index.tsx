@@ -20,12 +20,12 @@ const Button: React.FC<IProps> = ({
   onClick,
   isSubmitting,
   isValid = true,
-  hasIcon,
+  hasIcon = false,
   icon,
 }) => (
   <button
     className={`
-      ${className} outline-none rounded-md text-sm disabled:text-opacity-70 px-4 py-2.5 w-full disabled:bg-opacity-40 text-center disabled:cursor-not-allowed text-pure-white capitalize
+      ${className} outline-none rounded-md text-sm disabled:text-opacity-70 py-2.5 w-full disabled:bg-opacity-40 text-center disabled:cursor-not-allowed text-pure-white capitalize
       ${variant === 'primary' && 'bg-primary text-white'}
       ${variant === 'outline' && 'border-secondary border text-primary'}
     `}

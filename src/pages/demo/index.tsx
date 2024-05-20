@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Footer, Layout } from '@/container';
@@ -7,7 +9,6 @@ import WebcamDemo from '@/components/web-cam-face-detection';
 const Question: React.FC = () => {
   const [showRecordingScreen, setShowRecordingScreen] =
     React.useState<boolean>(false);
-  const [recordedChunks, setRecordedChunks] = React.useState<never[]>([]);
   const [isFinishedRecording, setIsFinishedRecording] =
     React.useState<boolean>(false);
   const [capture, setCapturing] = React.useState<boolean>(false);
@@ -24,7 +25,6 @@ const Question: React.FC = () => {
   };
 
   const handleRecordAgain = (): void => {
-    setRecordedChunks([]);
     setBlockFace(false);
     setIsFinishedRecording(!isFinishedRecording);
     setStep(step - 1);
@@ -42,7 +42,7 @@ const Question: React.FC = () => {
         <div className="flex items-center justify-between mt-5 mb-10">
           <h5 className="text-primary text-2xl font-bold">Question</h5>
           <button
-            className="bg-violet px-4 py-2.5 rounded-xl text-white font-bold"
+            className="bg-violet px-2 py-1.5 rounded-xl text-white font-bold"
             onClick={handleNext}
           >
             Exit demo
@@ -56,9 +56,8 @@ const Question: React.FC = () => {
           setCapturing={setCapturing}
           isFinishedRecording={isFinishedRecording}
           setIsFinishedRecording={setIsFinishedRecording}
-          recordedChunks={recordedChunks}
-          setRecordedChunks={setRecordedChunks}
           step={step}
+          isDemo
           setStep={setStep}
         />
       ) : (
