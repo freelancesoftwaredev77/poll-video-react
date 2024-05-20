@@ -1,9 +1,7 @@
 import React from 'react';
 
 const TripSkeleton: React.FC = () => (
-  <div className="bg-[#C7C7C7] animate-pulse border border-opacity-15 border-dark-grey rounded-md cursor-pointer overflow-hidden">
-    <div className="h-96 bg-[#c7c7c7] rounded-lg" />
-  </div>
+  <div className="bg-[#c6c0c0ac] animate-pulse rounded-md cursor-pointer overflow-hidden h-[90%]" />
 );
 
 export default React.memo(TripSkeleton);

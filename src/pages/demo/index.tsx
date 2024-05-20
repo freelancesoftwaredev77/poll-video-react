@@ -69,7 +69,7 @@ const Question: React.FC = () => {
           blockface={blockface}
           capture={capture}
           handleBlockFace={handleBlockFace}
-          // handleNext={handleNext}
+          handleNext={handleNext}
           handleRecordAgain={handleRecordAgain}
           handleShowRecordingScreen={handleShowRecordingScreen}
           step={step}
