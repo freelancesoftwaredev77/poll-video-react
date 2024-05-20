@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useRef, useState, useEffect } from 'react';
+import { v1 as uuidv1 } from 'uuid';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
 import Spinner from '../spinner';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { supabase } from '@/utils/supabase';
+import toastAlert from '@/utils/toastAlert';
 
 interface IProps {
   blockFace: boolean;
@@ -13,10 +18,19 @@ interface IProps {
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
   setIsFinishedRecording: React.Dispatch<React.SetStateAction<boolean>>;
-  setRecordedChunks?: React.Dispatch<React.SetStateAction<never[]>>;
+  setBlockFace: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowRecordingScreen?: React.Dispatch<React.SetStateAction<boolean>> | any;
+  setRecordedChunks?: React.Dispatch<React.SetStateAction<never[]>> | any;
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   isDemo?: boolean;
+  isSubmitting?: boolean;
+  setIsSubmitting?: any;
+  recordedChunks?: never[];
+  setCurrentIndex?: any;
+  userId?: string;
+  questionId?: number;
+  questionLength?: number | any;
 }
 
 const WebcamDemo: React.FC<IProps> = ({
@@ -29,6 +43,15 @@ const WebcamDemo: React.FC<IProps> = ({
   setStep,
   step,
   isDemo,
+  isSubmitting,
+  setIsSubmitting,
+  recordedChunks,
+  setCurrentIndex,
+  userId,
+  setBlockFace,
+  setShowRecordingScreen,
+  questionId,
+  questionLength,
 }) => {
   const [cameraMode, setCameraMode] = React.useState('user');
   const navigate: NavigateFunction = useNavigate();
@@ -76,7 +99,7 @@ const WebcamDemo: React.FC<IProps> = ({
     mediaRecorderRef.current.start();
   };
 
-  const handleStopCaptureClick = () => {
+  const handleStopCaptureClick = async () => {
     if (isDemo) {
       navigate('/congratulation');
     } else {
@@ -84,6 +107,78 @@ const WebcamDemo: React.FC<IProps> = ({
       setIsFinishedRecording(!isFinishedRecording);
       mediaRecorderRef.current?.stop();
       setStep(step + 1);
+
+      setIsSubmitting(true);
+
+      const inputBlob = new Blob(recordedChunks, {
+        type: 'video/x-matroska;codecs=avc1,opus',
+      });
+
+      const fileName = `${uuidv1()}.mp4`;
+
+      const { data: videoUploadResponse, error } = await supabase.storage
+        .from('videos/uploads')
+        .upload(fileName, inputBlob);
+
+      if (videoUploadResponse) {
+        const { data: videoResponse, error: videoResponseError } =
+          await supabase
+            .from('video_responses')
+            .insert([
+              {
+                // @ts-ignore
+                response_video_url: videoUploadResponse?.fullPath,
+                question_id: questionId,
+                user_id: userId,
+                should_block_face: blockFace,
+              },
+            ])
+            .select();
+
+        if (videoResponseError) {
+          toastAlert('error', 'Something went wrong');
+        }
+
+        if (videoResponse) {
+          try {
+            const data: Response = await fetch(
+              `${import.meta.env.VITE_APP_API_BASE_URL}/video-transcribe/`,
+              {
+                method: 'POST',
+                body: JSON.stringify({
+                  video_response_id: videoResponse[0]?.id,
+                }),
+              }
+            );
+            if (data?.status !== 200) {
+              toastAlert('error', 'Something went wrong');
+              setIsSubmitting(false);
+            }
+            if (data?.status === 200) {
+              setIsSubmitting(false);
+              setRecordedChunks([]);
+              setCapturing(false);
+              setShowRecordingScreen(false);
+              setIsFinishedRecording(false);
+              setStep(1);
+              setIsSubmitting(false);
+              setBlockFace(false);
+              setCurrentIndex(
+                (prevIndex: number) => (prevIndex + 1) % questionLength
+              );
+              setIsSubmitting(false);
+            }
+          } catch (err: any) {
+            toastAlert('error', 'Something went wrong');
+          }
+        }
+      }
+
+      if (error) {
+        toastAlert('error', 'Something went wrong');
+        setIsSubmitting(false);
+      }
+      setIsSubmitting(false);
     }
   };
 
@@ -92,11 +187,15 @@ const WebcamDemo: React.FC<IProps> = ({
 
   return isFinishedRecording ? (
     <div className="h-[90%] flex items-center justify-center flex-col">
-      <Spinner variant="large" align="center" />
+      {isSubmitting && (
+        <>
+          <Spinner variant="large" align="center" />
 
-      <p className="mt-4 text-xs text-primary">
-        Please wait video is uploading...
-      </p>
+          <p className="mt-4 text-xs text-primary">
+            Please wait video is uploading...
+          </p>
+        </>
+      )}
     </div>
   ) : (
     <div className="relative h-[90%]">

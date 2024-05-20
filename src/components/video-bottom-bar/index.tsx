@@ -4,7 +4,7 @@ import { IoIosPlay } from 'react-icons/io';
 import { IoVideocamOutline } from 'react-icons/io5';
 
 interface IProps {
-  handleNext: () => void;
+  // handleNext: () => void;
   handleShowRecordingScreen: () => void;
   handleBlockFace: () => void;
   handleRecordAgain: () => void;
@@ -16,7 +16,7 @@ interface IProps {
 }
 
 const VideoBottomBar: React.FC<IProps> = ({
-  handleNext,
+  // handleNext,
   handleShowRecordingScreen,
   blockface,
   step,
@@ -38,7 +38,7 @@ const VideoBottomBar: React.FC<IProps> = ({
                   icon={<IoIosPlay size={20} color="#fff" />}
                   className="px-4 py-2"
                   hasIcon
-                  onClick={handleNext}
+                  // onClick={handleNext}
                 />
                 <Button
                   text="Demo"

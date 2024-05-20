@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
-import { v1 as uuidv1 } from 'uuid';
 import { VideoQuestionType } from '@/types';
 import { Footer, Layout } from '@/container';
 import { VideoBottomBar, VideoSkeleton } from '@/components';
@@ -13,9 +12,9 @@ import toastAlert from '@/utils/toastAlert';
 
 const Question: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [showRecordingScreen, setShowRecordingScreen] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [recordedChunks, setRecordedChunks] = React.useState([]);
   const [isFinishedRecording, setIsFinishedRecording] = React.useState(false);
   const [capture, setCapturing] = React.useState(false);
@@ -56,78 +55,78 @@ const Question: React.FC = () => {
     }
   }, [navigate, state?.userId]);
 
-  const handleNext = async () => {
-    setIsSubmitting(true);
+  // const handleNext = async () => {
+  //   setIsSubmitting(true);
 
-    const inputBlob = new Blob(recordedChunks, {
-      type: 'video/x-matroska;codecs=avc1,opus',
-    });
+  //   const inputBlob = new Blob(recordedChunks, {
+  //     type: 'video/x-matroska;codecs=avc1,opus',
+  //   });
 
-    const fileName = `${uuidv1()}.mp4`;
+  //   const fileName = `${uuidv1()}.mp4`;
 
-    const { data: videoUploadResponse, error } = await supabase.storage
-      .from('videos/uploads')
-      .upload(fileName, inputBlob);
+  //   const { data: videoUploadResponse, error } = await supabase.storage
+  //     .from('videos/uploads')
+  //     .upload(fileName, inputBlob);
 
-    if (videoUploadResponse) {
-      const { data: videoResponse, error: videoResponseError } = await supabase
-        .from('video_responses')
-        .insert([
-          {
-            // @ts-ignore
-            response_video_url: videoUploadResponse?.fullPath,
-            question_id: videoQuestions[currentIndex]?.id,
-            user_id: state?.userId,
-            should_block_face: blockface,
-          },
-        ])
-        .select();
+  //   if (videoUploadResponse) {
+  //     const { data: videoResponse, error: videoResponseError } = await supabase
+  //       .from('video_responses')
+  //       .insert([
+  //         {
+  //           // @ts-ignore
+  //           response_video_url: videoUploadResponse?.fullPath,
+  //           question_id: videoQuestions[currentIndex]?.id,
+  //           user_id: state?.userId,
+  //           should_block_face: blockface,
+  //         },
+  //       ])
+  //       .select();
 
-      if (videoResponseError) {
-        toastAlert('error', 'Something went wrong');
-      }
+  //     if (videoResponseError) {
+  //       toastAlert('error', 'Something went wrong');
+  //     }
 
-      if (videoResponse) {
-        try {
-          const data: Response = await fetch(
-            `${import.meta.env.VITE_APP_API_BASE_URL}/video-transcribe/`,
-            {
-              method: 'POST',
-              body: JSON.stringify({
-                video_response_id: videoResponse[0]?.id,
-              }),
-            }
-          );
-          if (data?.status !== 200) {
-            toastAlert('error', 'Something went wrong');
-            setIsSubmitting(false);
-          }
-          if (data?.status === 200) {
-            setIsSubmitting(false);
-            setRecordedChunks([]);
-            setCapturing(false);
-            setShowRecordingScreen(false);
-            setIsFinishedRecording(false);
-            setStep(1);
-            setIsSubmitting(false);
-            setBlockFace(false);
-            setCurrentIndex(
-              (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
-            );
-            setIsSubmitting(false);
-          }
-        } catch (err: any) {
-          toastAlert('error', 'Something went wrong');
-        }
-      }
-    }
+  //     if (videoResponse) {
+  //       try {
+  //         const data: Response = await fetch(
+  //           `${import.meta.env.VITE_APP_API_BASE_URL}/video-transcribe/`,
+  //           {
+  //             method: 'POST',
+  //             body: JSON.stringify({
+  //               video_response_id: videoResponse[0]?.id,
+  //             }),
+  //           }
+  //         );
+  //         if (data?.status !== 200) {
+  //           toastAlert('error', 'Something went wrong');
+  //           setIsSubmitting(false);
+  //         }
+  //         if (data?.status === 200) {
+  //           setIsSubmitting(false);
+  //           setRecordedChunks([]);
+  //           setCapturing(false);
+  //           setShowRecordingScreen(false);
+  //           setIsFinishedRecording(false);
+  //           setStep(1);
+  //           setIsSubmitting(false);
+  //           setBlockFace(false);
+  //           setCurrentIndex(
+  //             (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
+  //           );
+  //           setIsSubmitting(false);
+  //         }
+  //       } catch (err: any) {
+  //         toastAlert('error', 'Something went wrong');
+  //       }
+  //     }
+  //   }
 
-    if (error) {
-      toastAlert('error', 'Something went wrong');
-      setIsSubmitting(false);
-    }
-    setIsSubmitting(false);
-  };
+  //   if (error) {
+  //     toastAlert('error', 'Something went wrong');
+  //     setIsSubmitting(false);
+  //   }
+  //   setIsSubmitting(false);
+  // };
 
   const handleShowRecordingScreen = () => {
     setShowRecordingScreen(!showRecordingScreen);
@@ -145,42 +144,68 @@ const Question: React.FC = () => {
 
   return (
     <Layout>
-      <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
-        {`Question ${currentIndex + 1}`}
-      </h1>
+      {videoQuestions?.length > currentIndex ? (
+        <div className="h-[80vh] pt-20 items-center justify-center flex flex-col">
+          <img
+            src="/go.png"
+            alt="go"
+            className="w-32 h-32 object-cover mx-auto"
+          />
 
-      {isLoading ? (
-        <VideoSkeleton />
-      ) : showRecordingScreen ? (
-        <WebcamDemo
-          blockFace={blockface}
-          capturing={capture}
-          setCapturing={setCapturing}
-          isFinishedRecording={isFinishedRecording}
-          setIsFinishedRecording={setIsFinishedRecording}
-          setRecordedChunks={setRecordedChunks}
-          step={step}
-          setStep={setStep}
-        />
+          <div className="font-bold my-3 text-center">
+            <h6>Congratulations!</h6>
+            <h6>Your answers have been submitted.</h6>
+          </div>
+        </div>
       ) : (
-        <QuestionDisplay
-          questions={videoQuestions ?? []}
-          currentIndex={currentIndex}
-        />
-      )}
+        <>
+          <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
+            {`Question ${currentIndex + 1}`}
+          </h1>
 
-      <Footer>
-        <VideoBottomBar
-          blockface={blockface}
-          capture={capture}
-          handleBlockFace={handleBlockFace}
-          handleNext={handleNext}
-          handleRecordAgain={handleRecordAgain}
-          handleShowRecordingScreen={handleShowRecordingScreen}
-          step={step}
-          isSubmitting={isSubmitting}
-        />
-      </Footer>
+          {isLoading ? (
+            <VideoSkeleton />
+          ) : showRecordingScreen ? (
+            <WebcamDemo
+              blockFace={blockface}
+              capturing={capture}
+              setCapturing={setCapturing}
+              isFinishedRecording={isFinishedRecording}
+              setIsFinishedRecording={setIsFinishedRecording}
+              setRecordedChunks={setRecordedChunks}
+              step={step}
+              setStep={setStep}
+              questionId={videoQuestions[currentIndex]?.id}
+              setBlockFace={setBlockFace}
+              questionLength={videoQuestions?.length ?? 0}
+              recordedChunks={recordedChunks}
+              setCurrentIndex={setCurrentIndex}
+              setShowRecordingScreen={setShowRecordingScreen}
+              userId={state?.user_id}
+              setIsSubmitting={setIsSubmitting}
+              isSubmitting={isSubmitting}
+            />
+          ) : (
+            <QuestionDisplay
+              questions={videoQuestions ?? []}
+              currentIndex={currentIndex}
+            />
+          )}
+
+          <Footer>
+            <VideoBottomBar
+              blockface={blockface}
+              capture={capture}
+              handleBlockFace={handleBlockFace}
+              // handleNext={handleNext}
+              handleRecordAgain={handleRecordAgain}
+              handleShowRecordingScreen={handleShowRecordingScreen}
+              step={step}
+              isSubmitting={false}
+            />
+          </Footer>
+        </>
+      )}
     </Layout>
   );
 };

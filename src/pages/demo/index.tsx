@@ -58,6 +58,7 @@ const Question: React.FC = () => {
           setIsFinishedRecording={setIsFinishedRecording}
           step={step}
           isDemo
+          setBlockFace={setBlockFace}
           setStep={setStep}
         />
       ) : (
@@ -68,7 +69,7 @@ const Question: React.FC = () => {
           blockface={blockface}
           capture={capture}
           handleBlockFace={handleBlockFace}
-          handleNext={handleNext}
+          // handleNext={handleNext}
           handleRecordAgain={handleRecordAgain}
           handleShowRecordingScreen={handleShowRecordingScreen}
           step={step}
