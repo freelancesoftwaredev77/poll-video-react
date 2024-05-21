@@ -219,43 +219,53 @@ const WebcamDemo: React.FC<IProps> = ({
         className="w-full h-full object-cover"
         muted
       />
-      {capturing ? (
-        <button
-          onClick={handleStopCaptureClick}
-          className="absolute bottom-8 left-[40%]"
-          aria-label="save"
-        >
-          <div className="border-white border-2 rounded-full w-16 h-16">
-            <div className="bg-[#000000bb] h-9 w-9 rounded-md mx-auto mt-3" />
+      <div className="absolute bottom-10 w-full px-4">
+        <div className="flex items-center justify-between gap-5">
+          {/* {capturing && ( */}
+
+          {capturing ? (
+            <div className="bg-warning px-3 py-1 rounded-full text-white font-bold ">
+              <p className="text-sm">00:{timer} / 00:45</p>
+            </div>
+          ) : (
+            <div className="" />
+          )}
+          <div className={capturing ? 'mr-[2rem]' : ''}>
+            {capturing ? (
+              <button
+                onClick={handleStopCaptureClick}
+                className=""
+                aria-label="save"
+              >
+                <div className="border-white border-2 rounded-full w-16 h-16">
+                  <div className="bg-[#000000bb] h-9 w-9 rounded-md mx-auto mt-3" />
+                </div>
+              </button>
+            ) : (
+              <button
+                onClick={handleStartCaptureClick}
+                className=""
+                aria-label="save"
+              >
+                <div className="border-white border-2 rounded-full w-16 h-16">
+                  <div className="bg-warning h-12 w-12 rounded-full mx-auto mt-1.5" />
+                </div>
+              </button>
+            )}
           </div>
-        </button>
-      ) : (
-        <button
-          onClick={handleStartCaptureClick}
-          className="absolute bottom-8 left-[40%]"
-          aria-label="save"
-        >
-          <div className="border-white border-2 rounded-full w-16 h-16">
-            <div className="bg-warning h-12 w-12 rounded-full mx-auto mt-1.5" />
-          </div>
-        </button>
-      )}
-      {capturing && (
-        <div className="absolute bottom-12 left-[17%] transform -translate-x-1/2 bg-warning px-3 py-1 rounded-full text-white font-bold">
-          <p className="text-sm">00:{timer} / 00:45</p>
+          {/* )} */}
+
+          {!capturing ? (
+            <button onClick={handleSwitchCamera} className="" aria-label="save">
+              <div className="bg-[#00000080] rounded-full w-12 h-12 flex items-center justify-center">
+                <FiRefreshCw color="#fff" className="hover:rotate-180" />
+              </div>
+            </button>
+          ) : (
+            <div className="" />
+          )}
         </div>
-      )}
-      {!capturing && (
-        <button
-          onClick={handleSwitchCamera}
-          className="absolute bottom-10 right-5"
-          aria-label="save"
-        >
-          <div className="bg-[#00000080] rounded-full w-12 h-12 flex items-center justify-center">
-            <FiRefreshCw color="#fff" className="hover:rotate-180" />
-          </div>
-        </button>
-      )}
+      </div>
     </div>
   );
 };
