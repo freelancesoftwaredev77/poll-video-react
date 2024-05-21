@@ -184,7 +184,7 @@ const WebcamDemo: React.FC<IProps> = ({
     }, 1000);
   };
   React.useEffect(() => {
-    if (timer >= 10) {
+    if (timer >= 46) {
       handleStopCaptureClick();
     }
   }, [timer]);
