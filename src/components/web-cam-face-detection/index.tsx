@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
@@ -180,8 +181,13 @@ const WebcamDemo: React.FC<IProps> = ({
         toastAlert('error', 'Something went wrong');
         setIsSubmitting(false);
       }
-    }, 1000); // delay to ensure data is available in recordedChunks
+    }, 1000);
   };
+  React.useEffect(() => {
+    if (timer >= 10) {
+      handleStopCaptureClick();
+    }
+  }, [timer]);
 
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
@@ -235,8 +241,8 @@ const WebcamDemo: React.FC<IProps> = ({
         </button>
       )}
       {capturing && (
-        <div className="absolute bottom-12 left-[20%] transform -translate-x-1/2 bg-warning px-3 py-1 rounded-full text-white font-bold">
-          <p className="text-sm">00:{timer} / 45 sec</p>
+        <div className="absolute bottom-12 left-[17%] transform -translate-x-1/2 bg-warning px-3 py-1 rounded-full text-white font-bold">
+          <p className="text-sm">00:{timer} / 00:45</p>
         </div>
       )}
       {!capturing && (
