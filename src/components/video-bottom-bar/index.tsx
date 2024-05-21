@@ -64,7 +64,7 @@ const VideoBottomBar: React.FC<IProps> = ({
         );
 
       case 2:
-        return (
+        return !capture ? (
           <Button
             text={!blockface ? 'Block your face' : 'unblock your face'}
             type="button"
@@ -73,6 +73,8 @@ const VideoBottomBar: React.FC<IProps> = ({
             className="px-4 py-2"
             onClick={handleBlockFace}
           />
+        ) : (
+          <div className="" />
         );
 
       case 3:

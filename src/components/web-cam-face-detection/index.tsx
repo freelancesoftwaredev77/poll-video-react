@@ -180,7 +180,7 @@ const WebcamDemo: React.FC<IProps> = ({
         toastAlert('error', 'Something went wrong');
         setIsSubmitting(false);
       }
-    }, 1000);
+    }, 1000); // delay to ensure data is available in recordedChunks
   };
 
   const handleSwitchCamera = () =>
@@ -242,7 +242,7 @@ const WebcamDemo: React.FC<IProps> = ({
       {!capturing && (
         <button
           onClick={handleSwitchCamera}
-          className="absolute bottom-8 right-10"
+          className="absolute bottom-10 right-5"
           aria-label="save"
         >
           <div className="bg-[#00000080] rounded-full w-12 h-12 flex items-center justify-center">
