@@ -25,9 +25,9 @@ const Button: React.FC<IProps> = ({
 }) => (
   <button
     className={`
-      ${className} outline-none rounded-md text-sm disabled:text-opacity-70 py-2.5 w-full disabled:bg-opacity-40 text-center disabled:cursor-not-allowed text-pure-white capitalize
-      ${variant === 'primary' && 'bg-primary text-white'}
-      ${variant === 'outline' && 'border-secondary border text-primary'}
+      ${className} outline-none rounded-md text-sm disabled:text-opacity-70 w-full disabled:bg-opacity-40 text-center disabled:cursor-not-allowed text-pure-white capitalize
+      ${variant === 'primary' && 'bg-primary text-white py-2.5'}
+      ${variant === 'outline' && 'border-secondary border text-primary py-2'}
     `}
     type={type}
     disabled={!isValid || isSubmitting}

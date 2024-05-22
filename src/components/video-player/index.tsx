@@ -8,7 +8,6 @@ interface IProps {
 
 const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
   const [isPaused, setIsPaused] = React.useState(true);
-  const [isLoading, setIsLoading] = React.useState(true);
   const [showControls, setShowControls] = React.useState(true);
 
   const handleControls: () => void = (): void => {
@@ -29,25 +28,21 @@ const VideoPlayer: React.FC<IProps> = ({ url, handleEndVideo }) => {
     setTimeout((): void => setShowControls(false), 500);
     setIsPaused(true);
   };
-  const handleLoading = () => setIsLoading(!isLoading);
 
   return (
     <div
       className="h-[90%] relative"
-      onClick={handleControls}
       role="button"
       tabIndex={0}
       aria-hidden="true"
+      onClick={handleControls}
     >
       <ReactPlayer
         url={url ?? ''}
-        controls={false}
         playing={!isPaused}
         className="!h-full !w-full custom-player"
         onEnded={handleEndVideo}
         playsinline
-        onBufferEnd={handleLoading}
-        onBuffer={handleLoading}
       />
 
       {showControls && (

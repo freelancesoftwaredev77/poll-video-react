@@ -1,18 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable consistent-return */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useRef, useState, useEffect } from 'react';
-import { v1 as uuidv1 } from 'uuid';
+import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
-import Spinner from '../spinner';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { supabase } from '@/utils/supabase';
-import toastAlert from '@/utils/toastAlert';
 
 interface IProps {
   blockFace: boolean;
@@ -20,19 +11,10 @@ interface IProps {
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
   setIsFinishedRecording: React.Dispatch<React.SetStateAction<boolean>>;
-  setBlockFace: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowRecordingScreen?: React.Dispatch<React.SetStateAction<boolean>> | any;
-  setRecordedChunks?: React.Dispatch<React.SetStateAction<Blob[]>> | any;
+  setRecordedChunks: React.Dispatch<React.SetStateAction<never[]>>;
+  recordedChunks: never[];
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  isDemo?: boolean;
-  isSubmitting?: boolean;
-  setIsSubmitting?: any;
-  recordedChunks?: Blob[];
-  setCurrentIndex?: any;
-  userId?: string;
-  questionId?: number;
-  questionLength?: number | any;
 }
 
 const WebcamDemo: React.FC<IProps> = ({
@@ -41,148 +23,60 @@ const WebcamDemo: React.FC<IProps> = ({
   setCapturing,
   isFinishedRecording,
   setIsFinishedRecording,
+  recordedChunks,
   setRecordedChunks,
   setStep,
   step,
-  isDemo,
-  isSubmitting,
-  setIsSubmitting,
-  recordedChunks,
-  setCurrentIndex,
-  userId,
-  setBlockFace,
-  setShowRecordingScreen,
-  questionId,
-  questionLength,
 }) => {
-  const [cameraMode, setCameraMode] = useState('user');
-  const navigate: NavigateFunction = useNavigate();
+  const [cameraMode, setCameraMode] = React.useState('user');
   const [timer, setTimer] = useState(0);
-  const webcamRef = useRef<Webcam | null>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const webcamRef: any = React.useRef<Webcam | null>(null);
 
   const videoConstraints = {
     facingMode: cameraMode,
   };
 
+  const mediaRecorderRef: MutableRefObject<any> = useRef<any>(null);
+
   useEffect(() => {
     let intervalId: any;
     if (capturing) {
       intervalId = setInterval(() => {
-        setTimer((prevTimer) => (prevTimer < 45 ? prevTimer + 1 : 45));
+        setTimer((prevTimer: number) => (prevTimer < 45 ? prevTimer + 1 : 45));
       }, 1000);
     } else {
       clearInterval(intervalId);
       setTimer(0);
     }
+
     return () => clearInterval(intervalId);
   }, [capturing]);
 
-  const handleDataAvailable = (event: { data: Blob }) => {
-    if (event.data && event.data.size > 0) {
-      setRecordedChunks((prev: any) => [...prev, event.data]);
+  const handleDataAvailable = ({ data }: { data: any }) => {
+    if (data.size > 0) {
+      setRecordedChunks((prev) => prev.concat(data));
     }
   };
 
   const handleStartCaptureClick = () => {
-    if (webcamRef.current && webcamRef.current.stream) {
-      setCapturing(true);
-      setRecordedChunks([]);
-      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-        mimeType: 'video/webm',
-      });
-      mediaRecorderRef.current.addEventListener(
-        'dataavailable',
-        handleDataAvailable
-      );
-      mediaRecorderRef.current.start(100);
-    }
+    setCapturing(true);
+    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+      mimeType: 'video/webm',
+    });
+    mediaRecorderRef.current.addEventListener(
+      'dataavailable',
+      handleDataAvailable
+    );
+    mediaRecorderRef.current.start();
   };
 
-  const handleStopCaptureClick = async () => {
-    setCapturing(false);
-    setIsFinishedRecording(true);
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-    }
-    if (isDemo) {
-      return navigate('/congratulation');
-    }
+  const handleStopCaptureClick = () => {
+    setCapturing(!capturing);
+    setIsFinishedRecording(!isFinishedRecording);
+    mediaRecorderRef.current?.stop();
     setStep(step + 1);
-    setIsSubmitting(true);
-
-    setTimeout(async () => {
-      const blob = new Blob(recordedChunks, {
-        type: 'video/webm',
-      });
-
-      if (blob.size === 0) {
-        setIsSubmitting(false);
-        return;
-      }
-
-      const { data: videoUploadResponse, error } = await supabase.storage
-        .from('videos/uploads')
-        .upload(`${uuidv1()}.webm`, blob);
-
-      if (videoUploadResponse) {
-        const { data: videoResponse, error: videoResponseError } =
-          await supabase
-            .from('video_responses')
-            .insert([
-              {
-                // @ts-ignore
-                response_video_url: videoUploadResponse?.fullPath,
-                question_id: questionId,
-                user_id: userId,
-                should_block_face: blockFace,
-              },
-            ])
-            .select();
-
-        if (videoResponseError) {
-          toastAlert('error', 'Something went wrong');
-        }
-
-        if (videoResponse) {
-          try {
-            const response = await fetch(
-              `${import.meta.env.VITE_APP_API_BASE_URL}/video-transcribe/`,
-              {
-                method: 'POST',
-                body: JSON.stringify({
-                  video_response_id: videoResponse[0]?.id,
-                }),
-              }
-            );
-
-            if (response.status !== 200) {
-              toastAlert('error', 'Something went wrong');
-              setIsSubmitting(false);
-            } else {
-              setIsSubmitting(false);
-              setRecordedChunks([]);
-              setCapturing(false);
-              setShowRecordingScreen(false);
-              setIsFinishedRecording(false);
-              setStep(1);
-              setBlockFace(false);
-              setCurrentIndex(
-                (prevIndex: number) => (prevIndex % questionLength) + 1
-              );
-            }
-          } catch (err) {
-            toastAlert('error', 'Something went wrong');
-          }
-        }
-      }
-
-      if (error) {
-        toastAlert('error', 'Something went wrong');
-        setIsSubmitting(false);
-      }
-    }, 1000);
   };
+
   React.useEffect(() => {
     if (timer >= 46) {
       handleStopCaptureClick();
@@ -190,18 +84,35 @@ const WebcamDemo: React.FC<IProps> = ({
   }, [timer]);
 
   const handleSwitchCamera = () =>
-    setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
+    setCameraMode((prev: string): 'user' | 'environment' =>
+      prev === 'user' ? 'environment' : 'user'
+    );
 
   return isFinishedRecording ? (
-    <div className="h-[90%] flex items-center justify-center flex-col">
-      {isSubmitting && (
-        <>
-          <Spinner variant="large" align="center" />
-          <p className="mt-4 text-xs text-primary">
-            Please wait video is uploading...
-          </p>
-        </>
+    <div className="relative h-[90%]">
+      {blockFace && (
+        <div className="absolute top-20 left-[25%] z-30">
+          <img src="/face-cover.png" alt="face-cover" className="z-30" />
+        </div>
       )}
+
+      <video
+        controlsList="nofullscreen nodownload"
+        playsInline
+        disablePictureInPicture
+        controls
+        autoPlay
+        className="object-cover h-full w-full rounded-lg"
+        src={
+          recordedChunks.length
+            ? URL.createObjectURL(
+                new Blob(recordedChunks, { type: 'video/webm' })
+              )
+            : ''
+        }
+      >
+        <source src="" type="" />
+      </video>
     </div>
   ) : (
     <div className="relative h-[90%]">
@@ -221,8 +132,6 @@ const WebcamDemo: React.FC<IProps> = ({
       />
       <div className="absolute bottom-10 w-full px-4">
         <div className="flex items-center justify-between gap-5">
-          {/* {capturing && ( */}
-
           {capturing ? (
             <div className="bg-warning px-3 py-1 rounded-full text-white font-bold ">
               <p className="text-sm">00:{timer} / 00:45</p>
