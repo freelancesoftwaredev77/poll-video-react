@@ -54,9 +54,7 @@ const VideoBottomBar: React.FC<IProps> = ({
               text="Demo"
               type="button"
               variant="outline"
-              icon={<IoVideocamOutline size={20} color="#fff" />}
               className="px-4 py-2"
-              hasIcon
               onClick={handleShowRecordingScreen}
             />
           </div>
