@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '../button';
-import { IoIosPlay } from 'react-icons/io';
 import { IoVideocamOutline } from 'react-icons/io5';
 
 interface IProps {
@@ -12,7 +11,6 @@ interface IProps {
   capture: boolean;
   step: number;
   isSubmitting?: boolean;
-  isDemo?: boolean;
 }
 
 const VideoBottomBar: React.FC<IProps> = ({
@@ -23,15 +21,14 @@ const VideoBottomBar: React.FC<IProps> = ({
   capture,
   handleBlockFace,
   handleRecordAgain,
-  isDemo = false,
   isSubmitting,
 }) => {
   const renderBottomNavigation = () => {
     switch (step) {
       case 1:
-        return !isDemo ? (
+        return (
           <Button
-            text="Record"
+            text="Răspunde"
             type="button"
             variant="primary"
             icon={<IoVideocamOutline size={20} color="#fff" />}
@@ -39,31 +36,11 @@ const VideoBottomBar: React.FC<IProps> = ({
             hasIcon
             onClick={handleShowRecordingScreen}
           />
-        ) : (
-          <div className="flex items-center gap-4">
-            <Button
-              text="Start Poll"
-              type="submit"
-              variant="primary"
-              icon={<IoIosPlay size={20} color="#fff" />}
-              className="px-4 py-2"
-              hasIcon
-              onClick={handleNext}
-            />
-            <Button
-              text="Demo"
-              type="button"
-              variant="outline"
-              className="px-4 py-2"
-              onClick={handleShowRecordingScreen}
-            />
-          </div>
         );
-
       case 2:
         return !capture ? (
           <Button
-            text={blockface ? 'Block your face' : 'unblock your face'}
+            text={!blockface ? 'Block your face' : 'unblock your face'}
             type="button"
             isValid={!capture}
             variant="outline"
@@ -100,7 +77,7 @@ const VideoBottomBar: React.FC<IProps> = ({
       default:
         return (
           <Button
-            text="Record"
+            text="Trimite"
             type="button"
             variant="primary"
             icon={<IoVideocamOutline size={20} color="#fff" />}

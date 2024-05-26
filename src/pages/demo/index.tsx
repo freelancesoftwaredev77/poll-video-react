@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  NavigateFunction,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { Footer, Layout } from '@/container';
 import { VideoBottomBar, VideoPlayer } from '@/components';
 import WebcamDemo from '@/components/web-cam-face-detection';
@@ -12,7 +17,10 @@ const Demo: React.FC = () => {
     React.useState<boolean>(false);
   const [capture, setCapturing] = React.useState<boolean>(false);
   const [blockface, setBlockFace] = React.useState<boolean>(false);
+
   const [step, setStep] = React.useState<number>(1);
+
+  const { state } = useLocation();
 
   const navigate: NavigateFunction = useNavigate();
 
@@ -32,23 +40,24 @@ const Demo: React.FC = () => {
 
   const handleBlockFace = (): void => setBlockFace(!blockface);
 
+  React.useEffect(() => {
+    if (!state?.instructionVideoUrl) {
+      navigate('/');
+    }
+  }, [navigate, state?.instructionVideoUrl]);
+
   return (
     <Layout>
-      {step === 1 ? (
-        <h5 className="text-center text-2xl font-bold mt-5 mb-10">
-          Instruction
-        </h5>
-      ) : (
-        <div className="flex items-center justify-between mt-5 mb-10">
-          <h5 className="text-primary text-2xl font-bold">Demo</h5>
-          <Link
-            className="bg-violet px-4 py-1.5 rounded-xl text-white font-bold"
-            to="/congratulation"
-          >
-            Exit demo
-          </Link>
-        </div>
-      )}
+      <div className="flex items-center justify-between mt-5 mb-10">
+        <h5 className="text-primary text-2xl font-bold"> Întrebarea</h5>
+        <Link
+          className="bg-violet px-4 py-1.5 rounded-xl text-white font-bold"
+          to="/congratulation"
+        >
+          Exit demo
+        </Link>
+      </div>
+
       {showRecordingScreen ? (
         <WebcamDemo
           blockFace={blockface}
@@ -62,7 +71,7 @@ const Demo: React.FC = () => {
           setStep={setStep}
         />
       ) : (
-        <VideoPlayer url="https://cdn.pixabay.com/video/2023/07/10/171007-844433279_large.mp4" />
+        <VideoPlayer url={state?.instructionVideoUrl ?? ''} />
       )}
       <Footer>
         <VideoBottomBar
@@ -73,7 +82,6 @@ const Demo: React.FC = () => {
           handleRecordAgain={handleRecordAgain}
           handleShowRecordingScreen={handleShowRecordingScreen}
           step={step}
-          isDemo
         />
       </Footer>
     </Layout>

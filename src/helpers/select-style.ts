@@ -12,7 +12,7 @@ const customStylesMain = {
   }),
   placeholder: (provided: any) => ({
     ...provided,
-    color: '#16161C',
+    color: '#000000',
     fontSize: '12px',
   }),
 

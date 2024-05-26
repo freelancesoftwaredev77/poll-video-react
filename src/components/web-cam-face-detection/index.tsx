@@ -137,9 +137,9 @@ const WebcamDemo: React.FC<IProps> = ({
               <p className="text-sm">00:{timer} / 00:45</p>
             </div>
           ) : (
-            <div className="" />
+            <div className=" px-3 py-1 rounded-full text-white font-bold " />
           )}
-          <div className={capturing ? 'mr-[2rem]' : ''}>
+          <div className={capturing ? 'mr-20' : 'ml-6'}>
             {capturing ? (
               <button
                 onClick={handleStopCaptureClick}
@@ -162,7 +162,6 @@ const WebcamDemo: React.FC<IProps> = ({
               </button>
             )}
           </div>
-          {/* )} */}
 
           {!capturing ? (
             <button onClick={handleSwitchCamera} className="" aria-label="save">

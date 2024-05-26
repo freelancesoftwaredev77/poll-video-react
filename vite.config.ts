@@ -4,8 +4,6 @@ import path from 'path'
 
 const isSupabase = process.env.VITE_APP_SUPABASE_URL === 'true'
 
-console.log("is subase", isSupabase)
-
 export default defineConfig({
   plugins: [react()],
   resolve: {

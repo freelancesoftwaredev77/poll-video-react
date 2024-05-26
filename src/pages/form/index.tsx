@@ -3,11 +3,12 @@ import * as Yup from 'yup';
 import { Formik, Form as FormikForm } from 'formik';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import { IoIosPlay } from 'react-icons/io';
-import { Button, SearchSelect, TextField } from '@/components';
+import { Button, DateInputMask, SearchSelect } from '@/components';
 import { Footer, Layout } from '@/container';
 import { educationLevel, genderData, locationData } from '@/static-data';
 import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
+import calculateAge from '@/utils/calculate-age';
 
 interface FormValue {
   birthdate: string;
@@ -17,7 +18,16 @@ interface FormValue {
 }
 
 const FORM_VALIDATION = Yup.object().shape({
-  birthdate: Yup.string().required('Birthdate is required'),
+  birthdate: Yup.string()
+    .matches(
+      /^\d{2}-\d{2}-\d{4}$/,
+      'Date of birth must be in the format dd-mm-yyyy'
+    )
+    .test('age', 'You are younger than 18', (value) => {
+      if (!value) return false;
+      return calculateAge(value) >= 18;
+    })
+    .required('Data nașterii este obligatorie'),
   location: Yup.string().required('Required'),
   sex: Yup.string().required('Required'),
   education: Yup.string().required('Required'),
@@ -25,6 +35,7 @@ const FORM_VALIDATION = Yup.object().shape({
 
 const Form: React.FC = () => {
   const navigate: NavigateFunction = useNavigate();
+
   const initValues = {
     birthdate: '',
     location: '',
@@ -60,7 +71,8 @@ const Form: React.FC = () => {
       >
         {({ isSubmitting, isValid }) => (
           <FormikForm>
-            <TextField name="birthdate" type="date" label="Data nasterii" />
+            <DateInputMask name="birthdate" label="Data nasterii" isPrimary />
+
             <SearchSelect
               name="location"
               options={locationData ?? []}
@@ -85,7 +97,7 @@ const Form: React.FC = () => {
               <div className="flex items-center gap-3 mt-4 justify-end ">
                 <Link to="/demo" className="w-full">
                   <Button
-                    text="Back"
+                    text="Înapoi"
                     type="button"
                     variant="outline"
                     className="px-4 py-2"
@@ -93,7 +105,7 @@ const Form: React.FC = () => {
                 </Link>
 
                 <Button
-                  text="Submit"
+                  text="Trimite"
                   type="submit"
                   variant="primary"
                   icon={<IoIosPlay size={20} color="#fff" />}

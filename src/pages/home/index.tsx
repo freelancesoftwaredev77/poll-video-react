@@ -1,51 +1,64 @@
 import * as React from 'react';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { VideoPlayer, VideoSkeleton } from '@/components';
+import { Button, VideoPlayer, VideoSkeleton } from '@/components';
 import { Footer, Layout } from '@/container';
-import { IntroDataType } from '@/types';
-import { supabase } from '@/utils/supabase';
-import toastAlert from '@/utils/toastAlert';
+import { IoIosPlay } from 'react-icons/io';
+import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
+import useFetch from '@/hooks/useFetch';
 
 const Home: React.FC = () => {
-  const [introData, setIntroData] = React.useState<IntroDataType[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const { data: introData, isLoading } = useFetch('polls');
+  const [isPlaying, setIsPlaying] = React.useState(false);
+
   const navigate: NavigateFunction = useNavigate();
-
-  const handleEndVideo = () => navigate('/demo');
-
-  const fetchIntro: () => Promise<void> = async (): Promise<void> => {
-    setIsLoading(true);
-    const { data: polls, error } = await supabase.from('polls').select('*');
-    if (polls) {
-      setIntroData(polls);
-      setIsLoading(false);
-    }
-    if (error) {
-      toastAlert('error', 'Something went wrong');
-      setIsLoading(false);
-    }
-
-    setIsLoading(false);
-  };
-  React.useEffect((): void => {
-    fetchIntro();
-  }, []);
 
   return (
     <Layout>
-      <h6 className="text-center mt-5 mb-10 font-bold text-[22px]">Welcome</h6>
+      <h6 className="text-center mt-5 mb-10 font-bold text-[22px]">
+        {isPlaying ? 'Instrucțiuni' : 'Bun venit!'}
+      </h6>
       {isLoading ? (
         <VideoSkeleton />
       ) : (
         <VideoPlayer
-          url={introData[0]?.demo_video ?? ''}
-          handleEndVideo={handleEndVideo}
+          url={(introData && introData[0]?.demo_video) ?? ''}
+          setIsPlaying={setIsPlaying}
         />
       )}
 
       <Footer>
         <h6 className="text-center mt-5 font-bold">
-          {introData && introData[0]?.title}
+          {isPlaying ? (
+            <div className="flex items-center gap-5">
+              <Link to="/congratulation" className="w-full">
+                <Button
+                  text="Începe sondajul"
+                  type="submit"
+                  variant="primary"
+                  icon={<IoIosPlay size={20} color="#fff" />}
+                  className="px-4 py-2"
+                  hasIcon
+                />
+              </Link>
+              <Link
+                to="/demo"
+                className="w-full"
+                state={{
+                  instructionVideoUrl:
+                    introData && introData[0]?.instruction_video,
+                }}
+              >
+                <Button
+                  text="Demo"
+                  type="button"
+                  variant="outline"
+                  className="px-4 py-2"
+                  onClick={() => navigate('/demo')}
+                />
+              </Link>
+            </div>
+          ) : (
+            introData && introData[0]?.title
+          )}
         </h6>
       </Footer>
     </Layout>

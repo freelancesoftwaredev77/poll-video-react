@@ -3,17 +3,18 @@
 import * as React from 'react';
 import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import { v1 as uuidv1 } from 'uuid';
-import { VideoQuestionType } from '@/types';
 import { Footer, Layout } from '@/container';
-import { VideoBottomBar, VideoSkeleton } from '@/components';
+import { Congrats, VideoBottomBar, VideoSkeleton } from '@/components';
 import WebcamDemo from '@/components/web-cam-face-detection';
 import QuestionDisplay from '@/components/quesiton-display';
 import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
+import useFetch from '@/hooks/useFetch';
 
 const Question: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
+  const { data: videoQuestions, isLoading } = useFetch('video_questions');
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isCompleted, setIsCompleted] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [showRecordingScreen, setShowRecordingScreen] = React.useState(false);
   const [recordedChunks, setRecordedChunks] = React.useState([]);
@@ -23,30 +24,6 @@ const Question: React.FC = () => {
   const [step, setStep] = React.useState(1);
   const navigate: NavigateFunction = useNavigate();
   const { state } = useLocation();
-
-  const [videoQuestions, setVideoQuestion] = React.useState<
-    VideoQuestionType[]
-  >([]);
-
-  const fetchQuestion = async () => {
-    setIsLoading(true);
-    const { data: videoQuestionResponse, error } = await supabase
-      .from('video_questions')
-      .select('*');
-
-    if (videoQuestionResponse) {
-      setIsLoading(false);
-      setVideoQuestion(videoQuestionResponse);
-    }
-    if (error) {
-      setIsLoading(false);
-      toastAlert('error', 'Something went wrong.');
-    }
-  };
-
-  React.useEffect(() => {
-    fetchQuestion();
-  }, []);
 
   React.useEffect(() => {
     if (!state?.userId) {
@@ -109,6 +86,9 @@ const Question: React.FC = () => {
             setCurrentIndex(
               (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
             );
+            if (currentIndex + 1 === videoQuestions?.length) {
+              setIsCompleted(true);
+            }
             setIsSubmitting(false);
           }
         } catch (err: any) {
@@ -139,23 +119,12 @@ const Question: React.FC = () => {
 
   return (
     <Layout>
-      {currentIndex === videoQuestions.length ? (
-        <div className="h-[80vh] pt-20 items-center justify-center flex flex-col">
-          <img
-            src="/go.png"
-            alt="go"
-            className="w-32 h-32 object-cover mx-auto"
-          />
-
-          <div className="font-bold my-3 text-center">
-            <h6>Congratulations!</h6>
-            <h6>Your answers have been submitted.</h6>
-          </div>
-        </div>
+      {isCompleted ? (
+        <Congrats message="Your answers have been submitted." />
       ) : (
         <>
           <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
-            {`Question ${currentIndex + 1}`}
+            {`Întrebarea ${currentIndex + 1}`}
           </h1>
 
           {isLoading ? (

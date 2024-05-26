@@ -39,7 +39,7 @@ export function CustomSelect({
     <div className={`mb-4 ${className}`}>
       <div className="relative inline-block">
         <label
-          className="font-semibold text-xs text-secondary block"
+          className="font-semibold text-xs text-primary block"
           htmlFor={field.name}
         >
           {label}
@@ -61,6 +61,7 @@ export function CustomSelect({
         isMulti={isMulti}
         placeholder={placeholder}
         classNamePrefix="react-select"
+        isSearchable={false}
         styles={customStylesMain}
         theme={(theme) => ({
           ...theme,
