@@ -62,7 +62,7 @@ const WebcamDemo: React.FC<IProps> = ({
     if (webcamRef.current && webcamRef.current.stream) {
       setCapturing(true);
       mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-        mimeType: 'video/webm',
+        mimeType: 'video/webm;codecs=vp8',
       });
       mediaRecorderRef.current.addEventListener(
         'dataavailable',
