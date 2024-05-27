@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Congratulations, Demo, Form, Home, Question } from '@/pages';
+import { AgeError, Demo, Form, Home, Question } from '@/pages';
 
 const routesData = [
   {
@@ -9,9 +9,10 @@ const routesData = [
   },
   {
     id: 1,
-    path: '/congratulation',
-    element: <Congratulations />,
+    path: '/age-error',
+    element: <AgeError />,
   },
+
   {
     id: 2,
     path: '/question',

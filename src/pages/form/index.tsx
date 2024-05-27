@@ -23,10 +23,6 @@ const FORM_VALIDATION = Yup.object().shape({
       /^\d{2}-\d{2}-\d{4}$/,
       'Data nașterii trebuie să fie în formatul zz-ll-aaaa'
     )
-    .test('birthdate', 'Vârsta nu poate fi mai mică de 18 ani', (value) => {
-      if (!value) return false;
-      return calculateAge(value) >= 18;
-    })
     .required('Data nașterii este obligatorie'),
   location: Yup.string()
     .required('')
@@ -54,6 +50,10 @@ const Form: React.FC = () => {
   };
   const handleSubmit = async (val: FormValue) => {
     const { birthdate, education, location, sex } = val;
+    if (calculateAge(birthdate) < 18) {
+      navigate('/age-error');
+      return;
+    }
     const { data, error } = await supabase
       .from('user')
       .insert({

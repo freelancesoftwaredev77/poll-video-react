@@ -25,6 +25,7 @@ const VideoPlayer: React.FC<IProps> = ({
 
   const handleControls: () => void = (): void => {
     setShowControls(true);
+    setTimeout((): void => setShowControls(false), 2000);
   };
 
   const handlePlayPause: () => void = (): void => {

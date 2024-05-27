@@ -29,7 +29,7 @@ const Home: React.FC = () => {
         <h6 className="text-center mt-5 font-bold">
           {isPlaying ? (
             <div className="flex items-center gap-5">
-              <Link to="/congratulation" className="w-full">
+              <Link to="/form" className="w-full">
                 <Button
                   text="Începe sondajul"
                   type="submit"

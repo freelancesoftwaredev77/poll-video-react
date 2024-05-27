@@ -24,7 +24,7 @@ const Demo: React.FC = () => {
 
   const navigate: NavigateFunction = useNavigate();
 
-  const handleNext = (): void => navigate('/congratulation');
+  const handleNext = (): void => navigate('/form');
 
   const handleShowRecordingScreen = (): void => {
     setShowRecordingScreen(!showRecordingScreen);
@@ -52,7 +52,7 @@ const Demo: React.FC = () => {
         <h5 className="text-primary text-2xl font-bold"> Întrebarea</h5>
         <Link
           className="bg-violet px-4 py-1.5 rounded-xl text-white font-bold"
-          to="/congratulation"
+          to="/form"
         >
           Exit demo
         </Link>

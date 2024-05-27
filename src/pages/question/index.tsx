@@ -120,7 +120,7 @@ const Question: React.FC = () => {
   return (
     <Layout>
       {isCompleted ? (
-        <Congrats message="Your answers have been submitted." />
+        <Congrats message="Să începem sondajul !" />
       ) : (
         <>
           <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">

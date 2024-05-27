@@ -40,7 +40,7 @@ const VideoBottomBar: React.FC<IProps> = ({
       case 2:
         return !capture ? (
           <Button
-            text={!blockface ? 'Block your face' : 'unblock your face'}
+            text={!blockface ? 'Acoperă fața' : 'Descoperă fața'}
             type="button"
             isValid={!capture}
             variant="outline"
@@ -55,7 +55,7 @@ const VideoBottomBar: React.FC<IProps> = ({
         return (
           <div className="flex items-center gap-3">
             <Button
-              text="Record Again"
+              text="Înregistrează din nou"
               type="button"
               variant="primary"
               icon={<IoVideocamOutline size={20} color="#fff" />}
@@ -64,7 +64,7 @@ const VideoBottomBar: React.FC<IProps> = ({
               onClick={handleRecordAgain}
             />
             <Button
-              text="Next"
+              text="Întrebarea următoare"
               type="button"
               variant="outline"
               className="px-4 py-2"
