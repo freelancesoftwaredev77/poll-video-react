@@ -112,8 +112,11 @@ export function CustomSelect({
           },
         })}
       />
+
       {meta.error ? (
-        <div className="text-warning text-xs mt-1">{meta.error}</div>
+        <div className="bg-warning text-white mt-1 text-xs inline-block px-2">
+          {meta.error}
+        </div>
       ) : null}
     </div>
   );
