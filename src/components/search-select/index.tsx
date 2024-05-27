@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useField } from 'formik';
 import Select from 'react-select';
-import customStylesMain from '@/helpers/select-style';
 
 export interface SelectType {
   label: string;
@@ -34,12 +33,53 @@ export function CustomSelect({
     const selectedValue = selectedOptions.value;
     helpers.setValue(selectedValue);
   };
+  const customStylesMain = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      border: state?.isFocused
+        ? '1px solid #023656'
+        : meta?.error
+          ? '1px solid #EA4F3D'
+          : '1px solid #0070D7',
+      '&:hover': {
+        border: meta?.error ? '1px solid #EA4F3D' : '1px solid #0070D7',
+      },
+      fontSize: '14px',
+      color: '#EA4F3D',
+    }),
+    indicatorSeparator: () => ({
+      display: 'none',
+      color: meta?.error ? '#EA4F3D' : '',
+    }),
+    placeholder: (provided: any) => ({
+      ...provided,
+      color: meta?.error ? '#EA4F3D' : '#000000',
+      fontSize: '12px',
+    }),
+
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? '#023656' : '#fff',
+      color: state.isFocused ? 'white' : 'black',
+      fontSize: '12px',
+      '&:hover': {
+        backgroundColor: '#023656',
+        color: 'white',
+      },
+      zIndex: `99999999 !important`,
+      top: 0,
+    }),
+  };
 
   return (
     <div className={`mb-4 ${className}`}>
       <div className="relative inline-block">
         <label
-          className="font-semibold text-xs text-primary block"
+          className={
+            meta.error
+              ? 'font-semibold text-xs text-warning block'
+              : 'font-semibold text-xs text-primary block'
+          }
           htmlFor={field.name}
         >
           {label}
@@ -72,8 +112,9 @@ export function CustomSelect({
           },
         })}
       />
-
-      {meta.touched && meta.error ? <div>{meta.error}</div> : null}
+      {meta.error ? (
+        <div className="text-warning text-xs mt-1">{meta.error}</div>
+      ) : null}
     </div>
   );
 }

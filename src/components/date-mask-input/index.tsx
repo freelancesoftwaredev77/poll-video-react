@@ -44,7 +44,7 @@ const DateInputMask: React.FC<IProps> = ({ label, isPrimary, ...props }) => {
           {...field}
           onChange={handleChange}
           maxLength={10}
-          placeholder="dd-mm-yyyy"
+          placeholder="zz-ll-aaaa"
         />
 
         <ErrorMessage

@@ -21,16 +21,26 @@ const FORM_VALIDATION = Yup.object().shape({
   birthdate: Yup.string()
     .matches(
       /^\d{2}-\d{2}-\d{4}$/,
-      'Date of birth must be in the format dd-mm-yyyy'
+      'Data nașterii trebuie să fie în formatul zz-ll-aaaa'
     )
-    .test('age', 'You are younger than 18', (value) => {
+    .test('birthdate', 'Vârsta nu poate fi mai mică de 18 ani', (value) => {
       if (!value) return false;
       return calculateAge(value) >= 18;
     })
     .required('Data nașterii este obligatorie'),
-  location: Yup.string().required('Required'),
-  sex: Yup.string().required('Required'),
-  education: Yup.string().required('Required'),
+  location: Yup.string()
+    .required('')
+    .test('location', 'locație nevalidă', (value) => {
+      if (
+        value?.trim() ===
+        'Domiciliul din cartea de identitate nu este in Bucuresti'
+      ) {
+        return false;
+      }
+      return true;
+    }),
+  sex: Yup.string().required(''),
+  education: Yup.string().required(''),
 });
 
 const Form: React.FC = () => {
@@ -86,7 +96,6 @@ const Form: React.FC = () => {
               label="Care este sexul dumneavoastra, asa cum este trecut in cartea de identitate?"
               placeholder="Select"
             />
-
             <SearchSelect
               name="education"
               options={educationLevel ?? []}
