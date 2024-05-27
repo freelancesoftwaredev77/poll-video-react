@@ -117,7 +117,7 @@ const WebcamDemo: React.FC<IProps> = ({
   ) : (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute top-20 left-[25%]">
+        <div className="absolute top-20 left-[25%] z-[99]">
           <img src="/face-cover.png" alt="face-cover" />
         </div>
       )}
