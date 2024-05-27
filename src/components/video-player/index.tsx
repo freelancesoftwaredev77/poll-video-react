@@ -5,9 +5,14 @@ import { MdOutlineReplay } from 'react-icons/md';
 interface IProps {
   url: string;
   setIsPlaying?: React.Dispatch<React.SetStateAction<boolean>>;
+  isControl?: boolean;
 }
 
-const VideoPlayer: React.FC<IProps> = ({ url, setIsPlaying }) => {
+const VideoPlayer: React.FC<IProps> = ({
+  url,
+  setIsPlaying,
+  isControl = false,
+}) => {
   const [isPaused, setIsPaused] = React.useState(true);
   const [showControls, setShowControls] = React.useState(true);
   const [endVideo, setEndVideo] = React.useState(false);
@@ -57,9 +62,14 @@ const VideoPlayer: React.FC<IProps> = ({ url, setIsPlaying }) => {
         ref={playerRef}
         url={url ?? ''}
         playing={!isPaused}
+        disablePictureInPicture
         className="!h-full !w-full custom-player"
         onEnded={handleEndVideo}
         playsinline
+        controls={isControl}
+        config={{
+          file: { attributes: { controlsList: 'nodownload nofullscreen' } },
+        }}
       />
 
       {showControls && (

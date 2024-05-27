@@ -4,6 +4,7 @@
 import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
+import VideoPlayer from '../video-player';
 
 interface IProps {
   blockFace: boolean;
@@ -102,23 +103,16 @@ const WebcamDemo: React.FC<IProps> = ({
         </div>
       )}
 
-      <video
-        controlsList="nofullscreen nodownload"
-        playsInline
-        disablePictureInPicture
-        controls
-        autoPlay
-        className="object-cover h-full w-full rounded-lg"
-        src={
+      <VideoPlayer
+        url={
           recordedChunks.length
             ? URL.createObjectURL(
                 new Blob(recordedChunks, { type: 'video/webm' })
               )
             : ''
         }
-      >
-        <source src="" type="" />
-      </video>
+        isControl
+      />
     </div>
   ) : (
     <div className="relative h-[90%]">
