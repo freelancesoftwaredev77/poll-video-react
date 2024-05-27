@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { AgeError, Demo, Form, Home, Question } from '@/pages';
+import { AgeError, Congratulations, Demo, Form, Home, Question } from '@/pages';
 
 const routesData = [
   {
@@ -28,6 +28,11 @@ const routesData = [
     id: 4,
     path: '/demo',
     element: <Demo />,
+  },
+  {
+    id: 5,
+    path: '/congratulation',
+    element: <Congratulations />,
   },
 ];
 
