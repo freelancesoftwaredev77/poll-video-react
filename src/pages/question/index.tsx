@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/require-await */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
-import { v1 as uuidv1 } from 'uuid';
+// import { v1 as uuidv1 } from 'uuid';
 import { Footer, Layout } from '@/container';
 import { Congrats, VideoBottomBar, VideoSkeleton } from '@/components';
 import WebcamDemo from '@/components/web-cam-face-detection';
 import QuestionDisplay from '@/components/quesiton-display';
-import { supabase } from '@/utils/supabase';
-import toastAlert from '@/utils/toastAlert';
+// import { supabase } from '@/utils/supabase';
+// import toastAlert from '@/utils/toastAlert';
 import useFetch from '@/hooks/useFetch';
 
 const Question: React.FC = () => {
@@ -36,71 +39,74 @@ const Question: React.FC = () => {
     const blob = new Blob(recordedChunks, {
       type: 'video/webm',
     });
+    alert(`Video size ${blob.size}`);
+    console.log('blob', setIsCompleted);
+    console.log('blob', setCurrentIndex);
 
-    const { data: videoUploadResponse, error } = await supabase.storage
-      .from('videos/uploads')
-      .upload(`${uuidv1()}.webm`, blob);
+    // const { data: videoUploadResponse, error } = await supabase.storage
+    //   .from('videos/uploads')
+    //   .upload(`${uuidv1()}.webm`, blob);
 
-    if (videoUploadResponse) {
-      const { data: videoResponse, error: videoResponseError } = await supabase
-        .from('video_responses')
-        .insert([
-          {
-            // @ts-ignore
-            response_video_url: videoUploadResponse?.fullPath,
-            question_id: videoQuestions[currentIndex]?.id,
-            user_id: state?.userId,
-            should_block_face: blockface,
-          },
-        ])
-        .select();
+    // if (videoUploadResponse) {
+    //   const { data: videoResponse, error: videoResponseError } = await supabase
+    //     .from('video_responses')
+    //     .insert([
+    //       {
+    //         // @ts-ignore
+    //         response_video_url: videoUploadResponse?.fullPath,
+    //         question_id: videoQuestions[currentIndex]?.id,
+    //         user_id: state?.userId,
+    //         should_block_face: blockface,
+    //       },
+    //     ])
+    //     .select();
 
-      if (videoResponseError) {
-        toastAlert('error', 'Something went wrong');
-      }
+    //   if (videoResponseError) {
+    //     toastAlert('error', 'Something went wrong');
+    //   }
 
-      if (videoResponse) {
-        try {
-          const data: Response = await fetch(
-            `${import.meta.env.VITE_APP_API_BASE_URL}/video-transcribe/`,
-            {
-              method: 'POST',
-              body: JSON.stringify({
-                video_response_id: videoResponse[0]?.id,
-              }),
-            }
-          );
-          if (data?.status !== 200) {
-            toastAlert('error', 'Something went wrong');
-            setIsSubmitting(false);
-          }
-          if (data?.status === 200) {
-            setIsSubmitting(false);
-            setRecordedChunks([]);
-            setCapturing(false);
-            setShowRecordingScreen(false);
-            setIsFinishedRecording(false);
-            setStep(1);
-            setIsSubmitting(false);
-            setBlockFace(false);
-            setCurrentIndex(
-              (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
-            );
-            if (currentIndex + 1 === videoQuestions?.length) {
-              setIsCompleted(true);
-            }
-            setIsSubmitting(false);
-          }
-        } catch (err: any) {
-          toastAlert('error', 'Something went wrong');
-        }
-      }
-    }
+    //   if (videoResponse) {
+    //     try {
+    //       const data: Response = await fetch(
+    //         `${import.meta.env.VITE_APP_API_BASE_URL}/video-transcribe/`,
+    //         {
+    //           method: 'POST',
+    //           body: JSON.stringify({
+    //             video_response_id: videoResponse[0]?.id,
+    //           }),
+    //         }
+    //       );
+    //       if (data?.status !== 200) {
+    //         toastAlert('error', 'Something went wrong');
+    //         setIsSubmitting(false);
+    //       }
+    //       if (data?.status === 200) {
+    //         setIsSubmitting(false);
+    //         setRecordedChunks([]);
+    //         setCapturing(false);
+    //         setShowRecordingScreen(false);
+    //         setIsFinishedRecording(false);
+    //         setStep(1);
+    //         setIsSubmitting(false);
+    //         setBlockFace(false);
+    //         setCurrentIndex(
+    //           (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
+    //         );
+    //         if (currentIndex + 1 === videoQuestions?.length) {
+    //           setIsCompleted(true);
+    //         }
+    //         setIsSubmitting(false);
+    //       }
+    //     } catch (err: any) {
+    //       toastAlert('error', 'Something went wrong');
+    //     }
+    //   }
+    // }
 
-    if (error) {
-      toastAlert('error', 'Something went wrong');
-      setIsSubmitting(false);
-    }
+    // if (error) {
+    //   toastAlert('error', 'Something went wrong');
+    //   setIsSubmitting(false);
+    // }
   };
 
   const handleShowRecordingScreen = () => {

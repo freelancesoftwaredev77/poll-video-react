@@ -59,25 +59,31 @@ const WebcamDemo: React.FC<IProps> = ({
   };
 
   const handleStartCaptureClick = () => {
-    setCapturing(true);
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-      mimeType: 'video/webm',
-    });
-    mediaRecorderRef.current.addEventListener(
-      'dataavailable',
-      handleDataAvailable
-    );
-    mediaRecorderRef.current.start();
+    if (webcamRef.current && webcamRef.current.stream) {
+      setCapturing(true);
+      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+        mimeType: 'video/webm',
+      });
+      mediaRecorderRef.current.addEventListener(
+        'dataavailable',
+        handleDataAvailable
+      );
+      mediaRecorderRef.current.start();
+    } else {
+      console.error('Webcam stream is not available');
+    }
   };
 
   const handleStopCaptureClick = () => {
     setCapturing(!capturing);
     setIsFinishedRecording(!isFinishedRecording);
-    mediaRecorderRef.current?.stop();
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+    }
     setStep(step + 1);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (timer >= 46) {
       handleStopCaptureClick();
     }
