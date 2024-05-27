@@ -55,7 +55,7 @@ const VideoBottomBar: React.FC<IProps> = ({
         return (
           <div className="flex items-center gap-3">
             <Button
-              text="Înregistrează din nou"
+              text="Reînregistrează"
               type="button"
               variant="primary"
               icon={<IoVideocamOutline size={20} color="#fff" />}
