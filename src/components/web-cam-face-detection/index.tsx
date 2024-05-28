@@ -71,7 +71,7 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
-        mimeType: 'video/mp4',
+        mimeType: 'video/webm;codecs=vp8', // Changed MIME type for better compatibility
         bitsPerSecond: 2 * 1024 * 1024,
       };
 
@@ -88,7 +88,11 @@ const WebcamDemo: React.FC<IProps> = ({
       recorderRef.current.stopRecording(() => {
         // @ts-ignore
         const recordedBlob = recorderRef.current.getBlob();
-        setRecordedChunks([...recordedChunks, recordedBlob]);
+        if (recordedBlob.size > 0) {
+          setRecordedChunks([...recordedChunks, recordedBlob]);
+        } else {
+          console.error('Recorded blob is empty');
+        }
         // @ts-ignore
         recorderRef.current.reset();
         recorderRef.current = null;
@@ -115,13 +119,15 @@ const WebcamDemo: React.FC<IProps> = ({
           <img src="/face-cover.png" alt="face-cover" className="z-30" />
         </div>
       )}
-      {recordedChunks.length > 0 && (
+      {recordedChunks.length > 0 ? (
         <video controls autoPlay className="w-full h-full object-cover">
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type="video/mp4"
+            type="video/webm" // Changed MIME type for better compatibility
           />
         </video>
+      ) : (
+        <p>No video recorded</p>
       )}
       {blockFace && (
         <div className="absolute top-20 left-[25%] z-[99]">
