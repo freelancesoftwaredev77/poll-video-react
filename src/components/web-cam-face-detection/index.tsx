@@ -70,12 +70,12 @@ const WebcamDemo: React.FC<IProps> = ({
       setCapturing(true);
 
       const mimeTypes = [
+        'video/mp4;codecs=avc1.424028,opus',
+        'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+        'video/mp4',
         'video/webm;codecs=vp8,opus',
         'video/webm;codecs=vp8',
         'video/webm;codecs=vp9',
-        'video/mp4;codecs=avc1.424028,opus',
-        'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
-        'video/webm;codecs=vp08.00.41.08,vorbis',
       ];
 
       let mimeType = '';
@@ -107,11 +107,11 @@ const WebcamDemo: React.FC<IProps> = ({
           handleDataAvailable
         );
         mediaRecorderRef.current.start(1000);
-      } catch (e) {
-        alert('MediaRecorder initialization failed:');
+      } catch (e: any) {
+        // alert('MediaRecorder initialization failed: ' + e.message);
       }
     } else {
-      alert('Webcam stream is not available');
+      // alert('Webcam stream is not available');
     }
   };
 
@@ -146,38 +146,14 @@ const WebcamDemo: React.FC<IProps> = ({
         <source
           src={
             recordedChunks.length
-              ? URL.createObjectURL(new Blob(recordedChunks))
+              ? URL.createObjectURL(
+                  new Blob(recordedChunks, { type: 'video/mp4' })
+                )
               : ''
           }
           type="video/mp4"
         />
-        <source
-          src={
-            recordedChunks.length
-              ? URL.createObjectURL(new Blob(recordedChunks))
-              : ''
-          }
-          type="video/webm"
-        />
-        <source
-          src={
-            recordedChunks.length
-              ? URL.createObjectURL(new Blob(recordedChunks))
-              : ''
-          }
-        />
       </video>
-      {/* 
-      <VideoPlayer
-        url={
-          recordedChunks.length
-            ? URL.createObjectURL(
-                new Blob(recordedChunks, { type: 'video/webm' })
-              )
-            : ''
-        }
-        isControl
-      /> */}
     </div>
   ) : (
     <div className="relative h-[90%]">
