@@ -20,14 +20,14 @@ const Button: React.FC<IProps> = ({
   onClick,
   isSubmitting,
   isValid = true,
-  hasIcon,
+  hasIcon = false,
   icon,
 }) => (
   <button
     className={`
-      ${className} outline-none rounded-md text-sm disabled:text-opacity-70 px-4 py-2.5 w-full disabled:bg-opacity-40  disabled:cursor-not-allowed text-pure-white capitalize
-      ${variant === 'primary' && 'bg-primary'}
-      ${variant === 'outline' && 'border-secondary border'}
+      ${className} outline-none rounded-md text-sm disabled:text-opacity-70 w-full disabled:bg-opacity-40 text-center disabled:cursor-not-allowed text-pure-white capitalize
+      ${variant === 'primary' && 'bg-primary text-white py-2.5'}
+      ${variant === 'outline' && 'border-secondary border text-primary py-2'}
     `}
     type={type}
     disabled={!isValid || isSubmitting}
@@ -55,10 +55,10 @@ const Button: React.FC<IProps> = ({
     ) : hasIcon ? (
       <div className="flex items-center gap-3 justify-center">
         {icon}
-        <p className="text-center text-white"> {text} </p>
+        <p> {text} </p>
       </div>
     ) : (
-      text
+      <p className="text-center"> {text} </p>
     )}
   </button>
 );

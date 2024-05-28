@@ -1,43 +1,44 @@
 export const locationData = [
   {
-    label: 'Kathmandu',
-    value: 'kathmandu',
+    label: 'Sector 1, Bucuresti',
+    value: 'Sector 1 Bucuresti',
   },
   {
-    label: 'Pokhara',
-    value: 'Pokhara',
+    label: 'Sector 2, Bucuresti',
+    value: 'Sector 2, Bucuresti',
   },
   {
-    label: 'Biratnagar',
-    value: 'Biratnagar',
+    label: ' Sector 6',
+    value: ' Sector 6',
   },
   {
-    label: 'Dharan',
-    value: 'Dharan',
+    label: 'Domiciliul din cartea de identitate nu este in Bucuresti',
+    value: 'Domiciliul din cartea de identitate nu este in Bucuresti',
   },
-  {
-    label: 'Damak',
-    value: 'Damak',
-  },
-  {
-    label: 'ithari',
-    value: 'ithari',
-  },
-  ,
 ];
 
 export const genderData = [
   {
-    value: 'm',
-    label: 'Male',
+    value: 'Masculin',
+    label: 'Masculin',
   },
   {
-    value: 'f',
-    label: 'Female',
+    value: 'Feminin',
+    label: 'Feminin',
+  },
+];
+
+export const educationLevel = [
+  {
+    label: '8 clase (scoala primara si gimnaziu)',
+    value: '8 clase (scoala primara si gimnaziu)',
   },
   {
-    value: 'not-to-say',
-    label: 'Rather not to say',
+    label: '12 clase (liceu sau scoala profesionala)',
+    value: '12 clase (liceu sau scoala profesionala)',
   },
-  ,
+  {
+    label: 'Facultate (studii universitare si post universitare)',
+    value: 'Facultate (studii universitare si post universitare)',
+  },
 ];
