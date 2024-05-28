@@ -1,10 +1,11 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
-import VideoPlayer from '../video-player';
+// import VideoPlayer from '../video-player';
 
 interface IProps {
   blockFace: boolean;
@@ -29,15 +30,20 @@ const WebcamDemo: React.FC<IProps> = ({
   setStep,
   step,
 }) => {
-  const [cameraMode, setCameraMode] = React.useState('user');
+  const [cameraMode, setCameraMode] = useState('user');
   const [timer, setTimer] = useState(0);
-  const webcamRef: any = React.useRef<Webcam | null>(null);
+  const webcamRef: MutableRefObject<Webcam | null> = useRef<Webcam | null>(
+    null
+  );
 
   const videoConstraints = {
     facingMode: cameraMode,
+    width: { ideal: 1920 },
+    height: { ideal: 1080 },
   };
 
-  const mediaRecorderRef: MutableRefObject<any> = useRef<any>(null);
+  const mediaRecorderRef: MutableRefObject<MediaRecorder | null> =
+    useRef<MediaRecorder | null>(null);
 
   useEffect(() => {
     let intervalId: any;
@@ -62,16 +68,50 @@ const WebcamDemo: React.FC<IProps> = ({
   const handleStartCaptureClick = () => {
     if (webcamRef.current && webcamRef.current.stream) {
       setCapturing(true);
-      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-        mimeType: 'video/webm;codecs=vp8',
-      });
-      mediaRecorderRef.current.addEventListener(
-        'dataavailable',
-        handleDataAvailable
-      );
-      mediaRecorderRef.current.start();
+
+      const mimeTypes = [
+        'video/webm;codecs=vp8,opus',
+        'video/webm;codecs=vp8',
+        'video/webm;codecs=vp9',
+        'video/mp4;codecs=avc1.424028,opus',
+        'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+        'video/webm;codecs=vp08.00.41.08,vorbis',
+      ];
+
+      let mimeType = '';
+      for (const type of mimeTypes) {
+        if (MediaRecorder.isTypeSupported(type)) {
+          mimeType = type;
+          break;
+        }
+      }
+
+      if (!mimeType) {
+        alert('No supported MIME type found');
+        return;
+      }
+
+      const options = {
+        mimeType,
+        audioBitsPerSecond: 128000, // Increased audio bitrate
+        videoBitsPerSecond: 2500000, // Increased video bitrate
+      };
+
+      try {
+        mediaRecorderRef.current = new MediaRecorder(
+          webcamRef.current.stream,
+          options
+        );
+        mediaRecorderRef.current.addEventListener(
+          'dataavailable',
+          handleDataAvailable
+        );
+        mediaRecorderRef.current.start(1000);
+      } catch (e) {
+        alert('MediaRecorder initialization failed:');
+      }
     } else {
-      console.error('Webcam stream is not available');
+      alert('Webcam stream is not available');
     }
   };
 
@@ -102,7 +142,32 @@ const WebcamDemo: React.FC<IProps> = ({
           <img src="/face-cover.png" alt="face-cover" className="z-30" />
         </div>
       )}
-
+      <video playsInline controls>
+        <source
+          src={
+            recordedChunks.length
+              ? URL.createObjectURL(new Blob(recordedChunks))
+              : ''
+          }
+          type="video/mp4"
+        />
+        <source
+          src={
+            recordedChunks.length
+              ? URL.createObjectURL(new Blob(recordedChunks))
+              : ''
+          }
+          type="video/webm"
+        />
+        <source
+          src={
+            recordedChunks.length
+              ? URL.createObjectURL(new Blob(recordedChunks))
+              : ''
+          }
+        />
+      </video>
+      {/* 
       <VideoPlayer
         url={
           recordedChunks.length
@@ -112,7 +177,7 @@ const WebcamDemo: React.FC<IProps> = ({
             : ''
         }
         isControl
-      />
+      /> */}
     </div>
   ) : (
     <div className="relative h-[90%]">
@@ -134,7 +199,9 @@ const WebcamDemo: React.FC<IProps> = ({
         <div className="flex items-center justify-between gap-5">
           {capturing ? (
             <div className="bg-warning px-3 py-1 rounded-full text-white font-bold ">
-              <p className="text-sm">00:{timer} / 00:45</p>
+              <p className="text-sm">
+                00:{timer < 10 ? `0${timer}` : timer} / 00:45
+              </p>
             </div>
           ) : (
             <div className=" px-3 py-1 rounded-full text-white font-bold " />
