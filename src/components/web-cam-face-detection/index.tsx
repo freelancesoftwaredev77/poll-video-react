@@ -49,6 +49,14 @@ const WebcamDemo: React.FC<IProps> = ({
     width: { ideal: 1920 },
     height: { ideal: 1080 },
   };
+  const getMimeType = () => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes('chrome')) {
+      return 'video/webm;codecs=vp9';
+    }
+
+    return 'video/mp4';
+  };
 
   useEffect(() => {
     let intervalId: any;
@@ -71,7 +79,7 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
-        mimeType: 'video/webm;codecs=vp9',
+        mimeType: getMimeType(),
         bitsPerSecond: 2 * 1024 * 1024,
         audioBitsPerSecond: 30000,
         videoBitsPerSecond: 50000,
@@ -130,11 +138,7 @@ const WebcamDemo: React.FC<IProps> = ({
         >
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type="video/mp4"
-          />
-          <source
-            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type="video/webm"
+            type={getMimeType()}
           />
         </video>
       ) : (
