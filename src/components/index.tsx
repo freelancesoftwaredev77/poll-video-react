@@ -5,6 +5,6 @@ export { default as VideoSkeleton } from './skeleton/video-skeleton';
 export { default as VideoPlayer } from './video-player';
 export { default as VideoBottomBar } from './video-bottom-bar';
 export { default as DatePicker } from './date-mask-input';
-export { default as Congrats } from './congrats-screen';
+export { default as Message } from './message';
 export { default as ErrorBoundary } from './error-boundary';
 export { default as DateInputMask } from './date-mask-input';

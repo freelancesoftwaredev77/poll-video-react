@@ -71,9 +71,8 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
-        mimeType: 'video/mp4', // Use a MIME type compatible with iOS
-
-        bitsPerSecond: 2 * 1024 * 1024, // Increase bitrate to 2Mbps for better quality
+        mimeType: 'video/mp4',
+        bitsPerSecond: 2 * 1024 * 1024,
       };
 
       recorderRef.current = new RecordRTC(stream, options);

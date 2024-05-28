@@ -31,9 +31,7 @@ const VideoBottomBar: React.FC<IProps> = ({
             text="Răspunde"
             type="button"
             variant="primary"
-            icon={<IoVideocamOutline size={20} color="#fff" />}
             className="px-4 py-2"
-            hasIcon
             onClick={handleShowRecordingScreen}
           />
         );
@@ -58,9 +56,7 @@ const VideoBottomBar: React.FC<IProps> = ({
               text="Reînregistrează"
               type="button"
               variant="primary"
-              icon={<IoVideocamOutline size={20} color="#fff" />}
               className="px-4 py-2"
-              hasIcon
               onClick={handleRecordAgain}
             />
             <Button

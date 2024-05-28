@@ -4,7 +4,7 @@ import * as React from 'react';
 import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import { v1 as uuidv1 } from 'uuid';
 import { Footer, Layout } from '@/container';
-import { Congrats, VideoBottomBar, VideoSkeleton } from '@/components';
+import { Message, VideoBottomBar, VideoSkeleton } from '@/components';
 import WebcamDemo from '@/components/web-cam-face-detection';
 import QuestionDisplay from '@/components/quesiton-display';
 import { supabase } from '@/utils/supabase';
@@ -120,7 +120,11 @@ const Question: React.FC = () => {
   return (
     <Layout>
       {isCompleted ? (
-        <Congrats message="Să începem sondajul !" />
+        <Message
+          message="Să începem sondajul !"
+          title="Felicitări !"
+          imageUrl="/clap.png"
+        />
       ) : (
         <>
           <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
