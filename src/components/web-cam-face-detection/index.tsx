@@ -1,4 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/media-has-caption */
@@ -66,7 +71,7 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
-        mimeType: 'video/webm;codecs=vp8', // Ensure compatibility and quality
+        mimeType: 'video/mp4', // Use a MIME type compatible with iOS
 
         bitsPerSecond: 2 * 1024 * 1024, // Increase bitrate to 2Mbps for better quality
       };
@@ -84,13 +89,9 @@ const WebcamDemo: React.FC<IProps> = ({
   const handleStopCaptureClick = () => {
     if (recorderRef.current) {
       recorderRef.current.stopRecording(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const recordedBlob = recorderRef.current.getBlob();
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         setRecordedChunks([...recordedChunks, recordedBlob]);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         recorderRef.current.reset();
         recorderRef.current = null;
@@ -121,7 +122,7 @@ const WebcamDemo: React.FC<IProps> = ({
         <video controls autoPlay className="w-full h-full object-cover">
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type="video/webm"
+            type="video/mp4"
           />
         </video>
       )}
