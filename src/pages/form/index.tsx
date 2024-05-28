@@ -24,17 +24,7 @@ const FORM_VALIDATION = Yup.object().shape({
       'Data nașterii trebuie să fie în formatul zz-ll-aaaa'
     )
     .required('Data nașterii este obligatorie'),
-  location: Yup.string()
-    .required('')
-    .test('location', 'locație nevalidă', (value) => {
-      if (
-        value?.trim() ===
-        'Domiciliul din cartea de identitate nu este in Bucuresti'
-      ) {
-        return false;
-      }
-      return true;
-    }),
+  location: Yup.string().required(''),
   sex: Yup.string().required(''),
   education: Yup.string().required(''),
 });
@@ -51,7 +41,14 @@ const Form: React.FC = () => {
   const handleSubmit = async (val: FormValue) => {
     const { birthdate, education, location, sex } = val;
     if (calculateAge(birthdate) < 18) {
-      navigate('/age-error');
+      navigate('/age-error', { state: 'age-error' });
+      return;
+    }
+
+    if (
+      location === 'Domiciliul din cartea de identitate nu este in Bucuresti'
+    ) {
+      navigate('/age-error', { state: 'location-error' });
       return;
     }
     const { data, error } = await supabase

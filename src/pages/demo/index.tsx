@@ -51,10 +51,10 @@ const Demo: React.FC = () => {
       <div className="flex items-center justify-between mt-5 mb-10">
         <h5 className="text-primary text-2xl font-bold">Întrebarea 1</h5>
         <Link
-          className="bg-violet px-4 py-1.5 rounded-xl text-white font-bold"
+          className="bg-violet px-4 py-1.5 rounded-md text-sm text-white"
           to="/congratulation"
         >
-          Exit demo
+          Închide demo
         </Link>
       </div>
 
