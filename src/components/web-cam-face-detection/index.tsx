@@ -163,8 +163,6 @@ const WebcamDemo: React.FC<IProps> = ({
                 onClick={handleStopCaptureClick}
                 className=""
                 aria-label="stop"
-                // Added touch event handlers
-                onTouchStart={handleStopCaptureClick}
               >
                 <div className="border-white border-2 rounded-full w-16 h-16">
                   <div className="bg-[#000000bb] h-9 w-9 rounded-md mx-auto mt-3" />
@@ -175,8 +173,6 @@ const WebcamDemo: React.FC<IProps> = ({
                 onClick={handleStartCaptureClick}
                 className=""
                 aria-label="start"
-                // Added touch event handlers
-                onTouchStart={handleStartCaptureClick}
               >
                 <div className="border-white border-2 rounded-full w-16 h-16">
                   <div className="bg-warning h-12 w-12 rounded-full mx-auto mt-1.5" />
@@ -190,8 +186,6 @@ const WebcamDemo: React.FC<IProps> = ({
               onClick={handleSwitchCamera}
               className=""
               aria-label="switch camera"
-              // Added touch event handlers
-              onTouchStart={handleSwitchCamera}
             >
               <div className="bg-[#00000080] rounded-full w-12 h-12 flex items-center justify-center">
                 <FiRefreshCw color="#fff" className="hover:rotate-180" />
