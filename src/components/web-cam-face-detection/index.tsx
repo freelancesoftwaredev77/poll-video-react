@@ -2,17 +2,11 @@
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/media-has-caption */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
 import RecordRTC from 'recordrtc';
-import VideoPlayer from '../video-player';
 
 interface IProps {
   blockFace: boolean;
@@ -74,7 +68,7 @@ const WebcamDemo: React.FC<IProps> = ({
   }, [capturing]);
 
   const handleStartCaptureClick = () => {
-    if (webcamRef.current && webcamRef.current.stream) {
+    if (webcamRef?.current && webcamRef?.current?.stream) {
       setCapturing(true);
       const { stream } = webcamRef.current;
 
@@ -122,15 +116,22 @@ const WebcamDemo: React.FC<IProps> = ({
   return isFinishedRecording ? (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute top-20 left-[25%] z-[99]">
-          <img src="/face-cover.png" alt="face-cover" className="z-30" />
+        <div className="absolute top-20 left-[25%]">
+          <img src="/face-cover.png" alt="face-cover" className="" />
         </div>
       )}
       {recordedChunks.length > 0 ? (
-        <VideoPlayer
-          url={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-          isControl
-        />
+        <video
+          playsInline
+          className="h-full w-full object-cover mt-5 rounded-3xl"
+          controls
+        >
+          <track kind="captions" />
+          <source
+            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
+            type={getMimeType()}
+          />
+        </video>
       ) : (
         <p className="text-center">
           No video recorded Please record from the safari browser

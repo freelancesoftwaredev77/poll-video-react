@@ -47,7 +47,7 @@ const VideoPlayer: React.FC<IProps> = ({
       setIsPaused(false);
       setEndVideo(false);
       setShowControls(true);
-      setTimeout((): void => setShowControls(false), 2000);
+      setTimeout((): void => setShowControls(false), 3000);
     }
   };
 
@@ -74,7 +74,7 @@ const VideoPlayer: React.FC<IProps> = ({
       />
 
       {showControls && (
-        <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-xl h-full z-[9999]">
+        <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-xl h-full z-[999999999]">
           <div className="absolute z-50 top-[45%] left-[45%]">
             {endVideo ? (
               <MdOutlineReplay size={50} color="#fff" onClick={handleReplay} />
