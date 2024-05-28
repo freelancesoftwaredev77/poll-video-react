@@ -77,8 +77,6 @@ const WebcamDemo: React.FC<IProps> = ({
 
       recorderRef.current = new RecordRTC(stream, options);
       recorderRef.current.startRecording();
-
-      // Start the timer
       setTimer(0);
     } else {
       alert('Webcam stream is not available');
@@ -125,14 +123,14 @@ const WebcamDemo: React.FC<IProps> = ({
           />
         </video>
       )}
-    </div>
-  ) : (
-    <div className="relative h-[90%]">
       {blockFace && (
         <div className="absolute top-20 left-[25%] z-[99]">
           <img src="/face-cover.png" alt="face-cover" />
         </div>
       )}
+    </div>
+  ) : (
+    <div className="relative h-[90%]">
       <Webcam
         ref={webcamRef}
         forceScreenshotSourceSize
@@ -158,7 +156,9 @@ const WebcamDemo: React.FC<IProps> = ({
               <button
                 onClick={handleStopCaptureClick}
                 className=""
-                aria-label="save"
+                aria-label="stop"
+                // Added touch event handlers
+                onTouchStart={handleStopCaptureClick}
               >
                 <div className="border-white border-2 rounded-full w-16 h-16">
                   <div className="bg-[#000000bb] h-9 w-9 rounded-md mx-auto mt-3" />
@@ -168,7 +168,9 @@ const WebcamDemo: React.FC<IProps> = ({
               <button
                 onClick={handleStartCaptureClick}
                 className=""
-                aria-label="save"
+                aria-label="start"
+                // Added touch event handlers
+                onTouchStart={handleStartCaptureClick}
               >
                 <div className="border-white border-2 rounded-full w-16 h-16">
                   <div className="bg-warning h-12 w-12 rounded-full mx-auto mt-1.5" />
@@ -178,7 +180,13 @@ const WebcamDemo: React.FC<IProps> = ({
           </div>
 
           {!capturing ? (
-            <button onClick={handleSwitchCamera} className="" aria-label="save">
+            <button
+              onClick={handleSwitchCamera}
+              className=""
+              aria-label="switch camera"
+              // Added touch event handlers
+              onTouchStart={handleSwitchCamera}
+            >
               <div className="bg-[#00000080] rounded-full w-12 h-12 flex items-center justify-center">
                 <FiRefreshCw color="#fff" className="hover:rotate-180" />
               </div>
