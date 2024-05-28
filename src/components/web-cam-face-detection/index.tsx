@@ -117,12 +117,17 @@ const WebcamDemo: React.FC<IProps> = ({
   return isFinishedRecording ? (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute top-20 left-[25%] z-30">
+        <div className="absolute top-20 left-[25%] z-[99999]">
           <img src="/face-cover.png" alt="face-cover" className="z-30" />
         </div>
       )}
       {recordedChunks.length > 0 ? (
-        <video controls autoPlay className="w-full h-full object-cover">
+        <video
+          controls
+          autoPlay
+          className="w-full h-full object-cover"
+          playsInline
+        >
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
             type="video/mp4"
@@ -135,14 +140,14 @@ const WebcamDemo: React.FC<IProps> = ({
       ) : (
         <p>No video recorded</p>
       )}
-      {blockFace && (
-        <div className="absolute top-20 left-[25%] z-[99]">
-          <img src="/face-cover.png" alt="face-cover" />
-        </div>
-      )}
     </div>
   ) : (
     <div className="relative h-[90%]">
+      {blockFace && (
+        <div className="absolute top-20 left-[25%] z-[99999]">
+          <img src="/face-cover.png" alt="face-cover" className="" />
+        </div>
+      )}
       <Webcam
         ref={webcamRef}
         forceScreenshotSourceSize
