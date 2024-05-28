@@ -132,17 +132,6 @@ const WebcamDemo: React.FC<IProps> = ({
           isControl
         />
       ) : (
-        // <video
-        //   controls
-        //   autoPlay
-        //   className="w-full h-full object-cover"
-        //   playsInline
-        // >
-        //   <source
-        //     src={}
-        //     type={getMimeType()}
-        //   />
-        // </video>
         <p className="text-center">
           No video recorded Please record from the safari browser
         </p>

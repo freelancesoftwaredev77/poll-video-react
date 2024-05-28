@@ -128,6 +128,8 @@ li {
   object-fit: cover !important;
   border-radius: 20px !important;
   cursor: pointer !important;
+  width: 100%;
+  height: 100%;
 }
 .animate-pulse {
   position: relative;
