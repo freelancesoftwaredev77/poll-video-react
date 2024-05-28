@@ -13,7 +13,7 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <h6 className="text-center mt-5 mb-5 font-bold text-[22px]">
+      <h6 className="text-center mt-5 mb-6 font-bold text-[22px]">
         {isPlaying ? 'Instrucțiuni' : 'Bun venit!'}
       </h6>
       {isLoading ? (

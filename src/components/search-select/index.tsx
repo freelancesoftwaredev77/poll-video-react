@@ -62,6 +62,7 @@ export function CustomSelect({
         placeholder={placeholder}
         classNamePrefix="react-select"
         styles={customStylesMain}
+        isSearchable={false}
         theme={(theme) => ({
           ...theme,
           colors: {

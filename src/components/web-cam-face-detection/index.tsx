@@ -12,6 +12,7 @@ import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
 import RecordRTC from 'recordrtc';
+import VideoPlayer from '../video-player';
 
 interface IProps {
   blockFace: boolean;
@@ -88,8 +89,6 @@ const WebcamDemo: React.FC<IProps> = ({
       recorderRef.current = new RecordRTC(stream, options);
       recorderRef.current.startRecording();
       setTimer(0);
-    } else {
-      alert('Webcam stream is not available');
     }
   };
 
@@ -100,8 +99,6 @@ const WebcamDemo: React.FC<IProps> = ({
         const recordedBlob = recorderRef.current.getBlob();
         if (recordedBlob.size > 0) {
           setRecordedChunks([...recordedChunks, recordedBlob]);
-        } else {
-          console.error('Recorded blob is empty');
         }
         // @ts-ignore
         recorderRef.current.reset();
@@ -125,24 +122,30 @@ const WebcamDemo: React.FC<IProps> = ({
   return isFinishedRecording ? (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute top-20 left-[25%] z-[99999]">
+        <div className="absolute top-20 left-[25%] z-[99]">
           <img src="/face-cover.png" alt="face-cover" className="z-30" />
         </div>
       )}
       {recordedChunks.length > 0 ? (
-        <video
-          controls
-          autoPlay
-          className="w-full h-full object-cover"
-          playsInline
-        >
-          <source
-            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type={getMimeType()}
-          />
-        </video>
+        <VideoPlayer
+          url={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
+          isControl
+        />
       ) : (
-        <p>No video recorded</p>
+        // <video
+        //   controls
+        //   autoPlay
+        //   className="w-full h-full object-cover"
+        //   playsInline
+        // >
+        //   <source
+        //     src={}
+        //     type={getMimeType()}
+        //   />
+        // </video>
+        <p className="text-center">
+          No video recorded Please record from the safari browser
+        </p>
       )}
     </div>
   ) : (
