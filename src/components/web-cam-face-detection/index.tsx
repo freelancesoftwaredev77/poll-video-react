@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/media-has-caption */
@@ -5,7 +6,7 @@
 import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
-// import VideoPlayer from '../video-player';
+import RecordRTC from 'recordrtc';
 
 interface IProps {
   blockFace: boolean;
@@ -13,8 +14,8 @@ interface IProps {
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
   setIsFinishedRecording: React.Dispatch<React.SetStateAction<boolean>>;
-  setRecordedChunks: React.Dispatch<React.SetStateAction<never[]>>;
-  recordedChunks: never[];
+  setRecordedChunks: React.Dispatch<React.SetStateAction<Blob[]>> | any;
+  recordedChunks: Blob[];
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -30,20 +31,19 @@ const WebcamDemo: React.FC<IProps> = ({
   setStep,
   step,
 }) => {
-  const [cameraMode, setCameraMode] = useState('user');
+  const [cameraMode, setCameraMode] = useState<'user' | 'environment'>('user');
   const [timer, setTimer] = useState(0);
   const webcamRef: MutableRefObject<Webcam | null> = useRef<Webcam | null>(
     null
   );
+  const recorderRef: MutableRefObject<RecordRTC | null> =
+    useRef<RecordRTC | null>(null);
 
   const videoConstraints = {
     facingMode: cameraMode,
     width: { ideal: 1920 },
     height: { ideal: 1080 },
   };
-
-  const mediaRecorderRef: MutableRefObject<MediaRecorder | null> =
-    useRef<MediaRecorder | null>(null);
 
   useEffect(() => {
     let intervalId: any;
@@ -59,69 +59,46 @@ const WebcamDemo: React.FC<IProps> = ({
     return () => clearInterval(intervalId);
   }, [capturing]);
 
-  const handleDataAvailable = ({ data }: { data: any }) => {
-    if (data.size > 0) {
-      setRecordedChunks((prev) => prev.concat(data));
-    }
-  };
-
   const handleStartCaptureClick = () => {
     if (webcamRef.current && webcamRef.current.stream) {
       setCapturing(true);
+      const { stream } = webcamRef.current;
 
-      const mimeTypes = [
-        'video/mp4;codecs=avc1.424028,opus',
-        'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
-        'video/mp4',
-        'video/webm;codecs=vp8,opus',
-        'video/webm;codecs=vp8',
-        'video/webm;codecs=vp9',
-      ];
+      const options: RecordRTC.Options = {
+        type: 'video',
+        mimeType: 'video/webm;codecs=vp8', // Ensure compatibility and quality
 
-      let mimeType = '';
-      for (const type of mimeTypes) {
-        if (MediaRecorder.isTypeSupported(type)) {
-          mimeType = type;
-          break;
-        }
-      }
-
-      if (!mimeType) {
-        alert('No supported MIME type found');
-        return;
-      }
-
-      const options = {
-        mimeType,
-        audioBitsPerSecond: 128000, // Increased audio bitrate
-        videoBitsPerSecond: 2500000, // Increased video bitrate
+        bitsPerSecond: 2 * 1024 * 1024, // Increase bitrate to 2Mbps for better quality
       };
 
-      try {
-        mediaRecorderRef.current = new MediaRecorder(
-          webcamRef.current.stream,
-          options
-        );
-        mediaRecorderRef.current.addEventListener(
-          'dataavailable',
-          handleDataAvailable
-        );
-        mediaRecorderRef.current.start(1000);
-      } catch (e: any) {
-        // alert('MediaRecorder initialization failed: ' + e.message);
-      }
+      recorderRef.current = new RecordRTC(stream, options);
+      recorderRef.current.startRecording();
+
+      // Start the timer
+      setTimer(0);
     } else {
-      // alert('Webcam stream is not available');
+      alert('Webcam stream is not available');
     }
   };
 
   const handleStopCaptureClick = () => {
-    setCapturing(!capturing);
-    setIsFinishedRecording(!isFinishedRecording);
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
+    if (recorderRef.current) {
+      recorderRef.current.stopRecording(() => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const recordedBlob = recorderRef.current.getBlob();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        setRecordedChunks([...recordedChunks, recordedBlob]);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        recorderRef.current.reset();
+        recorderRef.current = null;
+        setCapturing(false);
+        setIsFinishedRecording(true);
+        setStep(step + 1);
+      });
     }
-    setStep(step + 1);
   };
 
   useEffect(() => {
@@ -131,9 +108,7 @@ const WebcamDemo: React.FC<IProps> = ({
   }, [timer]);
 
   const handleSwitchCamera = () =>
-    setCameraMode((prev: string): 'user' | 'environment' =>
-      prev === 'user' ? 'environment' : 'user'
-    );
+    setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
   return isFinishedRecording ? (
     <div className="relative h-[90%]">
@@ -142,18 +117,14 @@ const WebcamDemo: React.FC<IProps> = ({
           <img src="/face-cover.png" alt="face-cover" className="z-30" />
         </div>
       )}
-      <video playsInline controls>
-        <source
-          src={
-            recordedChunks.length
-              ? URL.createObjectURL(
-                  new Blob(recordedChunks, { type: 'video/mp4' })
-                )
-              : ''
-          }
-          type="video/mp4"
-        />
-      </video>
+      {recordedChunks.length > 0 && (
+        <video controls autoPlay className="w-full h-full object-cover">
+          <source
+            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
+            type="video/webm"
+          />
+        </video>
+      )}
     </div>
   ) : (
     <div className="relative h-[90%]">
