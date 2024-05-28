@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, VideoPlayer, VideoSkeleton } from '@/components';
 import { Footer, Layout } from '@/container';
-import { IoIosPlay } from 'react-icons/io';
+// import { IoIosPlay } from 'react-icons/io';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import useFetch from '@/hooks/useFetch';
 
@@ -34,9 +34,7 @@ const Home: React.FC = () => {
                   text="Începe sondajul"
                   type="submit"
                   variant="primary"
-                  icon={<IoIosPlay size={20} color="#fff" />}
                   className="px-4 py-2"
-                  hasIcon
                 />
               </Link>
               <Link

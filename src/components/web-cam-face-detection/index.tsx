@@ -71,8 +71,10 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
-        mimeType: 'video/webm;codecs=vp8', // Changed MIME type for better compatibility
+        mimeType: 'video/mp4', // Using a valid MIME type
         bitsPerSecond: 2 * 1024 * 1024,
+        audioBitsPerSecond: 30000,
+        videoBitsPerSecond: 50000,
       };
 
       recorderRef.current = new RecordRTC(stream, options);
@@ -123,7 +125,7 @@ const WebcamDemo: React.FC<IProps> = ({
         <video controls autoPlay className="w-full h-full object-cover">
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type="video/webm" // Changed MIME type for better compatibility
+            type="video/mp4" // Changed MIME type for better compatibility
           />
         </video>
       ) : (
