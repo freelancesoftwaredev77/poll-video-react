@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
-import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  NavigateFunction,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { v1 as uuidv1 } from 'uuid';
 import { Footer, Layout } from '@/container';
 import { Message, VideoBottomBar, VideoSkeleton } from '@/components';
@@ -25,6 +30,18 @@ const Question: React.FC = () => {
   const [step, setStep] = React.useState(1);
   const navigate: NavigateFunction = useNavigate();
   const { state } = useLocation();
+
+  // const [showAlert, setShowAlert] = React.useState(false);
+
+  // const handleOpenAlert = () => {
+  //   setShowAlert(true);
+  //   window.history.pushState(null, '', window.location.href);
+  // };
+
+  // const handleCloseAlert = () => {
+  //   setShowAlert(false);
+  //   window.history.back();
+  // };
 
   React.useEffect(() => {
     if (!state?.userId) {
@@ -119,14 +136,33 @@ const Question: React.FC = () => {
 
   const handleBlockFace = () => setBlockFace(!blockface);
 
+  // React.useEffect(() => {
+  //   window.addEventListener('popstate', handleOpenAlert);
+
+  //   // Clean up the event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener('popstate', handleOpenAlert);
+  //   };
+  // }, []);
+
   return (
     <Layout>
       {isCompleted ? (
-        <Message
-          message="Să începem sondajul !"
-          title="Felicitări !"
-          imageUrl="/clap.png"
-        />
+        <>
+          <Message
+            message="Sondajul a fost încheiat !"
+            title="Felicitări !"
+            imageUrl="/clap.png"
+          />
+          <Footer>
+            <Link
+              to="/terms-conditions"
+              className="block text-center text-sm font-normal text-[blue]"
+            >
+              Terms and Conditions
+            </Link>
+          </Footer>
+        </>
       ) : (
         <>
           <h1 className="mb-10 mt-5 text-[22px] font-bold text-primary">
@@ -156,6 +192,13 @@ const Question: React.FC = () => {
               setIsPlaying={setIsPlaying}
             />
           )}
+
+          {/* {showAlert && (
+            <Alert
+              message="Sunteți sigur? Apăsarea din nou a butonului Înapoi va anula sondajul."
+              onClose={handleCloseAlert}
+            />
+          )} */}
 
           <Footer>
             <VideoBottomBar

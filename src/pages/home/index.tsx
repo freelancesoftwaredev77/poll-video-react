@@ -13,7 +13,7 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <h6 className="mb-6 mt-5 text-center text-[22px] font-bold">
+      <h6 className="mb-4 mt-5 text-center text-[22px] font-bold">
         {isPlaying ? 'Instrucțiuni' : 'Bun venit!'}
       </h6>
       {isLoading ? (
@@ -55,7 +55,15 @@ const Home: React.FC = () => {
               </Link>
             </div>
           ) : (
-            introData && introData[0]?.title
+            <>
+              <p>{introData && introData[0]?.title}</p>
+              <Link
+                to="/terms-conditions"
+                className="text-sm font-normal text-[blue]"
+              >
+                Terms and conditions
+              </Link>
+            </>
           )}
         </h6>
       </Footer>
