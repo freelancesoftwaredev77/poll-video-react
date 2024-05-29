@@ -28,7 +28,7 @@ const VideoBottomBar: React.FC<IProps> = ({
       case 1:
         return (
           <Button
-            text="Răspunde"
+            text="ce a dat pe play"
             type="button"
             variant="primary"
             className="px-4 py-2"
@@ -55,14 +55,14 @@ const VideoBottomBar: React.FC<IProps> = ({
             <Button
               text="Reînregistrează"
               type="button"
-              variant="primary"
+              variant="outline"
               className="px-4 py-2"
               onClick={handleRecordAgain}
             />
             <Button
               text="Întrebarea următoare"
               type="button"
-              variant="outline"
+              variant="primary"
               className="px-4 py-2"
               onClick={handleNext}
               isSubmitting={isSubmitting ?? false}

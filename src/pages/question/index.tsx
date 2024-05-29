@@ -20,7 +20,7 @@ const Question: React.FC = () => {
   const [recordedChunks, setRecordedChunks] = React.useState([]);
   const [isFinishedRecording, setIsFinishedRecording] = React.useState(false);
   const [capture, setCapturing] = React.useState(false);
-  const [blockface, setBlockFace] = React.useState(false);
+  const [blockface, setBlockFace] = React.useState(true);
   const [step, setStep] = React.useState(1);
   const navigate: NavigateFunction = useNavigate();
   const { state } = useLocation();

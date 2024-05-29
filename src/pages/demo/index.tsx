@@ -16,7 +16,7 @@ const Demo: React.FC = () => {
   const [isFinishedRecording, setIsFinishedRecording] =
     React.useState<boolean>(false);
   const [capture, setCapturing] = React.useState<boolean>(false);
-  const [blockface, setBlockFace] = React.useState<boolean>(false);
+  const [blockface, setBlockFace] = React.useState<boolean>(true);
 
   const [step, setStep] = React.useState<number>(1);
 
@@ -33,7 +33,7 @@ const Demo: React.FC = () => {
 
   const handleRecordAgain = (): void => {
     setRecordedChunks([]);
-    setBlockFace(false);
+    setBlockFace(true);
     setIsFinishedRecording(!isFinishedRecording);
     setStep(step - 1);
   };

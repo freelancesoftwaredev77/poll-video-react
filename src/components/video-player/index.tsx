@@ -74,28 +74,26 @@ const VideoPlayer: React.FC<IProps> = ({
       />
 
       {showControls && (
-        <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-xl h-full z-[999999999]">
-          <div className="absolute z-50 top-[45%] left-[45%]">
-            {endVideo ? (
-              <MdOutlineReplay size={50} color="#fff" onClick={handleReplay} />
-            ) : isPaused ? (
-              <button onClick={handlePlayPause}>
-                <img
-                  src="/play.png"
-                  alt="play-button"
-                  className="w-16 h-16 object-cover"
-                />
-              </button>
-            ) : (
-              <button onClick={handlePlayPause}>
-                <img
-                  src="/pause.png"
-                  alt="pause-button"
-                  className="w-16 h-16 object-cover"
-                />
-              </button>
-            )}
-          </div>
+        <div className="absolute z-50 top-[45%] left-[45%]">
+          {endVideo ? (
+            <MdOutlineReplay size={50} color="#fff" onClick={handleReplay} />
+          ) : isPaused ? (
+            <button onClick={handlePlayPause}>
+              <img
+                src="/play.png"
+                alt="play-button"
+                className="w-16 h-16 object-cover"
+              />
+            </button>
+          ) : (
+            <button onClick={handlePlayPause}>
+              <img
+                src="/pause.png"
+                alt="pause-button"
+                className="w-16 h-16 object-cover"
+              />
+            </button>
+          )}
         </div>
       )}
     </div>

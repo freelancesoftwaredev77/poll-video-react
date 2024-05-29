@@ -116,8 +116,8 @@ const WebcamDemo: React.FC<IProps> = ({
   return isFinishedRecording ? (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute top-20 left-[25%]">
-          <img src="/face-cover.png" alt="face-cover" className="" />
+        <div className="absolute top-20 left-[22%]">
+          <img src="/face-cover.png" alt="face-cover" className="w-60" />
         </div>
       )}
       {recordedChunks.length > 0 ? (
@@ -125,6 +125,8 @@ const WebcamDemo: React.FC<IProps> = ({
           playsInline
           className="h-full w-full object-cover mt-5 rounded-3xl"
           controls
+          controlsList="nofullscreen | nodownload"
+          disablePictureInPicture
         >
           <track kind="captions" />
           <source
@@ -141,8 +143,8 @@ const WebcamDemo: React.FC<IProps> = ({
   ) : (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute top-20 left-[25%] z-[99999]">
-          <img src="/face-cover.png" alt="face-cover" className="" />
+        <div className="absolute top-20 left-[22%] z-[99999]">
+          <img src="/face-cover.png" alt="face-cover" className="w-60" />
         </div>
       )}
       <Webcam
@@ -154,53 +156,53 @@ const WebcamDemo: React.FC<IProps> = ({
         className="w-full h-full object-cover"
         muted
       />
-      <div className="absolute bottom-10 w-full px-4">
-        <div className="flex items-center justify-between gap-5">
-          {capturing ? (
-            <div className="bg-warning px-3 py-1 rounded-full text-white font-bold ">
-              <p className="text-sm">
-                00:{timer < 10 ? `0${timer}` : timer} / 00:45
-              </p>
-            </div>
-          ) : (
+      <div className="absolute bottom-2 w-full px-4">
+        <div className="">
+          <div className="flex items-center justify-between gap-5">
             <div className=" px-3 py-1 rounded-full text-white font-bold " />
-          )}
-          <div className={capturing ? 'mr-20' : 'ml-6'}>
-            {capturing ? (
+
+            <div className="">
+              {capturing ? (
+                <button
+                  onClick={handleStopCaptureClick}
+                  className=""
+                  aria-label="stop"
+                >
+                  <div className="border-white border-2 rounded-full w-16 h-16">
+                    <div className="bg-[#000000bb] h-9 w-9 rounded-md mx-auto mt-3" />
+                  </div>
+                </button>
+              ) : (
+                <button
+                  onClick={handleStartCaptureClick}
+                  className=""
+                  aria-label="start"
+                >
+                  <div className="border-white border-2 rounded-full w-16 h-16">
+                    <div className="bg-warning h-12 w-12 rounded-full mx-auto mt-1.5" />
+                  </div>
+                </button>
+              )}
+            </div>
+
+            {!capturing ? (
               <button
-                onClick={handleStopCaptureClick}
+                onClick={handleSwitchCamera}
                 className=""
-                aria-label="stop"
+                aria-label="switch camera"
               >
-                <div className="border-white border-2 rounded-full w-16 h-16">
-                  <div className="bg-[#000000bb] h-9 w-9 rounded-md mx-auto mt-3" />
+                <div className="bg-[#00000080] rounded-full w-12 h-12 flex items-center justify-center">
+                  <FiRefreshCw color="#fff" className="hover:rotate-180" />
                 </div>
               </button>
             ) : (
-              <button
-                onClick={handleStartCaptureClick}
-                className=""
-                aria-label="start"
-              >
-                <div className="border-white border-2 rounded-full w-16 h-16">
-                  <div className="bg-warning h-12 w-12 rounded-full mx-auto mt-1.5" />
-                </div>
-              </button>
+              <div className="" />
             )}
           </div>
-
-          {!capturing ? (
-            <button
-              onClick={handleSwitchCamera}
-              className=""
-              aria-label="switch camera"
-            >
-              <div className="bg-[#00000080] rounded-full w-12 h-12 flex items-center justify-center">
-                <FiRefreshCw color="#fff" className="hover:rotate-180" />
-              </div>
-            </button>
-          ) : (
-            <div className="" />
+          {capturing && (
+            <p className="text-sm bg-warning px-3 py-1 rounded-full text-white font-bold text-center w-28 mx-auto">
+              00:{timer < 10 ? `0${timer}` : timer} / 00:45
+            </p>
           )}
         </div>
       </div>
