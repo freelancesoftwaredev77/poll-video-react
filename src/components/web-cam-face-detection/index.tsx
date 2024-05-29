@@ -45,14 +45,6 @@ const WebcamDemo: React.FC<IProps> = ({
     width: { ideal: 1920 },
     height: { ideal: 1080 },
   };
-  // const getMimeType = () => {
-  //   const userAgent = navigator.userAgent.toLowerCase();
-  //   if (userAgent.includes('chrome')) {
-  //     return 'video/webm;codecs=vp9';
-  //   }
-
-  //   return 'video/mp4';
-  // };
 
   useEffect(() => {
     let intervalId: any;
@@ -119,8 +111,8 @@ const WebcamDemo: React.FC<IProps> = ({
 
   return isFinishedRecording ? (
     <div className="relative h-[90%]">
-      {blockFace && (
-        <div className="absolute left-[27%] top-10">
+      {recordedChunks?.length > 0 && blockFace && (
+        <div className="absolute left-[23%] top-10">
           <img src="/face-cover.png" alt="face-cover" className="w-60" />
         </div>
       )}
@@ -148,7 +140,7 @@ const WebcamDemo: React.FC<IProps> = ({
   ) : (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute left-[27%] top-10 z-[99999]">
+        <div className="absolute left-[23%] top-10 z-[99999]">
           <img src="/face-cover.png" alt="face-cover" className="w-60" />
         </div>
       )}
