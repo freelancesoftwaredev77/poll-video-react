@@ -18,27 +18,27 @@ const DateInputMask: React.FC<IProps> = ({ label, isPrimary, ...props }) => {
   };
 
   return (
-    <div className="mb-2.5 relative">
+    <div className="relative mb-2.5">
       <label
-        className={`font-semibold text-xs block mb-2 ${
+        className={`mb-2 block text-xs font-semibold ${
           meta.error && meta.touched ? 'text-warning' : 'text-primary'
         }`}
         htmlFor={field.name}
       >
         {label}
         {isPrimary && (
-          <p className="absolute -top-1 text-warning font-bold inline-block">
+          <p className="absolute -top-1 inline-block font-bold text-warning">
             *
           </p>
         )}
       </label>
 
-      <div className="flex-1 relative">
+      <div className="relative flex-1">
         <input
-          className={`w-full appearance-none rounded-lg py-3 px-4 block shadow-none placeholder:text-xs bg-white text-base placeholder:text-[#000000] focus-within:outline-none focus:outline-none ${
+          className={`block w-full appearance-none rounded-lg bg-white px-4 py-3 text-base shadow-none placeholder:text-xs placeholder:text-[#000000] focus-within:outline-none focus:outline-none ${
             meta.touched && meta.error
-              ? 'text-warning placeholder:text-warning ring-1 ring-warning'
-              : 'ring-primary ring-1'
+              ? 'text-warning ring-1 ring-warning placeholder:text-warning'
+              : 'ring-1 ring-primary'
           }`}
           autoComplete="off"
           {...field}
@@ -50,7 +50,7 @@ const DateInputMask: React.FC<IProps> = ({ label, isPrimary, ...props }) => {
         <ErrorMessage
           component="div"
           name={field.name}
-          className="bg-warning text-white mt-1 text-xs inline-block px-2"
+          className="mt-1 inline-block bg-warning px-2 text-xs text-white"
         />
       </div>
     </div>

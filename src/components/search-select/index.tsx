@@ -39,20 +39,20 @@ export function CustomSelect({
     <div className={`mb-4 ${className}`}>
       <div className="relative inline-block">
         <label
-          className="font-semibold text-xs text-secondary block"
+          className="block text-xs font-semibold text-secondary"
           htmlFor={field.name}
         >
           {label}
         </label>
 
         {isPrimary && (
-          <p className="absolute -top-1 -right-2 text-warning font-semibold inline-block">
+          <p className="absolute -right-2 -top-1 inline-block font-semibold text-warning">
             *
           </p>
         )}
       </div>
       <Select
-        className="flex-1 mt-2"
+        className="mt-2 flex-1"
         options={options.map((option: SelectType) => ({
           label: option.label,
           value: option.value,

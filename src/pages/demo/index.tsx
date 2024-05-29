@@ -12,11 +12,13 @@ import WebcamDemo from '@/components/web-cam-face-detection';
 const Demo: React.FC = () => {
   const [showRecordingScreen, setShowRecordingScreen] =
     React.useState<boolean>(false);
+
   const [recordedChunks, setRecordedChunks] = React.useState<never[]>([]);
   const [isFinishedRecording, setIsFinishedRecording] =
     React.useState<boolean>(false);
   const [capture, setCapturing] = React.useState<boolean>(false);
   const [blockface, setBlockFace] = React.useState<boolean>(true);
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
   const [step, setStep] = React.useState<number>(1);
 
@@ -48,10 +50,10 @@ const Demo: React.FC = () => {
 
   return (
     <Layout>
-      <div className="flex items-center justify-between my-5">
-        <h5 className="text-primary text-2xl font-bold">Întrebarea 1</h5>
+      <div className="my-5 flex items-center justify-between">
+        <h5 className="text-2xl font-bold text-primary">Întrebarea 1</h5>
         <Link
-          className="bg-violet px-4 py-1.5 rounded-md text-sm text-white"
+          className="rounded-md bg-violet px-4 py-1.5 text-sm text-white"
           to="/congratulation"
         >
           Închide demo
@@ -71,7 +73,10 @@ const Demo: React.FC = () => {
           setStep={setStep}
         />
       ) : (
-        <VideoPlayer url={state?.instructionVideoUrl ?? ''} />
+        <VideoPlayer
+          url={state?.instructionVideoUrl ?? ''}
+          setIsPlaying={setIsPlaying}
+        />
       )}
       <Footer>
         <VideoBottomBar
@@ -82,6 +87,7 @@ const Demo: React.FC = () => {
           handleRecordAgain={handleRecordAgain}
           handleShowRecordingScreen={handleShowRecordingScreen}
           step={step}
+          isPlaying={isPlaying}
         />
       </Footer>
     </Layout>

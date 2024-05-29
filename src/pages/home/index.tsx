@@ -13,7 +13,7 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <h6 className="text-center mt-5 mb-6 font-bold text-[22px]">
+      <h6 className="mb-6 mt-5 text-center text-[22px] font-bold">
         {isPlaying ? 'Instrucțiuni' : 'Bun venit!'}
       </h6>
       {isLoading ? (
@@ -26,7 +26,7 @@ const Home: React.FC = () => {
       )}
 
       <Footer>
-        <h6 className="text-center mt-5 font-bold">
+        <h6 className="mt-5 text-center font-bold">
           {isPlaying ? (
             <div className="flex items-center gap-5">
               <Link to="/form" className="w-full">

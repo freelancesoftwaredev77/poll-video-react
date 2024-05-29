@@ -7,9 +7,9 @@ interface IProps {
 }
 
 const Message: React.FC<IProps> = ({ message, imageUrl, title }) => (
-  <div className="h-[80vh] pt-20 items-center justify-center flex flex-col">
-    <img src={imageUrl} alt="go" className="w-32 h-32 object-cover mx-auto" />
-    <div className="font-bold my-3 text-center mt-10">
+  <div className="flex h-[80vh] flex-col items-center justify-center pt-20">
+    <img src={imageUrl} alt="go" className="mx-auto h-32 w-32 object-cover" />
+    <div className="my-3 mt-10 text-center font-bold">
       {title && <h6 className="text-2xl font-normal leading-10"> {title} </h6>}
       <h6 className="text-2xl font-normal leading-10"> {message} </h6>
     </div>

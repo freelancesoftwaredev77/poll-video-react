@@ -8,11 +8,11 @@ interface IProps {
 
 const Layout: React.FC<IProps> = ({ title, children, className }) => (
   <main
-    className={`${className} relative mx-auto sm:w-[480px] md:w-[480px] xl:w-[480px] lg:w-[480px] 2xl:w-[480px] pb-5 h-[80vh] px-4`}
+    className={`${className} relative mx-auto h-[80vh] px-4 pb-5 sm:w-[480px] md:w-[480px] lg:w-[480px] xl:w-[480px] 2xl:w-[480px]`}
   >
     <section className="h-full">
       {title && (
-        <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
+        <h1 className="mb-10 mt-5 text-[22px] font-bold text-primary">
           {title}
         </h1>
       )}

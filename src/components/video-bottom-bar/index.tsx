@@ -11,6 +11,7 @@ interface IProps {
   capture: boolean;
   step: number;
   isSubmitting?: boolean;
+  isPlaying?: boolean;
 }
 
 const VideoBottomBar: React.FC<IProps> = ({
@@ -22,18 +23,21 @@ const VideoBottomBar: React.FC<IProps> = ({
   handleBlockFace,
   handleRecordAgain,
   isSubmitting,
+  isPlaying,
 }) => {
   const renderBottomNavigation = () => {
     switch (step) {
       case 1:
-        return (
+        return isPlaying ? (
           <Button
-            text="ce a dat pe play"
+            text="Răspunde"
             type="button"
             variant="primary"
             className="px-4 py-2"
             onClick={handleShowRecordingScreen}
           />
+        ) : (
+          <div />
         );
       case 2:
         return !capture ? (

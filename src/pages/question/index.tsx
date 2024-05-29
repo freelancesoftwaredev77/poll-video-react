@@ -6,10 +6,10 @@ import { v1 as uuidv1 } from 'uuid';
 import { Footer, Layout } from '@/container';
 import { Message, VideoBottomBar, VideoSkeleton } from '@/components';
 import WebcamDemo from '@/components/web-cam-face-detection';
-import QuestionDisplay from '@/components/quesiton-display';
 import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
 import useFetch from '@/hooks/useFetch';
+import VideoPlayer from '@/components/video-player';
 
 const Question: React.FC = () => {
   const { data: videoQuestions, isLoading } = useFetch('video_questions');
@@ -21,6 +21,7 @@ const Question: React.FC = () => {
   const [isFinishedRecording, setIsFinishedRecording] = React.useState(false);
   const [capture, setCapturing] = React.useState(false);
   const [blockface, setBlockFace] = React.useState(true);
+  const [isPlaying, setIsPlaying] = React.useState(false);
   const [step, setStep] = React.useState(1);
   const navigate: NavigateFunction = useNavigate();
   const { state } = useLocation();
@@ -82,7 +83,8 @@ const Question: React.FC = () => {
             setIsFinishedRecording(false);
             setStep(1);
             setIsSubmitting(false);
-            setBlockFace(false);
+            setBlockFace(true);
+            setIsPlaying(false);
             setCurrentIndex(
               (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
             );
@@ -127,7 +129,7 @@ const Question: React.FC = () => {
         />
       ) : (
         <>
-          <h1 className="text-primary text-[22px] font-bold mt-5 mb-10">
+          <h1 className="mb-10 mt-5 text-[22px] font-bold text-primary">
             {`Întrebarea ${currentIndex + 1}`}
           </h1>
 
@@ -146,9 +148,12 @@ const Question: React.FC = () => {
               setStep={setStep}
             />
           ) : (
-            <QuestionDisplay
-              questions={videoQuestions ?? []}
-              currentIndex={currentIndex}
+            <VideoPlayer
+              url={
+                videoQuestions &&
+                videoQuestions[currentIndex]?.question_video_url
+              }
+              setIsPlaying={setIsPlaying}
             />
           )}
 
@@ -162,6 +167,7 @@ const Question: React.FC = () => {
               handleShowRecordingScreen={handleShowRecordingScreen}
               step={step}
               isSubmitting={isSubmitting}
+              isPlaying={isPlaying}
             />
           </Footer>
         </>

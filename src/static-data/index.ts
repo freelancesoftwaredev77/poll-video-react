@@ -8,8 +8,21 @@ export const locationData = [
     value: 'Sector 2, Bucuresti',
   },
   {
-    label: ' Sector 6',
-    value: ' Sector 6',
+    label: 'Sector 3, Bucuresti',
+    value: 'Sector 3, Bucuresti',
+  },
+  {
+    label: 'Sector 4, Bucuresti',
+    value: 'Sector 4, Bucuresti',
+  },
+  {
+    label: 'Sector 5, Bucuresti',
+    value: 'Sector 5, Bucuresti',
+  },
+
+  {
+    label: ' Sector 6, Bucuresti',
+    value: ' Sector 6, Bucuresti',
   },
   {
     label: 'Domiciliul din cartea de identitate nu este in Bucuresti',
