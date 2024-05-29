@@ -28,7 +28,7 @@ const Question: React.FC = () => {
 
   React.useEffect(() => {
     if (!state?.userId) {
-      navigate('/form');
+      navigate('/');
     }
   }, [navigate, state?.userId]);
 

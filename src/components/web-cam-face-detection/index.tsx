@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 /* eslint-disable no-restricted-syntax */
@@ -44,14 +45,14 @@ const WebcamDemo: React.FC<IProps> = ({
     width: { ideal: 1920 },
     height: { ideal: 1080 },
   };
-  const getMimeType = () => {
-    const userAgent = navigator.userAgent.toLowerCase();
-    if (userAgent.includes('chrome')) {
-      return 'video/webm;codecs=vp9';
-    }
+  // const getMimeType = () => {
+  //   const userAgent = navigator.userAgent.toLowerCase();
+  //   if (userAgent.includes('chrome')) {
+  //     return 'video/webm;codecs=vp9';
+  //   }
 
-    return 'video/mp4';
-  };
+  //   return 'video/mp4';
+  // };
 
   useEffect(() => {
     let intervalId: any;
@@ -66,15 +67,14 @@ const WebcamDemo: React.FC<IProps> = ({
 
     return () => clearInterval(intervalId);
   }, [capturing]);
-
   const handleStartCaptureClick = () => {
-    if (webcamRef?.current && webcamRef?.current?.stream) {
+    if (webcamRef.current && webcamRef.current.stream) {
       setCapturing(true);
       const { stream } = webcamRef.current;
 
       const options: RecordRTC.Options = {
         type: 'video',
-        mimeType: getMimeType(),
+        mimeType: 'video/webm;codecs=vp9',
         bitsPerSecond: 2 * 1024 * 1024,
         audioBitsPerSecond: 30000,
         videoBitsPerSecond: 50000,
@@ -83,6 +83,8 @@ const WebcamDemo: React.FC<IProps> = ({
       recorderRef.current = new RecordRTC(stream, options);
       recorderRef.current.startRecording();
       setTimer(0);
+    } else {
+      alert('Webcam stream is not available');
     }
   };
 
@@ -93,6 +95,8 @@ const WebcamDemo: React.FC<IProps> = ({
         const recordedBlob = recorderRef.current.getBlob();
         if (recordedBlob.size > 0) {
           setRecordedChunks([...recordedChunks, recordedBlob]);
+        } else {
+          console.error('Recorded blob is empty');
         }
         // @ts-ignore
         recorderRef.current.reset();
@@ -122,22 +126,23 @@ const WebcamDemo: React.FC<IProps> = ({
       )}
       {recordedChunks.length > 0 ? (
         <video
-          playsInline
-          className="mt-5 h-full w-full rounded-3xl object-cover"
           controls
-          controlsList="nofullscreen | nodownload"
-          disablePictureInPicture
+          autoPlay
+          className="h-full w-full object-cover"
+          playsInline
+          controlsList=""
         >
-          <track kind="captions" />
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type={getMimeType()}
+            type="video/mp4"
+          />
+          <source
+            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
+            type="video/webm"
           />
         </video>
       ) : (
-        <p className="text-center">
-          No video recorded Please record from the safari browser
-        </p>
+        <p>No video recorded</p>
       )}
     </div>
   ) : (
