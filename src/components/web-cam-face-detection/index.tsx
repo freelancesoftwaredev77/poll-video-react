@@ -112,7 +112,7 @@ const WebcamDemo: React.FC<IProps> = ({
   return isFinishedRecording ? (
     <div className="relative h-[90%]">
       {recordedChunks?.length > 0 && blockFace && (
-        <div className="absolute left-[23%] top-10">
+        <div className="absolute left-[21%] top-10">
           <img src="/face-cover.png" alt="face-cover" className="w-60" />
         </div>
       )}
@@ -122,7 +122,9 @@ const WebcamDemo: React.FC<IProps> = ({
           autoPlay
           className="h-full w-full object-cover"
           playsInline
-          controlsList=""
+          controlsList="nofullscreen | nodownload"
+          disablePictureInPicture
+          disableRemotePlayback
         >
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
@@ -140,7 +142,7 @@ const WebcamDemo: React.FC<IProps> = ({
   ) : (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute left-[23%] top-10 z-[99999]">
+        <div className="absolute left-[21%] top-10 z-[99999]">
           <img src="/face-cover.png" alt="face-cover" className="w-60" />
         </div>
       )}
