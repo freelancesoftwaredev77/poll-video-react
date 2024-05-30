@@ -176,7 +176,7 @@ const Question: React.FC = () => {
         </>
       ) : (
         <>
-          <h1 className="mb-10 mt-5 text-[22px] font-bold text-primary">
+          <h1 className="mb-5 pt-7 text-[22px] font-bold text-primary">
             {`Întrebarea ${currentIndex + 1}`}
           </h1>
 

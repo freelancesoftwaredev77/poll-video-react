@@ -36,7 +36,7 @@ const Home: React.FC = () => {
       )}
 
       <Footer>
-        <h6 className="mt-5 text-center font-bold">
+        <h6 className="text-center font-bold">
           {isPlaying ? (
             <div className="flex items-center gap-5">
               <Link to="/form" className="w-full">
