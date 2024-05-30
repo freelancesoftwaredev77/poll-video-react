@@ -15,7 +15,6 @@ import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
 import useFetch from '@/hooks/useFetch';
 import VideoPlayer from '@/components/video-player';
-import useBackButtonAlert from '@/components/alert';
 
 const Question: React.FC = () => {
   const { data: videoQuestions, isLoading } = useFetch('video_questions');
@@ -31,7 +30,6 @@ const Question: React.FC = () => {
   const [step, setStep] = React.useState(1);
   const navigate: NavigateFunction = useNavigate();
   const { state } = useLocation();
-  const showAlert = useBackButtonAlert();
 
   // const [showAlert, setShowAlert] = React.useState(false);
 
@@ -138,26 +136,8 @@ const Question: React.FC = () => {
 
   const handleBlockFace = () => setBlockFace(!blockface);
 
-  // React.useEffect(() => {
-  //   window.addEventListener('popstate', handleOpenAlert);
-
-  //   // Clean up the event listener on component unmount
-  //   return () => {
-  //     window.removeEventListener('popstate', handleOpenAlert);
-  //   };
-  // }, []);
-
   return (
     <Layout>
-      {showAlert && (
-        <div className="bg-black fixed inset-0 flex items-center justify-center bg-opacity-50">
-          <div className="rounded bg-white p-4 text-center">
-            Sunteți sigur? Apăsarea din nou a butonului Înapoi va anula
-            sondajul.
-          </div>
-        </div>
-      )}
-
       {isCompleted ? (
         <>
           <Message
@@ -170,13 +150,13 @@ const Question: React.FC = () => {
               to="/terms-conditions"
               className="block text-center text-sm font-normal text-[blue]"
             >
-              Terms and Conditions
+              Termeni și condiții
             </Link>
           </Footer>
         </>
       ) : (
         <>
-          <h1 className="mb-5 pt-7 text-[22px] font-bold text-primary">
+          <h1 className="mb-10 mt-5 text-[22px] font-bold text-primary">
             {`Întrebarea ${currentIndex + 1}`}
           </h1>
 
