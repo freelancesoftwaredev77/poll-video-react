@@ -25,9 +25,9 @@ const Button: React.FC<IProps> = ({
 }) => (
   <button
     className={`
-      ${className} outline-none rounded-md text-sm disabled:text-opacity-70 w-full disabled:bg-opacity-40 text-center disabled:cursor-not-allowed text-pure-white capitalize
-      ${variant === 'primary' && 'bg-primary text-white py-2.5'}
-      ${variant === 'outline' && 'border-secondary border text-primary py-2'}
+      ${className} text-pure-white w-full rounded-md text-center text-sm capitalize outline-none disabled:cursor-not-allowed disabled:bg-opacity-40 disabled:text-opacity-70
+      ${variant === 'primary' && 'bg-primary py-2.5 text-white'}
+      ${variant === 'outline' && 'border border-secondary py-2 text-primary'}
     `}
     type={type}
     disabled={!isValid || isSubmitting}
@@ -37,7 +37,7 @@ const Button: React.FC<IProps> = ({
       <div role="status" className="flex items-center px-5">
         <svg
           aria-hidden="true"
-          className="w-4 h-4 mx-auto text-light-grey animate-spin dark:text-light-grey fill-primary"
+          className="text-light-grey dark:text-light-grey mx-auto h-4 w-4 animate-spin fill-primary"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +53,7 @@ const Button: React.FC<IProps> = ({
         </svg>
       </div>
     ) : hasIcon ? (
-      <div className="flex items-center gap-3 justify-center">
+      <div className="flex items-center justify-center gap-3">
         {icon}
         <p> {text} </p>
       </div>

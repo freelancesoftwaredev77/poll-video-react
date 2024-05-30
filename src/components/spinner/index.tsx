@@ -15,8 +15,8 @@ const Loader: React.FC<IProps> = ({ variant, align }) => (
     <svg
       aria-hidden="true"
       className={`${
-        variant === 'large' ? 'w-10 h-10' : 'w-4 h-4'
-      } mr-2 text-light-gray animate-spin dark:text-light-gray fill-secondary`}
+        variant === 'large' ? 'h-10 w-10' : 'h-4 w-4'
+      } text-light-gray dark:text-light-gray mr-2 animate-spin fill-secondary`}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

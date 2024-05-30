@@ -4,3 +4,4 @@ export { default as Form } from './form';
 export { default as Demo } from './demo';
 export { default as Congratulations } from './congratulation';
 export { default as AgeError } from './form/error-page';
+export { default as TermsAndCondition } from './terms-and-conditions';

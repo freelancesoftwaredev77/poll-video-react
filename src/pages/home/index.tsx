@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button, VideoPlayer, VideoSkeleton } from '@/components';
 import { Footer, Layout } from '@/container';
-import { IoIosPlay } from 'react-icons/io';
+// import { IoIosPlay } from 'react-icons/io';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import useFetch from '@/hooks/useFetch';
 
@@ -13,7 +13,7 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <h6 className="text-center mt-5 mb-5 font-bold text-[22px]">
+      <h6 className="mb-4 mt-5 text-center text-[22px] font-bold">
         {isPlaying ? 'Instrucțiuni' : 'Bun venit!'}
       </h6>
       {isLoading ? (
@@ -26,7 +26,7 @@ const Home: React.FC = () => {
       )}
 
       <Footer>
-        <h6 className="text-center mt-5 font-bold">
+        <h6 className="mt-5 text-center font-bold">
           {isPlaying ? (
             <div className="flex items-center gap-5">
               <Link to="/form" className="w-full">
@@ -34,9 +34,7 @@ const Home: React.FC = () => {
                   text="Începe sondajul"
                   type="submit"
                   variant="primary"
-                  icon={<IoIosPlay size={20} color="#fff" />}
                   className="px-4 py-2"
-                  hasIcon
                 />
               </Link>
               <Link
@@ -57,7 +55,15 @@ const Home: React.FC = () => {
               </Link>
             </div>
           ) : (
-            introData && introData[0]?.title
+            <>
+              <p>{introData && introData[0]?.title}</p>
+              <Link
+                to="/terms-conditions"
+                className="text-sm font-normal text-[blue]"
+              >
+                Terms and conditions
+              </Link>
+            </>
           )}
         </h6>
       </Footer>

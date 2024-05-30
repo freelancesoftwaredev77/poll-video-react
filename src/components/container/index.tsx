@@ -7,7 +7,7 @@ interface IProps {
 
 const Container: React.FC<IProps> = ({ children, className }) => (
   <div
-    className={`${className} mx-auto sm:w-[480px] md:w-[480px] xl:w-[480px] lg:w-[480px] 2xl:w-[480px] pb-5 px-5`}
+    className={`${className} mx-auto px-5 pb-5 sm:w-[480px] md:w-[480px] lg:w-[480px] xl:w-[480px] 2xl:w-[480px]`}
   >
     {children}
   </div>

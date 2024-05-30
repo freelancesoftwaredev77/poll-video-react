@@ -100,7 +100,7 @@ const Form: React.FC = () => {
               placeholder="Select"
             />
             <Footer>
-              <div className="flex items-center gap-3 mt-4 justify-end ">
+              <div className="mt-4 flex items-center justify-end gap-3 ">
                 <Link to="/demo" className="w-full">
                   <Button
                     text="Înapoi"

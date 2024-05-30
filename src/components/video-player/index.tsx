@@ -47,13 +47,13 @@ const VideoPlayer: React.FC<IProps> = ({
       setIsPaused(false);
       setEndVideo(false);
       setShowControls(true);
-      setTimeout((): void => setShowControls(false), 2000);
+      setTimeout((): void => setShowControls(false), 3000);
     }
   };
 
   return (
     <div
-      className="h-[90%] relative"
+      className="relative h-[90%]"
       role="button"
       tabIndex={0}
       aria-hidden="true"
@@ -64,7 +64,7 @@ const VideoPlayer: React.FC<IProps> = ({
         url={url ?? ''}
         playing={!isPaused}
         disablePictureInPicture
-        className="!h-full !w-full custom-player"
+        className="custom-player !h-full !w-full"
         onEnded={handleEndVideo}
         playsinline
         controls={isControl}
@@ -74,28 +74,26 @@ const VideoPlayer: React.FC<IProps> = ({
       />
 
       {showControls && (
-        <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#000000b5] rounded-xl h-full z-[9999]">
-          <div className="absolute z-50 top-[45%] left-[45%]">
-            {endVideo ? (
-              <MdOutlineReplay size={50} color="#fff" onClick={handleReplay} />
-            ) : isPaused ? (
-              <button onClick={handlePlayPause}>
-                <img
-                  src="/play.png"
-                  alt="play-button"
-                  className="w-16 h-16 object-cover"
-                />
-              </button>
-            ) : (
-              <button onClick={handlePlayPause}>
-                <img
-                  src="/pause.png"
-                  alt="pause-button"
-                  className="w-16 h-16 object-cover"
-                />
-              </button>
-            )}
-          </div>
+        <div className="absolute left-[45%] top-[45%] z-50">
+          {endVideo ? (
+            <MdOutlineReplay size={50} color="#fff" onClick={handleReplay} />
+          ) : isPaused ? (
+            <button onClick={handlePlayPause}>
+              <img
+                src="/play.png"
+                alt="play-button"
+                className="h-16 w-16 object-cover"
+              />
+            </button>
+          ) : (
+            <button onClick={handlePlayPause}>
+              <img
+                src="/pause.png"
+                alt="pause-button"
+                className="h-16 w-16 object-cover"
+              />
+            </button>
+          )}
         </div>
       )}
     </div>

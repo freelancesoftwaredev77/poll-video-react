@@ -29,27 +29,25 @@ class ErrorBoundary extends React.Component<object, ErrorBoundaryState> {
   render(): React.ReactNode {
     if (this.state?.hasError) {
       return (
-        <div className="flex items-center justify-center h-screen">
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <h1 className="text-2xl font-bold my-5">Something went wrong.</h1>
+        <div className="flex h-screen items-center justify-center">
+          <div className="rounded-lg bg-white p-8 text-center shadow-lg">
+            <h1 className="my-5 text-2xl font-bold">Something went wrong.</h1>
             <p className="mb-5 text-sm">
               {
                 " We're sorry for the inconvenience. Please try refreshing the page."
               }
             </p>
-            <div className="flex items-center justify-between gap-5 my-5">
+            <div className="my-5 flex items-center justify-between gap-5">
               <Button
                 type="button"
                 text="Refresh"
                 variant="outline"
-                className=""
                 onClick={this.handleRefresh}
               />
               <Button
                 type="button"
                 text="Back to Home"
                 variant="primary"
-                className=""
                 onClick={this.handleBackToHome}
               />
             </div>

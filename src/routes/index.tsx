@@ -1,5 +1,13 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { AgeError, Congratulations, Demo, Form, Home, Question } from '@/pages';
+import {
+  AgeError,
+  Congratulations,
+  Demo,
+  Form,
+  Home,
+  Question,
+  TermsAndCondition,
+} from '@/pages';
 
 const routesData = [
   {
@@ -33,6 +41,11 @@ const routesData = [
     id: 5,
     path: '/congratulation',
     element: <Congratulations />,
+  },
+  {
+    id: 6,
+    path: '/terms-conditions',
+    element: <TermsAndCondition />,
   },
 ];
 
