@@ -4,10 +4,12 @@ import { Footer, Layout } from '@/container';
 // import { IoIosPlay } from 'react-icons/io';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import useFetch from '@/hooks/useFetch';
+import useBackButtonAlert from '@/components/alert';
 
 const Home: React.FC = () => {
   const { data: introData, isLoading } = useFetch('polls');
   const [isPlaying, setIsPlaying] = React.useState(false);
+  const showAlert = useBackButtonAlert();
 
   const navigate: NavigateFunction = useNavigate();
 
@@ -16,6 +18,14 @@ const Home: React.FC = () => {
       <h6 className="mb-4 mt-5 text-center text-[22px] font-bold">
         {isPlaying ? 'Instrucțiuni' : 'Bun venit!'}
       </h6>
+      {showAlert && (
+        <div>
+          <div>
+            Sunteți sigur? Apăsarea din nou a butonului Înapoi va anula
+            sondajul.
+          </div>
+        </div>
+      )}
       {isLoading ? (
         <VideoSkeleton />
       ) : (

@@ -15,6 +15,7 @@ import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
 import useFetch from '@/hooks/useFetch';
 import VideoPlayer from '@/components/video-player';
+import useBackButtonAlert from '@/components/alert';
 
 const Question: React.FC = () => {
   const { data: videoQuestions, isLoading } = useFetch('video_questions');
@@ -30,6 +31,7 @@ const Question: React.FC = () => {
   const [step, setStep] = React.useState(1);
   const navigate: NavigateFunction = useNavigate();
   const { state } = useLocation();
+  const showAlert = useBackButtonAlert();
 
   // const [showAlert, setShowAlert] = React.useState(false);
 
@@ -147,6 +149,15 @@ const Question: React.FC = () => {
 
   return (
     <Layout>
+      {showAlert && (
+        <div className="bg-black fixed inset-0 flex items-center justify-center bg-opacity-50">
+          <div className="rounded bg-white p-4 text-center">
+            Sunteți sigur? Apăsarea din nou a butonului Înapoi va anula
+            sondajul.
+          </div>
+        </div>
+      )}
+
       {isCompleted ? (
         <>
           <Message

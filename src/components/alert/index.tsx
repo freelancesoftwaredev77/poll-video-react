@@ -1,44 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const Alert = ({
-  message,
-  onClose,
-}: {
-  message: string;
-  onClose: () => void;
-}) => {
-  const alertRef: React.MutableRefObject<any> = React.useRef(null);
+const useBackButtonAlert = (homePath: string = '/') => {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleClickOutside = (event: any) => {
-    if (alertRef.current && !alertRef.current.contains(event.target)) {
-      onClose();
-    }
-  };
+  const [showAlert, setShowAlert] = useState(false);
 
-  React.useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+  console.log('show alert', showAlert);
 
-    const handleBackButton = (event: any) => {
-      event.preventDefault();
-      onClose();
+  useEffect(() => {
+    const handleBackButton = () => {
+      if (location.pathname !== homePath && !showAlert) {
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
+        window.history.pushState(null, document.title, window.location.href);
+      } else if (location.pathname !== homePath && showAlert) {
+        navigate(homePath);
+      }
     };
 
     window.addEventListener('popstate', handleBackButton);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('popstate', handleBackButton);
     };
-  }, [onClose]);
+  }, []);
 
-  return (
-    <div className="alert-overlay">
-      <div className="alert" ref={alertRef}>
-        <p>{message}</p>
-      </div>
-    </div>
-  );
+  return showAlert;
 };
 
-export default Alert;
+export default useBackButtonAlert;
