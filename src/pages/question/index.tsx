@@ -136,15 +136,6 @@ const Question: React.FC = () => {
 
   const handleBlockFace = () => setBlockFace(!blockface);
 
-  // React.useEffect(() => {
-  //   window.addEventListener('popstate', handleOpenAlert);
-
-  //   // Clean up the event listener on component unmount
-  //   return () => {
-  //     window.removeEventListener('popstate', handleOpenAlert);
-  //   };
-  // }, []);
-
   return (
     <Layout>
       {isCompleted ? (
@@ -159,7 +150,7 @@ const Question: React.FC = () => {
               to="/terms-conditions"
               className="block text-center text-sm font-normal text-[blue]"
             >
-              Terms and Conditions
+              Termeni și condiții
             </Link>
           </Footer>
         </>

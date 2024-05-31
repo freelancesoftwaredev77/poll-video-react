@@ -16,6 +16,7 @@ const Home: React.FC = () => {
       <h6 className="mb-4 mt-5 text-center text-[22px] font-bold">
         {isPlaying ? 'Instrucțiuni' : 'Bun venit!'}
       </h6>
+
       {isLoading ? (
         <VideoSkeleton />
       ) : (
@@ -26,7 +27,7 @@ const Home: React.FC = () => {
       )}
 
       <Footer>
-        <h6 className="mt-5 text-center font-bold">
+        <h6 className="text-center font-bold">
           {isPlaying ? (
             <div className="flex items-center gap-5">
               <Link to="/form" className="w-full">
@@ -61,7 +62,7 @@ const Home: React.FC = () => {
                 to="/terms-conditions"
                 className="text-sm font-normal text-[blue]"
               >
-                Terms and conditions
+                Termeni și condiții
               </Link>
             </>
           )}

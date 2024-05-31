@@ -39,11 +39,32 @@ const WebcamDemo: React.FC<IProps> = ({
   );
   const recorderRef: MutableRefObject<RecordRTC | null> =
     useRef<RecordRTC | null>(null);
-
+  const [isPaused, setIsPaused] = React.useState(false);
+  const [showControls, setShowControls] = React.useState(true);
+  const playerRef = React.useRef<any>(null);
   const videoConstraints = {
     facingMode: cameraMode,
     width: { ideal: 1920 },
     height: { ideal: 1080 },
+  };
+
+  const handleControls = () => {
+    setShowControls(true);
+    setTimeout((): void => setShowControls(false), 2000);
+  };
+
+  const handlePlay = () => {
+    if (isPaused) {
+      playerRef?.current?.pause();
+      setIsPaused(false);
+      setShowControls(true);
+      setTimeout((): void => setShowControls(false), 2000);
+    } else {
+      playerRef?.current?.play();
+      setIsPaused(true);
+      setShowControls(true);
+      setTimeout((): void => setShowControls(false), 2000);
+    }
   };
 
   useEffect(() => {
@@ -110,7 +131,13 @@ const WebcamDemo: React.FC<IProps> = ({
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
   return isFinishedRecording ? (
-    <div className="relative h-[90%]">
+    <div
+      className="relative h-[90%] cursor-pointer"
+      onClick={handleControls}
+      role="button"
+      tabIndex={0}
+      aria-hidden="true"
+    >
       {recordedChunks?.length > 0 && blockFace && (
         <div className="absolute left-[21%] top-10">
           <img src="/face-cover.png" alt="face-cover" className="w-60" />
@@ -118,13 +145,17 @@ const WebcamDemo: React.FC<IProps> = ({
       )}
       {recordedChunks.length > 0 ? (
         <video
-          controls
-          autoPlay
-          className="h-full w-full object-cover"
+          autoPlay={false}
+          ref={playerRef}
+          className="h-full w-full rounded-xl object-cover"
           playsInline
           controlsList="nofullscreen | nodownload"
           disablePictureInPicture
           disableRemotePlayback
+          onEnded={() => {
+            setIsPaused(false);
+            setShowControls(true);
+          }}
         >
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
@@ -136,8 +167,33 @@ const WebcamDemo: React.FC<IProps> = ({
           />
         </video>
       ) : (
-        <p>No video recorded</p>
+        <p className="text-center font-semibold">
+          Please Open in safari browser for this feature
+        </p>
       )}
+      {showControls && (
+        <div className="controls absolute bottom-5 left-[40%] top-[45%]">
+          {!isPaused ? (
+            <button onClick={handlePlay} className="rounded-full bg-[black]">
+              <img
+                src="/play.png"
+                alt="play-button"
+                className="h-16 w-16 object-cover"
+              />
+            </button>
+          ) : (
+            <button onClick={handlePlay} className="rounded-full bg-[black]">
+              <img
+                src="/pause.png"
+                alt="pause-button"
+                className="h-16 w-16 object-cover"
+              />
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* )} */}
     </div>
   ) : (
     <div className="relative h-[90%]">
