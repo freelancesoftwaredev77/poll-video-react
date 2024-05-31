@@ -39,7 +39,7 @@ const WebcamDemo: React.FC<IProps> = ({
   );
   const recorderRef: MutableRefObject<RecordRTC | null> =
     useRef<RecordRTC | null>(null);
-  const [isPaused, setIsPaused] = React.useState(true);
+  const [isPaused, setIsPaused] = React.useState(false);
   const [showControls, setShowControls] = React.useState(true);
   const playerRef = React.useRef<any>(null);
   const videoConstraints = {
@@ -167,7 +167,9 @@ const WebcamDemo: React.FC<IProps> = ({
           />
         </video>
       ) : (
-        <p>No video recorded</p>
+        <p className="text-center font-semibold">
+          Please Open in safari browser for this feature
+        </p>
       )}
       {showControls && (
         <div className="controls absolute bottom-5 left-[40%] top-[45%]">
