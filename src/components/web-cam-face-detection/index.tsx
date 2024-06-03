@@ -88,6 +88,7 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
+        mimeType: 'video/mp4',
         bitsPerSecond: 2 * 1024 * 1024,
         audioBitsPerSecond: 30000,
         videoBitsPerSecond: 50000,
