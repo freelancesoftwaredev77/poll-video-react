@@ -4,13 +4,14 @@ import { Footer, Layout } from '@/container';
 import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => (
-  <Layout title="">
-    <Message
-      message="Ai terminat demo-ul !"
-      title="Felicitări !"
-      imageUrl="/clap.png"
-    />
-
+  <>
+    <Layout title="">
+      <Message
+        message="Ai terminat demo-ul !"
+        title="Felicitări !"
+        imageUrl="/clap.png"
+      />
+    </Layout>
     <Footer>
       <Link to="/form" className="w-full">
         <Button
@@ -21,7 +22,7 @@ const Home: React.FC = () => (
         />
       </Link>
     </Footer>
-  </Layout>
+  </>
 );
 
 export default React.memo(Home);
