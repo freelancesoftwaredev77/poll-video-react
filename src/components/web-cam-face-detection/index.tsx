@@ -139,8 +139,8 @@ const WebcamDemo: React.FC<IProps> = ({
       aria-hidden="true"
     >
       {recordedChunks?.length > 0 && blockFace && (
-        <div className="absolute left-[23%] top-10">
-          <img src="/face-cover.png" alt="face-cover" className="w-60" />
+        <div className="absolute left-[23%] top-14">
+          <img src="/face-cover.png" alt="face-cover" className="w-64" />
         </div>
       )}
       {recordedChunks.length > 0 ? (
@@ -198,8 +198,8 @@ const WebcamDemo: React.FC<IProps> = ({
   ) : (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute left-[23%] top-10 z-[99999]">
-          <img src="/face-cover.png" alt="face-cover" className="w-60" />
+        <div className="absolute left-[23%] top-14 z-[99999]">
+          <img src="/face-cover.png" alt="face-cover" className="w-64" />
         </div>
       )}
       <Webcam

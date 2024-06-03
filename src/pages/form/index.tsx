@@ -3,9 +3,9 @@ import * as Yup from 'yup';
 import { Formik, Form as FormikForm } from 'formik';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import { IoIosPlay } from 'react-icons/io';
-import { Button, DateInputMask, SearchSelect } from '@/components';
+import { Button, DateInputMask, SearchSelect, TextField } from '@/components';
 import { Footer, Layout } from '@/container';
-import { educationLevel, genderData, locationData } from '@/static-data';
+import { educationLevel, genderData } from '@/static-data';
 import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
 import calculateAge from '@/utils/calculate-age';
@@ -24,7 +24,7 @@ const FORM_VALIDATION = Yup.object().shape({
       'Data nașterii trebuie să fie în formatul zz-ll-aaaa'
     )
     .required('Data nașterii este obligatorie'),
-  location: Yup.string().required(''),
+  location: Yup.string().required('Localitatea este necesară'),
   sex: Yup.string().required(''),
   education: Yup.string().required(''),
 });
@@ -79,12 +79,10 @@ const Form: React.FC = () => {
         {({ isSubmitting, isValid }) => (
           <FormikForm>
             <DateInputMask name="birthdate" label="Data nasterii" isPrimary />
-
-            <SearchSelect
+            <TextField
               name="location"
-              options={locationData ?? []}
-              label="Unde este domiciliul dumneavoastra din cartea de identitate?"
-              placeholder="Select"
+              label="În ce localitate este domiciliul dumneavoastră din cartea de identitate?"
+              placeholder="Ex: București"
             />
 
             <SearchSelect
@@ -96,7 +94,7 @@ const Form: React.FC = () => {
             <SearchSelect
               name="education"
               options={educationLevel ?? []}
-              label="Ce studii ati absolvit?"
+              label="Care este cea mai înaltă formă de educație absolvită?"
               placeholder="Select"
             />
             <Footer>
