@@ -35,7 +35,7 @@ const DateInputMask: React.FC<IProps> = ({ label, isPrimary, ...props }) => {
 
       <div className="relative flex-1">
         <input
-          className={`block w-full appearance-none rounded-md bg-white px-4 py-2 text-base shadow-none placeholder:text-xs placeholder:text-[#000000] focus-within:outline-none focus:outline-none ${
+          className={`block w-full appearance-none rounded bg-white px-4 py-1.5 text-base shadow-none placeholder:text-xs placeholder:text-[#000000] focus-within:outline-none focus:outline-none ${
             meta.touched && meta.error
               ? 'text-warning ring-1 ring-warning placeholder:text-warning'
               : 'ring-1 ring-primary'

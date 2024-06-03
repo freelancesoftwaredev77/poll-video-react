@@ -45,7 +45,7 @@ function TextField({
 
       <div className="flex-1">
         <input
-          className={`bg-pure-white text-dark block w-full appearance-none rounded-md px-4 py-2 text-base shadow-none placeholder:text-xs focus-within:outline-none focus:outline-none ${
+          className={`block w-full appearance-none rounded bg-white px-4 py-1.5 text-base shadow-none placeholder:text-xs focus-within:outline-none focus:outline-none ${
             meta.touched && meta.error
               ? ' text-warning ring-1 ring-warning placeholder:text-warning'
               : ' ring-1 ring-primary '
