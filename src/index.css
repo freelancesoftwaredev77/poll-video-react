@@ -130,6 +130,12 @@ li {
   cursor: pointer !important;
   width: 100%;
   height: 100%;
+  border-top-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+
+.custom-player {
+  border-radius: 20px;
 }
 .animate-pulse {
   position: relative;
