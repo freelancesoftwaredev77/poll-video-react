@@ -88,10 +88,6 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
-
-        // bitsPerSecond: 2 * 1024 * 1024,
-        // audioBitsPerSecond: 30000,
-        // videoBitsPerSecond: 50000,
       };
 
       try {
@@ -148,15 +144,15 @@ const WebcamDemo: React.FC<IProps> = ({
       tabIndex={0}
       aria-hidden="true"
     >
-      {/* {blockFace && (
-        <div className="center inset-0 z-[99999] h-[80%] w-[90%]">
+      {blockFace && (
+        <div className="face-block">
           <img
             src="/face-cover.png"
             alt="face-cover"
             className="h-full w-full"
           />
         </div>
-      )} */}
+      )}
       {recordedChunks.length > 0 ? (
         <video
           autoPlay={false}
@@ -210,7 +206,7 @@ const WebcamDemo: React.FC<IProps> = ({
   ) : (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="center inset-0 z-[99999] h-[80%] w-[90%]">
+        <div className="face-block">
           <img
             src="/face-cover.png"
             alt="face-cover"

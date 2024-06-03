@@ -168,3 +168,35 @@ video {
   width: 100%;
   height: auto;
 }
+
+.face-block {
+  position: absolute;
+  top: 39%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 57%;
+}
+
+/* @media screen and (max-width: 868px) {
+  .face-block {
+    width: 55%;
+    height: 70%;
+    top: 40%;
+  }
+} */
+
+@media screen and (max-width: 768px) {
+  .face-block {
+    width: 89%;
+    height: 70%;
+    top: 40%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .face-block {
+    width: 95%;
+    height: 74%;
+    top: 40%;
+  }
+}
