@@ -85,7 +85,6 @@ const WebcamDemo: React.FC<IProps> = ({
     if (webcamRef.current && webcamRef.current.stream) {
       setCapturing(true);
       const { stream } = webcamRef.current;
-      alert(stream);
 
       const options: RecordRTC.Options = {
         type: 'video',
