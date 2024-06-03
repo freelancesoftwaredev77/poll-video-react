@@ -140,7 +140,7 @@ const WebcamDemo: React.FC<IProps> = ({
       aria-hidden="true"
     >
       {recordedChunks?.length > 0 && blockFace && (
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="center">
           <img src="/face-cover.png" alt="face-cover" className="w-[250px]" />
         </div>
       )}

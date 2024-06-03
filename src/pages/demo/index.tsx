@@ -49,35 +49,37 @@ const Demo: React.FC = () => {
   }, [navigate, state?.instructionVideoUrl]);
 
   return (
-    <Layout>
-      <div className="my-5 flex items-center justify-between">
-        <h5 className="text-2xl font-bold text-primary">Întrebarea 1</h5>
-        <Link
-          className="rounded-md bg-violet px-4 py-1.5 text-sm text-white"
-          to="/congratulation"
-        >
-          Închide demo
-        </Link>
-      </div>
+    <>
+      <Layout>
+        <div className="my-5 flex items-center justify-between">
+          <h5 className="text-2xl font-bold text-primary">Întrebarea 1</h5>
+          <Link
+            className="rounded-md bg-violet px-4 py-1.5 text-sm text-white"
+            to="/congratulation"
+          >
+            Închide demo
+          </Link>
+        </div>
 
-      {showRecordingScreen ? (
-        <WebcamDemo
-          blockFace={blockface}
-          capturing={capture}
-          setCapturing={setCapturing}
-          isFinishedRecording={isFinishedRecording}
-          setIsFinishedRecording={setIsFinishedRecording}
-          recordedChunks={recordedChunks}
-          setRecordedChunks={setRecordedChunks}
-          step={step}
-          setStep={setStep}
-        />
-      ) : (
-        <VideoPlayer
-          url={state?.instructionVideoUrl ?? ''}
-          setIsPlaying={setIsPlaying}
-        />
-      )}
+        {showRecordingScreen ? (
+          <WebcamDemo
+            blockFace={blockface}
+            capturing={capture}
+            setCapturing={setCapturing}
+            isFinishedRecording={isFinishedRecording}
+            setIsFinishedRecording={setIsFinishedRecording}
+            recordedChunks={recordedChunks}
+            setRecordedChunks={setRecordedChunks}
+            step={step}
+            setStep={setStep}
+          />
+        ) : (
+          <VideoPlayer
+            url={state?.instructionVideoUrl ?? ''}
+            setIsPlaying={setIsPlaying}
+          />
+        )}
+      </Layout>
       <Footer>
         <VideoBottomBar
           blockface={blockface}
@@ -90,7 +92,7 @@ const Demo: React.FC = () => {
           isPlaying={isPlaying}
         />
       </Footer>
-    </Layout>
+    </>
   );
 };
 

@@ -137,76 +137,70 @@ const Question: React.FC = () => {
   const handleBlockFace = () => setBlockFace(!blockface);
 
   return (
-    <Layout>
-      {isCompleted ? (
-        <>
-          <Message
-            message="Sondajul a fost încheiat !"
-            title="Felicitări !"
-            imageUrl="/clap.png"
-          />
-          <Footer>
-            <Link
-              to="/terms-conditions"
-              className="block text-center text-sm font-normal text-[blue]"
-            >
-              Termeni și condiții
-            </Link>
-          </Footer>
-        </>
-      ) : (
-        <>
-          <h1 className="mb-10 mt-5 text-[22px] font-bold text-primary">
-            {`Întrebarea ${currentIndex + 1}`}
-          </h1>
+    <>
+      <Layout>
+        {isCompleted ? (
+          <>
+            <Message
+              message="Sondajul a fost încheiat !"
+              title="Felicitări !"
+              imageUrl="/clap.png"
+            />
+            <Footer>
+              <Link
+                to="/terms-conditions"
+                className="block text-center text-sm font-normal text-[blue]"
+              >
+                Termeni și condiții
+              </Link>
+            </Footer>
+          </>
+        ) : (
+          <>
+            <h1 className="mb-10 mt-5 text-[22px] font-bold text-primary">
+              {`Întrebarea ${currentIndex + 1}`}
+            </h1>
 
-          {isLoading ? (
-            <VideoSkeleton />
-          ) : showRecordingScreen ? (
-            <WebcamDemo
-              blockFace={blockface}
-              capturing={capture}
-              setCapturing={setCapturing}
-              isFinishedRecording={isFinishedRecording}
-              setIsFinishedRecording={setIsFinishedRecording}
-              recordedChunks={recordedChunks}
-              setRecordedChunks={setRecordedChunks}
-              step={step}
-              setStep={setStep}
-            />
-          ) : (
-            <VideoPlayer
-              url={
-                videoQuestions &&
-                videoQuestions[currentIndex]?.question_video_url
-              }
-              setIsPlaying={setIsPlaying}
-            />
-          )}
-
-          {/* {showAlert && (
-            <Alert
-              message="Sunteți sigur? Apăsarea din nou a butonului Înapoi va anula sondajul."
-              onClose={handleCloseAlert}
-            />
-          )} */}
-
-          <Footer>
-            <VideoBottomBar
-              blockface={blockface}
-              capture={capture}
-              handleBlockFace={handleBlockFace}
-              handleNext={handleNext}
-              handleRecordAgain={handleRecordAgain}
-              handleShowRecordingScreen={handleShowRecordingScreen}
-              step={step}
-              isSubmitting={isSubmitting}
-              isPlaying={isPlaying}
-            />
-          </Footer>
-        </>
-      )}
-    </Layout>
+            {isLoading ? (
+              <VideoSkeleton />
+            ) : showRecordingScreen ? (
+              <WebcamDemo
+                blockFace={blockface}
+                capturing={capture}
+                setCapturing={setCapturing}
+                isFinishedRecording={isFinishedRecording}
+                setIsFinishedRecording={setIsFinishedRecording}
+                recordedChunks={recordedChunks}
+                setRecordedChunks={setRecordedChunks}
+                step={step}
+                setStep={setStep}
+              />
+            ) : (
+              <VideoPlayer
+                url={
+                  videoQuestions &&
+                  videoQuestions[currentIndex]?.question_video_url
+                }
+                setIsPlaying={setIsPlaying}
+              />
+            )}
+          </>
+        )}
+      </Layout>
+      <Footer>
+        <VideoBottomBar
+          blockface={blockface}
+          capture={capture}
+          handleBlockFace={handleBlockFace}
+          handleNext={handleNext}
+          handleRecordAgain={handleRecordAgain}
+          handleShowRecordingScreen={handleShowRecordingScreen}
+          step={step}
+          isSubmitting={isSubmitting}
+          isPlaying={isPlaying}
+        />
+      </Footer>
+    </>
   );
 };
 
