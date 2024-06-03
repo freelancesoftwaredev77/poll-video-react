@@ -107,6 +107,10 @@ const WebcamDemo: React.FC<IProps> = ({
       recorderRef.current.stopRecording(() => {
         // @ts-ignore
         const recordedBlob = recorderRef.current.getBlob();
+        console.log(
+          '🚀 ~ recorderRef.current.stopRecording ~ recordedBlob:',
+          recordedBlob
+        );
         if (recordedBlob.size > 0) {
           setRecordedChunks([...recordedChunks, recordedBlob]);
         } else {
@@ -169,7 +173,8 @@ const WebcamDemo: React.FC<IProps> = ({
         </video>
       ) : (
         <p className="text-center font-semibold">
-          Please Open in safari browser for this feature
+          {/* {alert('ddata', recordedChunks)} */}
+          {JSON.stringify(recordedChunks, null, 5)}
         </p>
       )}
       {showControls && (
