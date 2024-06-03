@@ -85,6 +85,7 @@ const WebcamDemo: React.FC<IProps> = ({
     if (webcamRef.current && webcamRef.current.stream) {
       setCapturing(true);
       const { stream } = webcamRef.current;
+      alert(stream);
 
       const options: RecordRTC.Options = {
         type: 'video',
@@ -147,7 +148,7 @@ const WebcamDemo: React.FC<IProps> = ({
       tabIndex={0}
       aria-hidden="true"
     >
-      {blockFace && (
+      {/* {blockFace && (
         <div className="center inset-0 z-[99999] h-[80%] w-[90%]">
           <img
             src="/face-cover.png"
@@ -155,7 +156,7 @@ const WebcamDemo: React.FC<IProps> = ({
             className="h-full w-full"
           />
         </div>
-      )}
+      )} */}
       {recordedChunks.length > 0 ? (
         <video
           autoPlay={false}
