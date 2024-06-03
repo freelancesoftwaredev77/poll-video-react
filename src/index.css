@@ -187,9 +187,9 @@ video {
 
 @media screen and (max-width: 768px) {
   .face-block {
-    width: 89%;
+    width: 87%;
     height: 70%;
-    top: 40%;
+    top: 39%;
   }
 }
 

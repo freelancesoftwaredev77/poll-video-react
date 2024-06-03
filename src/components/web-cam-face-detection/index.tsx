@@ -144,7 +144,7 @@ const WebcamDemo: React.FC<IProps> = ({
       tabIndex={0}
       aria-hidden="true"
     >
-      {blockFace && (
+      {blockFace && recordedChunks.length > 0 && (
         <div className="face-block">
           <img
             src="/face-cover.png"
@@ -178,7 +178,7 @@ const WebcamDemo: React.FC<IProps> = ({
         </video>
       ) : (
         <p className="text-center font-semibold">
-          {JSON.stringify(recordedChunks, null, 5)} no data
+          Please Open in safari browser for recording preview features.
         </p>
       )}
       {showControls && (
