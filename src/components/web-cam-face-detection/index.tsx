@@ -80,6 +80,7 @@ const WebcamDemo: React.FC<IProps> = ({
 
     return () => clearInterval(intervalId);
   }, [capturing]);
+
   const handleStartCaptureClick = () => {
     if (webcamRef.current && webcamRef.current.stream) {
       setCapturing(true);
@@ -139,8 +140,8 @@ const WebcamDemo: React.FC<IProps> = ({
       aria-hidden="true"
     >
       {recordedChunks?.length > 0 && blockFace && (
-        <div className="absolute left-[23%] top-14">
-          <img src="/face-cover.png" alt="face-cover" className="w-64" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <img src="/face-cover.png" alt="face-cover" className="w-[250px]" />
         </div>
       )}
       {recordedChunks.length > 0 ? (
@@ -192,14 +193,16 @@ const WebcamDemo: React.FC<IProps> = ({
           )}
         </div>
       )}
-
-      {/* )} */}
     </div>
   ) : (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute left-[23%] top-14 z-[99999]">
-          <img src="/face-cover.png" alt="face-cover" className="w-64" />
+        <div className="center z-[99999]">
+          <img
+            src="/face-cover.png"
+            alt="face-cover"
+            className="w-[250px] object-cover"
+          />
         </div>
       )}
       <Webcam

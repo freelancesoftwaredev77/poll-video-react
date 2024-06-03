@@ -14,7 +14,6 @@ interface IProps {
   isLabel?: boolean;
   ringColor?: string;
   icon?: any;
-  isPrimary?: boolean;
 }
 function TextField({
   label,
@@ -23,7 +22,6 @@ function TextField({
   readOnly,
   defaultValue,
   className,
-  isPrimary = true,
   ...otherProps
 }: IProps & FieldHookConfig<string>) {
   const [field, meta] = useField(otherProps);
@@ -36,11 +34,8 @@ function TextField({
         htmlFor={field.name}
       >
         {label}
-        {isPrimary && (
-          <p className="absolute -top-1 inline-block font-bold text-warning">
-            *
-          </p>
-        )}
+
+        <span className="mx-1 text-warning">*</span>
       </label>
 
       <div className="flex-1">

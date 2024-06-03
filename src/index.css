@@ -150,3 +150,11 @@ li {
   );
   animation: loading-ans 4s linear infinite;
 }
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

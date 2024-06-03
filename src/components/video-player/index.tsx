@@ -53,7 +53,7 @@ const VideoPlayer: React.FC<IProps> = ({
 
   return (
     <div
-      className="relative h-[100%] pb-16"
+      className="relative h-[100%]"
       role="button"
       tabIndex={0}
       aria-hidden="true"

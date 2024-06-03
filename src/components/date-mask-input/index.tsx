@@ -26,11 +26,7 @@ const DateInputMask: React.FC<IProps> = ({ label, isPrimary, ...props }) => {
         htmlFor={field.name}
       >
         {label}
-        {isPrimary && (
-          <p className="absolute -top-1 inline-block font-bold text-warning">
-            *
-          </p>
-        )}
+        <span className="mx-1 text-warning">*</span>
       </label>
 
       <div className="relative flex-1">
