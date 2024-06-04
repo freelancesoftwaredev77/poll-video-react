@@ -10,11 +10,11 @@ import {
 import { v1 as uuidv1 } from 'uuid';
 import { Footer, Layout } from '@/container';
 import { Message, VideoBottomBar, VideoSkeleton } from '@/components';
-import WebcamDemo from '@/components/web-cam-face-detection';
 import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
 import useFetch from '@/hooks/useFetch';
 import VideoPlayer from '@/components/video-player';
+import CompatibleWebcam from '@/components/web-cam-face-detection/web';
 
 const Question: React.FC = () => {
   const { data: videoQuestions, isLoading } = useFetch('video_questions');
@@ -164,7 +164,7 @@ const Question: React.FC = () => {
             {isLoading ? (
               <VideoSkeleton />
             ) : showRecordingScreen ? (
-              <WebcamDemo
+              <CompatibleWebcam
                 blockFace={blockface}
                 capturing={capture}
                 setCapturing={setCapturing}
