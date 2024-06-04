@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable jsx-a11y/media-has-caption */
 // eslint-disable jsx-a11y/media-has-caption /
 // eslint-disable @typescript-eslint/no-unsafe-argument /
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
 
@@ -30,12 +32,34 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
   const [cameraMode, setCameraMode] = React.useState('user');
   const [timer, setTimer] = useState(0);
   const webcamRef: any = React.useRef<Webcam | null>(null);
+  const [isPaused, setIsPaused] = React.useState(false);
+  const [showControls, setShowControls] = React.useState(true);
+  const playerRef = React.useRef<any>(null);
 
   const videoConstraints = {
     facingMode: cameraMode,
   };
 
   const mediaRecorderRef = useRef<any>(null);
+
+  const handleControls = () => {
+    setShowControls(true);
+    setTimeout(() => setShowControls(false), 2000);
+  };
+
+  const handlePlay = () => {
+    if (isPaused) {
+      playerRef?.current?.pause();
+      setIsPaused(false);
+      setShowControls(true);
+      setTimeout(() => setShowControls(false), 2000);
+    } else {
+      playerRef?.current?.play();
+      setIsPaused(true);
+      setShowControls(true);
+      setTimeout(() => setShowControls(false), 2000);
+    }
+  };
 
   useEffect(() => {
     let intervalId: any;
@@ -67,49 +91,58 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
     mediaRecorderRef.current.start();
   };
 
-  const handleStopCaptureClick = () => {
+  const handleStopCaptureClick = useCallback(() => {
     setCapturing(!capturing);
     setIsFinishedRecording(!isFinishedRecording);
     mediaRecorderRef.current?.stop();
     setStep(step + 1);
-  };
+  }, [
+    capturing,
+    isFinishedRecording,
+    setCapturing,
+    setIsFinishedRecording,
+    setStep,
+    step,
+  ]);
 
-  // console.log('Record chunks', recordedChunks);
+  useEffect(() => {
+    if (timer >= 46) {
+      handleStopCaptureClick();
+    }
+  }, [handleStopCaptureClick, timer]);
 
-  // const handleUpload = async () => {
-  //   const blob = new Blob(recordedChunks, {
-  //     type: 'video/webm',
-  //   });
-
-  //   const { data, error } = await supabase.storage
-  //     .from('videos/uploads')
-  //     .upload('new-added.mp4', blob);
-  // };
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
-  // userid + - + questionId
-
   return isFinishedRecording ? (
-    <div className="relative">
-      {/* {blockFace && (
-        <div className="absolute left-[25%] top-20 z-30">
-          <img src="/face-cover.png" alt="face-cover" className="z-30" />
+    <div
+      className="relative h-[90%] cursor-pointer"
+      onClick={handleControls}
+      role="button"
+      tabIndex={0}
+      aria-hidden="true"
+    >
+      {blockFace && recordedChunks.length > 0 && (
+        <div className="face-block">
+          <img
+            src="/face-cover.png"
+            alt="face-cover"
+            className="h-full w-full"
+          />
         </div>
-      )} */}
+      )}
       <video
-        autoPlay
-        // ref={playerRef}
+        autoPlay={false}
+        ref={playerRef}
         className="h-full w-full rounded-xl object-cover"
         playsInline
         controlsList="nofullscreen nodownload"
         disablePictureInPicture
         disableRemotePlayback
-        controls
-        // onEnded={() => {
-        //   setIsPaused(false);
-        //   setShowControls(true);
-        // }}
+        onEnded={() => {
+          setIsPaused(false);
+          setShowControls(true);
+        }}
       >
         <source
           src={
@@ -130,27 +163,37 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
           }
         />
       </video>
-      {/* <video
-        controlsList="nofullscreen nodownload"
-        playsInline
-        disablePictureInPicture
-        controls
-        autoPlay
-        className="h-full w-full"
-        src={
-          recordedChunks.length
-            ? URL.createObjectURL(
-                new Blob(recordedChunks, { type: 'video/webm' })
-              )
-            : ''
-        }
-      /> */}
+      {showControls && (
+        <div className="controls absolute bottom-5 left-[40%] top-[45%]">
+          {!isPaused ? (
+            <button onClick={handlePlay} className="rounded-full bg-[black]">
+              <img
+                src="/play.png"
+                alt="play-button"
+                className="h-16 w-16 object-cover"
+              />
+            </button>
+          ) : (
+            <button onClick={handlePlay} className="rounded-full bg-[black]">
+              <img
+                src="/pause.png"
+                alt="pause-button"
+                className="h-16 w-16 object-cover"
+              />
+            </button>
+          )}
+        </div>
+      )}
     </div>
   ) : (
-    <div className="relative">
+    <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute left-[25%] top-20">
-          <img src="/face-cover.png" alt="face-cover" />
+        <div className="face-block">
+          <img
+            src="/face-cover.png"
+            alt="face-cover"
+            className="h-full w-full"
+          />
         </div>
       )}
       <Webcam
@@ -159,47 +202,51 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
         videoConstraints={videoConstraints}
         mirrored={false}
         audio
-        className="h-full w-full"
+        className="h-full w-full object-cover"
         muted
       />
-      {capturing ? (
-        <button
-          onClick={handleStopCaptureClick}
-          className="absolute bottom-8 left-[40%]"
-          aria-label="save"
-        >
-          <div className="h-16 w-16 rounded-full border-2 border-white">
-            <div className="mx-auto mt-3 h-9 w-9 rounded-md bg-[#000000bb]" />
-          </div>
-        </button>
-      ) : (
-        <button
-          onClick={handleStartCaptureClick}
-          className="absolute bottom-8 left-[40%]"
-          aria-label="save"
-        >
-          <div className="h-16 w-16 rounded-full border-2 border-white">
-            <div className="mx-auto mt-1.5 h-12 w-12 rounded-full bg-warning" />
-          </div>
-        </button>
-      )}
+      <div className="absolute bottom-2 w-full px-4">
+        <div>
+          {capturing && (
+            <p className="mx-auto w-28 rounded-full bg-warning px-3 py-1 text-center text-sm font-bold text-white">
+              00:{timer < 10 ? `0${timer}` : timer} / 00:45
+            </p>
+          )}
+          <div className="flex items-center justify-between gap-5">
+            <div className="rounded-full px-3 py-1 font-bold text-white " />
 
-      {capturing && (
-        <div className="absolute left-[50%] top-4 -translate-x-1/2 transform rounded-full bg-warning px-3 py-1 font-bold text-white">
-          <p className="text-sm">00:{timer} / 45 sec</p>
-        </div>
-      )}
-      {!capturing && (
-        <button
-          onClick={handleSwitchCamera}
-          className="absolute bottom-8 right-10"
-          aria-label="save"
-        >
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00000080]">
-            <FiRefreshCw color="#fff" className="hover:rotate-180" />
+            <div className="mt-3.5">
+              {capturing ? (
+                <button
+                  onClick={handleStopCaptureClick}
+                  aria-label="stop"
+                  className={capturing ? 'mr-8' : ''}
+                >
+                  <div className="h-16 w-16 rounded-full border-2 border-white">
+                    <div className="mx-auto mt-4 h-7 w-7 rounded bg-warning" />
+                  </div>
+                </button>
+              ) : (
+                <button onClick={handleStartCaptureClick} aria-label="start">
+                  <div className="h-16 w-16 rounded-full border-4 border-white">
+                    <div className="mx-auto mt-[1.3px] h-[54px] w-[54px] rounded-full bg-warning" />
+                  </div>
+                </button>
+              )}
+            </div>
+
+            {!capturing ? (
+              <button onClick={handleSwitchCamera} aria-label="switch camera">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00000080]">
+                  <FiRefreshCw color="#fff" className="hover:rotate-180" />
+                </div>
+              </button>
+            ) : (
+              <div />
+            )}
           </div>
-        </button>
-      )}
+        </div>
+      </div>
     </div>
   );
 };
