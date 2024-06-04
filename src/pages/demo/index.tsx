@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import { Footer, Layout } from '@/container';
 import { VideoBottomBar, VideoPlayer } from '@/components';
-import WebcamDemo from '@/components/web-cam-face-detection';
+import CompatibleWebcam from '@/components/web-cam-face-detection/web';
 
 const Demo: React.FC = () => {
   const [showRecordingScreen, setShowRecordingScreen] =
@@ -62,7 +62,7 @@ const Demo: React.FC = () => {
         </div>
 
         {showRecordingScreen ? (
-          <WebcamDemo
+          <CompatibleWebcam
             blockFace={blockface}
             capturing={capture}
             setCapturing={setCapturing}
