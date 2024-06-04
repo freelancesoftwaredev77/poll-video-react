@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 // eslint-disable jsx-a11y/media-has-caption /
 // eslint-disable @typescript-eslint/no-unsafe-argument /
 import React, { useRef, useState, useEffect, useCallback } from 'react';
@@ -32,34 +32,12 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
   const [cameraMode, setCameraMode] = React.useState('user');
   const [timer, setTimer] = useState(0);
   const webcamRef: any = React.useRef<Webcam | null>(null);
-  const [isPaused, setIsPaused] = React.useState(false);
-  const [showControls, setShowControls] = React.useState(true);
-  const playerRef = React.useRef<any>(null);
 
   const videoConstraints = {
     facingMode: cameraMode,
   };
 
   const mediaRecorderRef = useRef<any>(null);
-
-  const handleControls = () => {
-    setShowControls(true);
-    setTimeout(() => setShowControls(false), 2000);
-  };
-
-  const handlePlay = () => {
-    if (isPaused) {
-      playerRef?.current?.pause();
-      setIsPaused(false);
-      setShowControls(true);
-      setTimeout(() => setShowControls(false), 2000);
-    } else {
-      playerRef?.current?.play();
-      setIsPaused(true);
-      setShowControls(true);
-      setTimeout(() => setShowControls(false), 2000);
-    }
-  };
 
   useEffect(() => {
     let intervalId: any;
@@ -117,32 +95,18 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
   return isFinishedRecording ? (
     <div
       className="relative h-[90%] cursor-pointer"
-      onClick={handleControls}
       role="button"
       tabIndex={0}
       aria-hidden="true"
     >
-      {blockFace && recordedChunks.length > 0 && (
-        <div className="face-block">
-          <img
-            src="/face-cover.png"
-            alt="face-cover"
-            className="h-full w-full"
-          />
-        </div>
-      )}
       <video
         autoPlay={false}
-        ref={playerRef}
         className="h-full w-full rounded-xl object-cover"
         playsInline
         controlsList="nofullscreen nodownload"
         disablePictureInPicture
         disableRemotePlayback
-        onEnded={() => {
-          setIsPaused(false);
-          setShowControls(true);
-        }}
+        controls
       >
         <source
           src={
@@ -163,27 +127,6 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
           }
         />
       </video>
-      {showControls && (
-        <div className="controls absolute bottom-5 left-[40%] top-[45%]">
-          {!isPaused ? (
-            <button onClick={handlePlay} className="rounded-full bg-[black]">
-              <img
-                src="/play.png"
-                alt="play-button"
-                className="h-16 w-16 object-cover"
-              />
-            </button>
-          ) : (
-            <button onClick={handlePlay} className="rounded-full bg-[black]">
-              <img
-                src="/pause.png"
-                alt="pause-button"
-                className="h-16 w-16 object-cover"
-              />
-            </button>
-          )}
-        </div>
-      )}
     </div>
   ) : (
     <div className="relative h-[90%]">

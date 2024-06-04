@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
@@ -10,7 +9,7 @@ import { FiRefreshCw } from 'react-icons/fi';
 import RecordRTC from 'recordrtc';
 
 interface IProps {
-  blockFace: boolean;
+  // blockFace: boolean;
   capturing: boolean;
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
@@ -22,7 +21,7 @@ interface IProps {
 }
 
 const WebcamDemo: React.FC<IProps> = ({
-  blockFace,
+  // blockFace,
   capturing,
   setCapturing,
   isFinishedRecording,
@@ -39,32 +38,10 @@ const WebcamDemo: React.FC<IProps> = ({
   );
   const recorderRef: MutableRefObject<RecordRTC | null> =
     useRef<RecordRTC | null>(null);
-  const [isPaused, setIsPaused] = React.useState(false);
-  const [showControls, setShowControls] = React.useState(true);
-  const playerRef = React.useRef<any>(null);
   const videoConstraints = {
     facingMode: cameraMode,
     width: { ideal: 1920 },
     height: { ideal: 1080 },
-  };
-
-  const handleControls = () => {
-    setShowControls(true);
-    setTimeout(() => setShowControls(false), 2000);
-  };
-
-  const handlePlay = () => {
-    if (isPaused) {
-      playerRef?.current?.pause();
-      setIsPaused(false);
-      setShowControls(true);
-      setTimeout(() => setShowControls(false), 2000);
-    } else {
-      playerRef?.current?.play();
-      setIsPaused(true);
-      setShowControls(true);
-      setTimeout(() => setShowControls(false), 2000);
-    }
   };
 
   useEffect(() => {
@@ -101,7 +78,6 @@ const WebcamDemo: React.FC<IProps> = ({
       alert('Webcam stream is not available');
     }
   };
-
   const handleStopCaptureClick = () => {
     if (recorderRef.current) {
       try {
@@ -139,33 +115,18 @@ const WebcamDemo: React.FC<IProps> = ({
   return isFinishedRecording ? (
     <div
       className="relative h-[90%] cursor-pointer"
-      onClick={handleControls}
       role="button"
       tabIndex={0}
       aria-hidden="true"
     >
-      {blockFace && recordedChunks.length > 0 && (
-        <div className="face-block">
-          <img
-            src="/face-cover.png"
-            alt="face-cover"
-            className="h-full w-full"
-          />
-        </div>
-      )}
       {recordedChunks.length > 0 ? (
         <video
           autoPlay={false}
-          ref={playerRef}
           className="h-full w-full rounded-xl object-cover"
           playsInline
-          controlsList="nofullscreen nodownload"
-          disablePictureInPicture
+          controlsList="nodownload"
           disableRemotePlayback
-          onEnded={() => {
-            setIsPaused(false);
-            setShowControls(true);
-          }}
+          controls
         >
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
@@ -181,31 +142,10 @@ const WebcamDemo: React.FC<IProps> = ({
           Please Open in safari browser for recording preview features.
         </p>
       )}
-      {showControls && (
-        <div className="controls absolute bottom-5 left-[40%] top-[45%]">
-          {!isPaused ? (
-            <button onClick={handlePlay} className="rounded-full bg-[black]">
-              <img
-                src="/play.png"
-                alt="play-button"
-                className="h-16 w-16 object-cover"
-              />
-            </button>
-          ) : (
-            <button onClick={handlePlay} className="rounded-full bg-[black]">
-              <img
-                src="/pause.png"
-                alt="pause-button"
-                className="h-16 w-16 object-cover"
-              />
-            </button>
-          )}
-        </div>
-      )}
     </div>
   ) : (
     <div className="relative h-[90%]">
-      {blockFace && (
+      {/* {blockFace && (
         <div className="face-block">
           <img
             src="/face-cover.png"
@@ -213,7 +153,7 @@ const WebcamDemo: React.FC<IProps> = ({
             className="h-full w-full"
           />
         </div>
-      )}
+      )} */}
       <Webcam
         ref={webcamRef}
         forceScreenshotSourceSize
