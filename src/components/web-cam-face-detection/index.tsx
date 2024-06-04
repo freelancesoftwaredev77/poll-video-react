@@ -10,7 +10,7 @@ import { FiRefreshCw } from 'react-icons/fi';
 import RecordRTC from 'recordrtc';
 
 interface IProps {
-  blockFace: boolean;
+  // blockFace: boolean;
   capturing: boolean;
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
@@ -22,7 +22,7 @@ interface IProps {
 }
 
 const WebcamDemo: React.FC<IProps> = ({
-  blockFace,
+  // blockFace,
   capturing,
   setCapturing,
   isFinishedRecording,
@@ -101,7 +101,6 @@ const WebcamDemo: React.FC<IProps> = ({
       alert('Webcam stream is not available');
     }
   };
-
   const handleStopCaptureClick = () => {
     if (recorderRef.current) {
       try {
@@ -144,7 +143,7 @@ const WebcamDemo: React.FC<IProps> = ({
       tabIndex={0}
       aria-hidden="true"
     >
-      {blockFace && recordedChunks.length > 0 && (
+      {/* {blockFace && recordedChunks.length > 0 && (
         <div className="face-block">
           <img
             src="/face-cover.png"
@@ -152,7 +151,7 @@ const WebcamDemo: React.FC<IProps> = ({
             className="h-full w-full"
           />
         </div>
-      )}
+      )} */}
       {recordedChunks.length > 0 ? (
         <video
           autoPlay={false}
@@ -205,7 +204,7 @@ const WebcamDemo: React.FC<IProps> = ({
     </div>
   ) : (
     <div className="relative h-[90%]">
-      {blockFace && (
+      {/* {blockFace && (
         <div className="face-block">
           <img
             src="/face-cover.png"
@@ -213,7 +212,7 @@ const WebcamDemo: React.FC<IProps> = ({
             className="h-full w-full"
           />
         </div>
-      )}
+      )} */}
       <Webcam
         ref={webcamRef}
         forceScreenshotSourceSize

@@ -2,14 +2,12 @@ import * as React from 'react';
 import { Button, VideoPlayer, VideoSkeleton } from '@/components';
 import { Footer, Layout } from '@/container';
 // import { IoIosPlay } from 'react-icons/io';
-import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useFetch from '@/hooks/useFetch';
 
 const Home: React.FC = () => {
   const { data: introData, isLoading } = useFetch('polls');
   const [isPlaying, setIsPlaying] = React.useState(false);
-
-  const navigate: NavigateFunction = useNavigate();
 
   return (
     <>
@@ -30,32 +28,14 @@ const Home: React.FC = () => {
       <Footer>
         <h6 className="text-center font-bold">
           {isPlaying ? (
-            <div className="flex items-center gap-5">
-              <Link to="/form" className="w-full">
-                <Button
-                  text="Începe sondajul"
-                  type="submit"
-                  variant="primary"
-                  className="px-4 py-2"
-                />
-              </Link>
-              <Link
-                to="/demo"
-                className="w-full"
-                state={{
-                  instructionVideoUrl:
-                    introData && introData[0]?.instruction_video,
-                }}
-              >
-                <Button
-                  text="Demo"
-                  type="button"
-                  variant="outline"
-                  className="px-4 py-2"
-                  onClick={() => navigate('/demo')}
-                />
-              </Link>
-            </div>
+            <Link to="/form" className="w-full">
+              <Button
+                text="Începe sondajul"
+                type="submit"
+                variant="primary"
+                className="px-4 py-2"
+              />
+            </Link>
           ) : (
             <>
               <p>{introData && introData[0]?.title}</p>

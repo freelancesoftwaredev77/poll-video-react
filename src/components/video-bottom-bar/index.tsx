@@ -17,10 +17,10 @@ interface IProps {
 const VideoBottomBar: React.FC<IProps> = ({
   handleNext,
   handleShowRecordingScreen,
-  blockface,
+  // blockface,
   step,
-  capture,
-  handleBlockFace,
+  // capture,
+  // handleBlockFace,
   handleRecordAgain,
   isSubmitting,
   isPlaying,

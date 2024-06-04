@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 // eslint-disable jsx-a11y/media-has-caption /
 // eslint-disable @typescript-eslint/no-unsafe-argument /
 import React, { useRef, useState, useEffect } from 'react';
