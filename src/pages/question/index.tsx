@@ -25,7 +25,7 @@ const Question: React.FC = () => {
   const [recordedChunks, setRecordedChunks] = React.useState([]);
   const [isFinishedRecording, setIsFinishedRecording] = React.useState(false);
   const [capture, setCapturing] = React.useState(false);
-  const [blockface, setBlockFace] = React.useState(true);
+  const [blockface, setBlockFace] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [step, setStep] = React.useState(1);
   const navigate: NavigateFunction = useNavigate();
@@ -100,7 +100,6 @@ const Question: React.FC = () => {
             setIsFinishedRecording(false);
             setStep(1);
             setIsSubmitting(false);
-            setBlockFace(true);
             setIsPlaying(false);
             setCurrentIndex(
               (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
@@ -129,7 +128,6 @@ const Question: React.FC = () => {
 
   const handleRecordAgain = () => {
     setRecordedChunks([]);
-    setBlockFace(false);
     setIsFinishedRecording(!isFinishedRecording);
     setStep(step - 1);
   };
