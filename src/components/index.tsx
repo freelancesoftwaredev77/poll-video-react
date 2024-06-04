@@ -8,3 +8,4 @@ export { default as DatePicker } from './date-mask-input';
 export { default as Message } from './message';
 export { default as ErrorBoundary } from './error-boundary';
 export { default as DateInputMask } from './date-mask-input';
+export { default as TextField } from './text-field';

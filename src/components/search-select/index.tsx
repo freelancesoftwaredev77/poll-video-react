@@ -13,7 +13,6 @@ interface CustomSelectProps {
   className?: string;
   placeholder?: string;
   label?: string;
-  isPrimary?: boolean;
   name: string;
   onChange?: any;
 }
@@ -23,7 +22,6 @@ export function CustomSelect({
   placeholder,
   name,
   options,
-  isPrimary = true,
   isMulti = false,
   label = '',
   onChange,
@@ -43,13 +41,8 @@ export function CustomSelect({
           htmlFor={field.name}
         >
           {label}
+          <span className="mx-1 text-warning">*</span>
         </label>
-
-        {isPrimary && (
-          <p className="absolute -right-2 -top-1 inline-block font-semibold text-warning">
-            *
-          </p>
-        )}
       </div>
       <Select
         className="mt-2 flex-1"

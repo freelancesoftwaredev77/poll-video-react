@@ -12,3 +12,4 @@ index.html
 vite-env.d.ts
 .eslintignore
 .husky
+.vite.config.ts

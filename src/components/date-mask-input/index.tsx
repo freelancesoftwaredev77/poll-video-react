@@ -18,24 +18,20 @@ const DateInputMask: React.FC<IProps> = ({ label, isPrimary, ...props }) => {
   };
 
   return (
-    <div className="relative mb-2.5">
+    <div className="relative pb-3">
       <label
         className={`mb-2 block text-xs font-semibold ${
-          meta.error && meta.touched ? 'text-warning' : 'text-primary'
+          meta.error && meta.touched ? 'text-warning' : 'text-secondary'
         }`}
         htmlFor={field.name}
       >
         {label}
-        {isPrimary && (
-          <p className="absolute -top-1 inline-block font-bold text-warning">
-            *
-          </p>
-        )}
+        <span className="mx-1 text-warning">*</span>
       </label>
 
       <div className="relative flex-1">
         <input
-          className={`block w-full appearance-none rounded-lg bg-white px-4 py-3 text-base shadow-none placeholder:text-xs placeholder:text-[#000000] focus-within:outline-none focus:outline-none ${
+          className={`block w-full appearance-none rounded bg-white px-4 py-1.5 text-base shadow-none placeholder:text-xs placeholder:text-[#000000] focus-within:outline-none focus:outline-none ${
             meta.touched && meta.error
               ? 'text-warning ring-1 ring-warning placeholder:text-warning'
               : 'ring-1 ring-primary'

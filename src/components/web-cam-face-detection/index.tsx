@@ -50,7 +50,7 @@ const WebcamDemo: React.FC<IProps> = ({
 
   const handleControls = () => {
     setShowControls(true);
-    setTimeout((): void => setShowControls(false), 2000);
+    setTimeout(() => setShowControls(false), 2000);
   };
 
   const handlePlay = () => {
@@ -58,12 +58,12 @@ const WebcamDemo: React.FC<IProps> = ({
       playerRef?.current?.pause();
       setIsPaused(false);
       setShowControls(true);
-      setTimeout((): void => setShowControls(false), 2000);
+      setTimeout(() => setShowControls(false), 2000);
     } else {
       playerRef?.current?.play();
       setIsPaused(true);
       setShowControls(true);
-      setTimeout((): void => setShowControls(false), 2000);
+      setTimeout(() => setShowControls(false), 2000);
     }
   };
 
@@ -71,7 +71,7 @@ const WebcamDemo: React.FC<IProps> = ({
     let intervalId: any;
     if (capturing) {
       intervalId = setInterval(() => {
-        setTimer((prevTimer: number) => (prevTimer < 45 ? prevTimer + 1 : 45));
+        setTimer((prevTimer) => (prevTimer < 45 ? prevTimer + 1 : 45));
       }, 1000);
     } else {
       clearInterval(intervalId);
@@ -80,6 +80,7 @@ const WebcamDemo: React.FC<IProps> = ({
 
     return () => clearInterval(intervalId);
   }, [capturing]);
+
   const handleStartCaptureClick = () => {
     if (webcamRef.current && webcamRef.current.stream) {
       setCapturing(true);
@@ -87,15 +88,15 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
-        mimeType: 'video/webm;codecs=vp9',
-        bitsPerSecond: 2 * 1024 * 1024,
-        audioBitsPerSecond: 30000,
-        videoBitsPerSecond: 50000,
       };
 
-      recorderRef.current = new RecordRTC(stream, options);
-      recorderRef.current.startRecording();
-      setTimer(0);
+      try {
+        recorderRef.current = new RecordRTC(stream, options);
+        recorderRef?.current?.startRecording();
+        setTimer(0);
+      } catch (error) {
+        setCapturing(false);
+      }
     } else {
       alert('Webcam stream is not available');
     }
@@ -103,21 +104,26 @@ const WebcamDemo: React.FC<IProps> = ({
 
   const handleStopCaptureClick = () => {
     if (recorderRef.current) {
-      recorderRef.current.stopRecording(() => {
-        // @ts-ignore
-        const recordedBlob = recorderRef.current.getBlob();
-        if (recordedBlob.size > 0) {
-          setRecordedChunks([...recordedChunks, recordedBlob]);
-        } else {
-          console.error('Recorded blob is empty');
-        }
-        // @ts-ignore
-        recorderRef.current.reset();
-        recorderRef.current = null;
+      try {
+        recorderRef.current.stopRecording(() => {
+          // @ts-ignore
+          const recordedBlob: Blob = recorderRef.current.getBlob();
+          if (recordedBlob.size > 0) {
+            setRecordedChunks([...recordedChunks, recordedBlob]);
+          } else {
+            console.error('Recorded blob is empty');
+          }
+          // @ts-ignore
+          recorderRef.current.reset();
+          recorderRef.current = null;
+          setCapturing(false);
+          setIsFinishedRecording(true);
+          setStep(step + 1);
+        });
+      } catch (error) {
+        console.error('Error stopping recording:', error);
         setCapturing(false);
-        setIsFinishedRecording(true);
-        setStep(step + 1);
-      });
+      }
     }
   };
 
@@ -138,9 +144,13 @@ const WebcamDemo: React.FC<IProps> = ({
       tabIndex={0}
       aria-hidden="true"
     >
-      {recordedChunks?.length > 0 && blockFace && (
-        <div className="absolute left-[23%] top-10">
-          <img src="/face-cover.png" alt="face-cover" className="w-60" />
+      {blockFace && recordedChunks.length > 0 && (
+        <div className="face-block">
+          <img
+            src="/face-cover.png"
+            alt="face-cover"
+            className="h-full w-full"
+          />
         </div>
       )}
       {recordedChunks.length > 0 ? (
@@ -149,7 +159,7 @@ const WebcamDemo: React.FC<IProps> = ({
           ref={playerRef}
           className="h-full w-full rounded-xl object-cover"
           playsInline
-          controlsList="nofullscreen | nodownload"
+          controlsList="nofullscreen nodownload"
           disablePictureInPicture
           disableRemotePlayback
           onEnded={() => {
@@ -168,7 +178,7 @@ const WebcamDemo: React.FC<IProps> = ({
         </video>
       ) : (
         <p className="text-center font-semibold">
-          Please Open in safari browser for this feature
+          Please Open in safari browser for recording preview features.
         </p>
       )}
       {showControls && (
@@ -192,14 +202,16 @@ const WebcamDemo: React.FC<IProps> = ({
           )}
         </div>
       )}
-
-      {/* )} */}
     </div>
   ) : (
     <div className="relative h-[90%]">
       {blockFace && (
-        <div className="absolute left-[23%] top-10 z-[99999]">
-          <img src="/face-cover.png" alt="face-cover" className="w-60" />
+        <div className="face-block">
+          <img
+            src="/face-cover.png"
+            alt="face-cover"
+            className="h-full w-full"
+          />
         </div>
       )}
       <Webcam

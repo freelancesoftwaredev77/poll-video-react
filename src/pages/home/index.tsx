@@ -12,20 +12,21 @@ const Home: React.FC = () => {
   const navigate: NavigateFunction = useNavigate();
 
   return (
-    <Layout>
-      <h6 className="mb-4 mt-5 text-center text-[22px] font-bold">
-        {isPlaying ? 'Instrucțiuni' : 'Bun venit!'}
-      </h6>
+    <>
+      <Layout>
+        <h6 className="mb-4 mt-5 text-center text-[22px] font-bold">
+          {isPlaying ? 'Instrucțiuni' : 'Bun venit!'}
+        </h6>
 
-      {isLoading ? (
-        <VideoSkeleton />
-      ) : (
-        <VideoPlayer
-          url={(introData && introData[0]?.demo_video) ?? ''}
-          setIsPlaying={setIsPlaying}
-        />
-      )}
-
+        {isLoading ? (
+          <VideoSkeleton />
+        ) : (
+          <VideoPlayer
+            url={(introData && introData[0]?.demo_video) ?? ''}
+            setIsPlaying={setIsPlaying}
+          />
+        )}
+      </Layout>
       <Footer>
         <h6 className="text-center font-bold">
           {isPlaying ? (
@@ -68,7 +69,7 @@ const Home: React.FC = () => {
           )}
         </h6>
       </Footer>
-    </Layout>
+    </>
   );
 };
 
