@@ -39,19 +39,22 @@ const VideoBottomBar: React.FC<IProps> = ({
         ) : (
           <div />
         );
-      case 2:
-        return !capture ? (
-          <Button
-            text={!blockface ? 'Acoperă fața' : 'Descoperă fața'}
-            type="button"
-            isValid={!capture}
-            variant="outline"
-            className="px-4 py-2"
-            onClick={handleBlockFace}
-          />
-        ) : (
-          <div className="" />
-        );
+      case 2: {
+        // TODO: temporarily disable the block face
+        // return !capture ? (
+        //   <Button
+        //     text={!blockface ? 'Acoperă fața' : 'Descoperă fața'}
+        //     type="button"
+        //     isValid={!capture}
+        //     variant="outline"
+        //     className="px-4 py-2"
+        //     onClick={handleBlockFace}
+        //   />
+        // ) : (
+        //   <div className="" />
+        // );
+        return null;
+      }
 
       case 3:
         return (

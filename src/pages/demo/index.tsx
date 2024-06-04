@@ -17,7 +17,7 @@ const Demo: React.FC = () => {
   const [isFinishedRecording, setIsFinishedRecording] =
     React.useState<boolean>(false);
   const [capture, setCapturing] = React.useState<boolean>(false);
-  const [blockface, setBlockFace] = React.useState<boolean>(true);
+  const [blockface, setBlockFace] = React.useState<boolean>(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
 
   const [step, setStep] = React.useState<number>(1);
