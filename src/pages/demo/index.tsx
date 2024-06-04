@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import { Footer, Layout } from '@/container';
 import { VideoBottomBar, VideoPlayer } from '@/components';
-import WebcamDemo from '@/components/web-cam-face-detection';
+import CompatibleWebcam from '@/components/web-cam-face-detection/web';
 
 const Demo: React.FC = () => {
   const [showRecordingScreen, setShowRecordingScreen] =
@@ -17,7 +17,7 @@ const Demo: React.FC = () => {
   const [isFinishedRecording, setIsFinishedRecording] =
     React.useState<boolean>(false);
   const [capture, setCapturing] = React.useState<boolean>(false);
-  const [blockface, setBlockFace] = React.useState<boolean>(true);
+  const [blockface, setBlockFace] = React.useState<boolean>(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
 
   const [step, setStep] = React.useState<number>(1);
@@ -35,7 +35,6 @@ const Demo: React.FC = () => {
 
   const handleRecordAgain = (): void => {
     setRecordedChunks([]);
-    setBlockFace(true);
     setIsFinishedRecording(!isFinishedRecording);
     setStep(step - 1);
   };
@@ -62,7 +61,7 @@ const Demo: React.FC = () => {
         </div>
 
         {showRecordingScreen ? (
-          <WebcamDemo
+          <CompatibleWebcam
             blockFace={blockface}
             capturing={capture}
             setCapturing={setCapturing}

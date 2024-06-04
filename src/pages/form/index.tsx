@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import * as React from 'react';
 import * as Yup from 'yup';
-import { Formik, Form as FormikForm } from 'formik';
+import { Field, Formik, Form as FormikForm } from 'formik';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import { IoIosPlay } from 'react-icons/io';
 import { Button, DateInputMask, SearchSelect, TextField } from '@/components';
@@ -15,6 +16,7 @@ interface FormValue {
   location: string;
   sex: string;
   education: string;
+  checked: boolean;
 }
 
 const FORM_VALIDATION = Yup.object().shape({
@@ -27,6 +29,7 @@ const FORM_VALIDATION = Yup.object().shape({
   location: Yup.string().required('Localitatea este necesară'),
   sex: Yup.string().required(''),
   education: Yup.string().required(''),
+  checked: Yup.bool().oneOf([true]),
 });
 
 const Form: React.FC = () => {
@@ -37,6 +40,7 @@ const Form: React.FC = () => {
     location: '',
     sex: '',
     education: '',
+    checked: false,
   };
   const handleSubmit = async (val: FormValue) => {
     const { birthdate, education, location, sex } = val;
@@ -97,8 +101,23 @@ const Form: React.FC = () => {
               label="Care este cea mai înaltă formă de educație absolvită?"
               placeholder="Select"
             />
+            <div className="flex">
+              <Field
+                type="checkbox"
+                name="checked"
+                required
+                className="h-10 w-10 accent-secondary"
+              />
+              <label className="ml-4 text-xs" htmlFor="checked">
+                Declar că sunt de acord cu înregistrarea răspunsurilor mele și
+                cu prelucrarea datelor mele personale în conformitate cu
+                politica de confidențialitate. Am citit și înțeles termenii și
+                condițiile referitoare la protecția datelor personale.
+              </label>
+            </div>
+
             <Footer>
-              <div className="mt-4 flex items-center justify-end gap-3 ">
+              <div className="mt-4 flex items-center justify-end gap-3">
                 <Link to="/demo" className="w-full">
                   <Button
                     text="Înapoi"
