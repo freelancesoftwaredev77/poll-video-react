@@ -1,4 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
 import { Message, MetaPixel } from '@/components';
 import { Link } from 'react-router-dom';
 

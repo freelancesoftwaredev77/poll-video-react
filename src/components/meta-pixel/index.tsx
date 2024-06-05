@@ -22,4 +22,4 @@ src="https://www.facebook.com/tr?id=1847353955784394&ev=PageView&noscript=1"
   </Helmet>
 );
 
-export default React.memo(MetaPixel);
+export default React.memo(MetaPixel)
