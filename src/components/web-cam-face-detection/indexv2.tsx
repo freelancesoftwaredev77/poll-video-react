@@ -118,13 +118,22 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
       aria-hidden
     >
       <VideoPlayer
-        url={
-          recordedChunks.length
-            ? URL.createObjectURL(
-                new Blob(recordedChunks, { type: 'video/mp4' })
-              )
-            : ''
-        }
+        url={[
+          {
+            src: recordedChunks.length
+              ? URL.createObjectURL(
+                  new Blob(recordedChunks, { type: 'video/webm' })
+                )
+              : '',
+          },
+          {
+            src: recordedChunks.length
+              ? URL.createObjectURL(
+                  new Blob(recordedChunks, { type: 'video/mp4' })
+                )
+              : '',
+          },
+        ]}
       />
       {/* <video
         ref={videoRef}

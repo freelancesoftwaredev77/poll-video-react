@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import { MdOutlineReplay } from 'react-icons/md';
 
 interface IProps {
-  url: string;
+  url: any;
   setIsPlaying?: React.Dispatch<React.SetStateAction<boolean>>;
   isControl?: boolean;
 }
