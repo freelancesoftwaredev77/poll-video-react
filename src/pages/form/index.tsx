@@ -116,6 +116,12 @@ const Form: React.FC = () => {
                 ale INTERSPECT.
               </label>
             </div>
+            <Link
+              to="/terms-conditions"
+              className="mt-5 block text-center text-sm font-normal text-[blue]"
+            >
+              Termeni și Condiții pentru INTERSPECT
+            </Link>
 
             <Footer>
               <div className="mt-4 flex items-center justify-end gap-3">
