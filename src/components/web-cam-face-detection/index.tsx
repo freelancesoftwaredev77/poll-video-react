@@ -89,13 +89,15 @@ const WebcamDemo: React.FC<IProps> = ({
     video.playsInline = true;
     video.muted = true;
     video.onloadeddata = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const context = canvas.getContext('2d');
-      context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const thumbnailUrl = canvas.toDataURL('image/png');
-      setThumbnail(thumbnailUrl);
+      setTimeout(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const thumbnailUrl = canvas.toDataURL('image/png');
+        setThumbnail(thumbnailUrl);
+      }, 500);
     };
     video.load();
   };
@@ -148,7 +150,7 @@ const WebcamDemo: React.FC<IProps> = ({
           controlsList="nodownload"
           disableRemotePlayback
           controls
-          poster={thumbnail || undefined}
+          poster={thumbnail ?? ''}
           onCanPlay={() => console.log('Video can play')}
           onError={(e) => console.error('Error playing video', e)}
         >
@@ -195,13 +197,13 @@ const WebcamDemo: React.FC<IProps> = ({
                   aria-label="stop"
                   className={capturing ? 'mr-8' : ''}
                 >
-                  <div className="h-16 w-16 rounded-full border-2 border-white">
+                  <div className="h-16 w-16 rounded-full border-2 border-[#000000]">
                     <div className="mx-auto mt-4 h-7 w-7 rounded bg-warning" />
                   </div>
                 </button>
               ) : (
                 <button onClick={handleStartCaptureClick} aria-label="start">
-                  <div className="h-16 w-16 rounded-full border-4 border-white">
+                  <div className="h-16 w-16 rounded-full border-4 border-[#000000]">
                     <div className="mx-auto mt-[1.3px] h-[54px] w-[54px] rounded-full bg-warning" />
                   </div>
                 </button>
@@ -223,13 +225,17 @@ const WebcamDemo: React.FC<IProps> = ({
       {capturing ? (
         <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
           <p>Apasă </p>
-          <div className="h-7 w-7 rounded bg-warning" />
+          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
+            <div className="mx-auto mt-1.5 h-5 w-5 rounded bg-warning" />
+          </div>
           <p>pentru a încheia</p>
         </div>
       ) : (
         <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
           <p>Apasă </p>
-          <div className="h-7 w-7 rounded-full bg-warning" />
+          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
+            <div className="mx-auto mt-0.5 h-7 w-7 rounded-full bg-warning" />
+          </div>
           <p>pentru înregistrare</p>
         </div>
       )}
