@@ -101,7 +101,7 @@ const Form: React.FC = () => {
               label="Care este cea mai înaltă formă de educație absolvită?"
               placeholder="Select"
             />
-            <div className="flex">
+            <div className="flex items-center">
               <Field
                 type="checkbox"
                 name="checked"
