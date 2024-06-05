@@ -159,6 +159,10 @@ const WebcamDemo: React.FC<IProps> = ({
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
             type="video/webm"
           />
+          <source
+            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
+            type="video/mp4"
+          />
         </video>
       ) : (
         <p className="text-center font-semibold">
