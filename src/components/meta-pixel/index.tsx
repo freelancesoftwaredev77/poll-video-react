@@ -1,3 +1,4 @@
+import React from 'react';
 import { Helmet } from 'react-helmet';
 
 const MetaPixel = () => (
@@ -21,4 +22,4 @@ src="https://www.facebook.com/tr?id=1847353955784394&ev=PageView&noscript=1"
   </Helmet>
 );
 
-export default MetaPixel;
+export default React.memo(MetaPixel)

@@ -120,7 +120,7 @@ const Form: React.FC = () => {
               to="/terms-conditions"
               className="mt-5 block text-center text-sm font-normal text-[blue]"
             >
-              Termeni și Condiții pentru INTERSPECT
+              Termeni și condiții, Politica de confidențialitate INTERSPECT
             </Link>
 
             <Footer>

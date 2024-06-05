@@ -149,7 +149,7 @@ const Question: React.FC = () => {
               to="/terms-conditions"
               className="block pb-10 text-center text-sm font-normal text-[blue]"
             >
-              Termeni și Condiții pentru INTERSPECT
+              Termeni și condiții, Politica de confidențialitate INTERSPECT
             </Link>
           </div>
         ) : (

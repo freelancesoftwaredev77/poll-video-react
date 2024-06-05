@@ -7,7 +7,7 @@ import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
 
 interface IProps {
-  blockFace: boolean;
+  // blockFace: boolean;
   capturing: boolean;
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
@@ -19,7 +19,7 @@ interface IProps {
 }
 
 const WebcamDemoForIosDevices: React.FC<IProps> = ({
-  blockFace,
+  // blockFace,
   capturing,
   setCapturing,
   isFinishedRecording,
@@ -100,7 +100,7 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
       aria-hidden="true"
     >
       <video
-        autoPlay={false}
+        autoPlay
         className="h-full w-full rounded-xl object-cover"
         playsInline
         controlsList="nofullscreen nodownload"
@@ -130,15 +130,6 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
     </div>
   ) : (
     <div className="relative h-[90%]">
-      {blockFace && (
-        <div className="face-block">
-          <img
-            src="/face-cover.png"
-            alt="face-cover"
-            className="h-full w-full"
-          />
-        </div>
-      )}
       <Webcam
         ref={webcamRef}
         forceScreenshotSourceSize
@@ -190,6 +181,23 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
           </div>
         </div>
       </div>
+      {capturing ? (
+        <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
+          <p>Apasă </p>
+          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
+            <div className="mx-auto mt-1.5 h-5 w-5 rounded bg-warning" />
+          </div>
+          <p>pentru a încheia</p>
+        </div>
+      ) : (
+        <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
+          <p>Apasă </p>
+          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
+            <div className="mx-auto mt-0.5 h-7 w-7 rounded-full bg-warning" />
+          </div>
+          <p>pentru înregistrare</p>
+        </div>
+      )}
     </div>
   );
 };

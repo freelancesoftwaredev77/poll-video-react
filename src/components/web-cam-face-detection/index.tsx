@@ -9,7 +9,6 @@ import { FiRefreshCw } from 'react-icons/fi';
 import RecordRTC from 'recordrtc';
 
 interface IProps {
-  // blockFace: boolean;
   capturing: boolean;
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
@@ -21,7 +20,6 @@ interface IProps {
 }
 
 const WebcamDemo: React.FC<IProps> = ({
-  // blockFace,
   capturing,
   setCapturing,
   isFinishedRecording,
@@ -33,6 +31,7 @@ const WebcamDemo: React.FC<IProps> = ({
 }) => {
   const [cameraMode, setCameraMode] = useState<'user' | 'environment'>('user');
   const [timer, setTimer] = useState(0);
+  const [thumbnail, setThumbnail] = useState<string | null>(null);
   const webcamRef: MutableRefObject<Webcam | null> = useRef<Webcam | null>(
     null
   );
@@ -82,6 +81,30 @@ const WebcamDemo: React.FC<IProps> = ({
       alert('Webcam stream is not available');
     }
   };
+
+  const captureThumbnail = (videoUrl: string) => {
+    const video = document.createElement('video');
+    video.src = videoUrl;
+    video.currentTime = 2;
+    video.playsInline = true;
+    video.muted = true;
+    video.onloadeddata = () => {
+      const timeoutId = setTimeout(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const thumbnailUrl = canvas.toDataURL('image/png');
+        setThumbnail(thumbnailUrl);
+      }, 500);
+      // Clear the timeout if the thumbnail is captured before the timeout fires
+      video.onloadeddata = null;
+      clearTimeout(timeoutId);
+    };
+    video.load();
+  };
+
   const handleStopCaptureClick = () => {
     if (recorderRef.current) {
       try {
@@ -89,9 +112,9 @@ const WebcamDemo: React.FC<IProps> = ({
           // @ts-ignore
           const recordedBlob: Blob = recorderRef.current.getBlob();
           if (recordedBlob.size > 0) {
+            const videoUrl = URL.createObjectURL(recordedBlob);
             setRecordedChunks([...recordedChunks, recordedBlob]);
-          } else {
-            // console.error('Recorded blob is empty');
+            captureThumbnail(videoUrl);
           }
           // @ts-ignore
           recorderRef.current.reset();
@@ -124,39 +147,33 @@ const WebcamDemo: React.FC<IProps> = ({
     >
       {recordedChunks.length > 0 ? (
         <video
-          autoPlay={false}
+          autoPlay
           className="h-full w-full rounded-xl object-cover"
           playsInline
           controlsList="nodownload"
           disableRemotePlayback
           controls
+          poster={thumbnail ?? ''}
+          onCanPlay={() => console.log('Video can play')}
+          onError={(e) => console.error('Error playing video', e)}
         >
-          <source
-            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type="video/mp4"
-          />
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
             type="video/webm"
           />
+          <source
+            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
+            type="video/mp4"
+          />
         </video>
       ) : (
         <p className="text-center font-semibold">
-          Please Open in safari browser for recording preview features.
+          Please open in a supported browser for recording preview features.
         </p>
       )}
     </div>
   ) : (
     <div className="relative h-[90%]">
-      {/* {blockFace && (
-        <div className="face-block">
-          <img
-            src="/face-cover.png"
-            alt="face-cover"
-            className="h-full w-full"
-          />
-        </div>
-      )} */}
       <Webcam
         ref={webcamRef}
         forceScreenshotSourceSize
@@ -183,13 +200,13 @@ const WebcamDemo: React.FC<IProps> = ({
                   aria-label="stop"
                   className={capturing ? 'mr-8' : ''}
                 >
-                  <div className="h-16 w-16 rounded-full border-2 border-white">
+                  <div className="h-16 w-16 rounded-full border-2 border-[#000000]">
                     <div className="mx-auto mt-4 h-7 w-7 rounded bg-warning" />
                   </div>
                 </button>
               ) : (
                 <button onClick={handleStartCaptureClick} aria-label="start">
-                  <div className="h-16 w-16 rounded-full border-4 border-white">
+                  <div className="h-16 w-16 rounded-full border-4 border-[#000000]">
                     <div className="mx-auto mt-[1.3px] h-[54px] w-[54px] rounded-full bg-warning" />
                   </div>
                 </button>
@@ -208,6 +225,23 @@ const WebcamDemo: React.FC<IProps> = ({
           </div>
         </div>
       </div>
+      {capturing ? (
+        <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
+          <p>Apasă </p>
+          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
+            <div className="mx-auto mt-1.5 h-5 w-5 rounded bg-warning" />
+          </div>
+          <p>pentru a încheia</p>
+        </div>
+      ) : (
+        <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
+          <p>Apasă </p>
+          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
+            <div className="mx-auto mt-0.5 h-7 w-7 rounded-full bg-warning" />
+          </div>
+          <p>pentru înregistrare</p>
+        </div>
+      )}
     </div>
   );
 };
