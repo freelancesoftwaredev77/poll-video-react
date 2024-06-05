@@ -144,30 +144,20 @@ const WebcamDemo: React.FC<IProps> = ({
       aria-hidden="true"
     >
       {recordedChunks.length > 0 ? (
-        <>
-          <video
-            autoPlay={false}
-            className="h-full w-full rounded-xl object-cover"
-            playsInline
-            controlsList="nodownload"
-            disableRemotePlayback
-            controls
-          >
-            <source
-              src={URL.createObjectURL(
-                recordedChunks[recordedChunks.length - 1]
-              )}
-              type="video/webm"
-            />
-          </video>
-          {thumbnail && (
-            <img
-              src={thumbnail}
-              alt="Video thumbnail"
-              className="absolute bottom-2 right-2 h-32 w-32 object-cover"
-            />
-          )}
-        </>
+        <video
+          autoPlay={false}
+          className="h-full w-full rounded-xl object-cover"
+          playsInline
+          controlsList="nodownload"
+          disableRemotePlayback
+          controls
+          poster={thumbnail || undefined}
+        >
+          <source
+            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
+            type="video/webm"
+          />
+        </video>
       ) : (
         <p className="text-center font-semibold">
           Please open in a supported browser for recording preview features.
