@@ -43,7 +43,7 @@ const Home: React.FC = () => {
                 to="/terms-conditions"
                 className="text-sm font-normal text-[blue]"
               >
-                Termeni și Condiții pentru INTERSPECT
+                Termeni și condiții, Politica de confidențialitate INTERSPECT
               </Link>
             </>
           )}

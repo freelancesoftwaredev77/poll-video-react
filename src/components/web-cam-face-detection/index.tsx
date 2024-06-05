@@ -86,15 +86,21 @@ const WebcamDemo: React.FC<IProps> = ({
     const video = document.createElement('video');
     video.src = videoUrl;
     video.currentTime = 2; // Capture a frame 2 seconds into the video
+    video.playsInline = true;
+    video.muted = true;
     video.onloadeddata = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const context = canvas.getContext('2d');
-      context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const thumbnailUrl = canvas.toDataURL('image/png');
-      setThumbnail(thumbnailUrl);
+      setTimeout(() => {
+        // Ensure the video has rendered the frame
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const thumbnailUrl = canvas.toDataURL('image/png');
+        setThumbnail(thumbnailUrl);
+      }, 500);
     };
+    video.load();
   };
 
   const handleStopCaptureClick = () => {
@@ -221,6 +227,19 @@ const WebcamDemo: React.FC<IProps> = ({
           </div>
         </div>
       </div>
+      {capturing ? (
+        <div className="mt-5 flex items-center justify-center gap-3 text-secondary">
+          <p>Apasă </p>
+          <div className="h-7 w-7 rounded bg-warning" />
+          <p>pentru înregistrare</p>
+        </div>
+      ) : (
+        <div className="mt-4 flex items-center justify-center gap-3 text-secondary">
+          <p>Apasă </p>
+          <div className="h-7 w-7 rounded-full bg-warning" />
+          <p>pentru a încheia</p>
+        </div>
+      )}
     </div>
   );
 };
