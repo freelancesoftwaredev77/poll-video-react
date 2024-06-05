@@ -5,6 +5,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
+import VideoPlayer from '../video-player';
 
 interface IProps {
   capturing: boolean;
@@ -29,9 +30,9 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
 }) => {
   const [cameraMode, setCameraMode] = React.useState('user');
   const [timer, setTimer] = useState(0);
-  const [showControls, setShowControls] = useState(false); // Initially hide controls
+  // const [showControls, setShowControls] = useState(false);
   const webcamRef: any = React.useRef<Webcam | null>(null);
-  const videoRef: any = useRef<HTMLVideoElement>(null); // Reference to the video element
+  // const videoRef: any = useRef<HTMLVideoElement>(null);
 
   const videoConstraints = {
     facingMode: cameraMode,
@@ -92,22 +93,22 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
-  const handleVideoTap = () => {
-    setShowControls((prev) => !prev);
-  };
+  // const handleVideoTap = () => {
+  //   setShowControls((prev) => !prev);
+  // };
 
-  useEffect(() => {
-    const videoElement = videoRef.current;
-    if (videoElement) {
-      videoElement.addEventListener('play', () => {
-        setShowControls(false);
-      });
+  // useEffect(() => {
+  //   const videoElement = videoRef.current;
+  //   if (videoElement) {
+  //     videoElement.addEventListener('play', () => {
+  //       setShowControls(false);
+  //     });
 
-      videoElement.addEventListener('ended', () => {
-        setShowControls(true);
-      });
-    }
-  }, []);
+  //     videoElement.addEventListener('ended', () => {
+  //       setShowControls(true);
+  //     });
+  //   }
+  // }, []);
 
   return isFinishedRecording ? (
     <div
@@ -115,9 +116,17 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
       role="button"
       tabIndex={0}
       aria-hidden
-      onClick={handleVideoTap}
     >
-      <video
+      <VideoPlayer
+        url={
+          recordedChunks.length
+            ? URL.createObjectURL(
+                new Blob(recordedChunks, { type: 'video/mp4' })
+              )
+            : ''
+        }
+      />
+      {/* <video
         ref={videoRef}
         autoPlay
         className="h-full w-full rounded-xl object-cover"
@@ -126,6 +135,7 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
         controlsList="nofullscreen nodownload"
         disablePictureInPicture
         disableRemotePlayback
+        muted
       >
         <source
           src={
@@ -136,16 +146,8 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
               : ''
           }
         />
-        <source
-          src={
-            recordedChunks.length
-              ? URL.createObjectURL(
-                  new Blob(recordedChunks, { type: 'video/mp4' })
-                )
-              : ''
-          }
-        />
-      </video>
+        <source src={} />
+      </video> */}
     </div>
   ) : (
     <div className="relative h-[90%]">
