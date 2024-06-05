@@ -7,6 +7,7 @@ import {
   Home,
   Question,
   TermsAndCondition,
+  Thankyou,
 } from '@/pages';
 
 const routesData = [
@@ -46,6 +47,11 @@ const routesData = [
     id: 6,
     path: '/terms-conditions',
     element: <TermsAndCondition />,
+  },
+  {
+    id: 7,
+    path: '/thank-you',
+    element: <Thankyou />,
   },
 ];
 
