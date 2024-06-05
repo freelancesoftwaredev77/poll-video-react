@@ -106,7 +106,7 @@ const Form: React.FC = () => {
                 type="checkbox"
                 name="checked"
                 required
-                className="h-10 w-10 accent-secondary"
+                className="form-checkbox-custom peer"
               />
               <label className="ml-4 text-xs" htmlFor="checked">
                 Declar că sunt de acord cu înregistrarea răspunsurilor mele text
