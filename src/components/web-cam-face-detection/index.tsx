@@ -89,7 +89,7 @@ const WebcamDemo: React.FC<IProps> = ({
     video.playsInline = true;
     video.muted = true;
     video.onloadeddata = () => {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         const canvas = document.createElement('canvas');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
@@ -98,6 +98,9 @@ const WebcamDemo: React.FC<IProps> = ({
         const thumbnailUrl = canvas.toDataURL('image/png');
         setThumbnail(thumbnailUrl);
       }, 500);
+      // Clear the timeout if the thumbnail is captured before the timeout fires
+      video.onloadeddata = null;
+      clearTimeout(timeoutId);
     };
     video.load();
   };
