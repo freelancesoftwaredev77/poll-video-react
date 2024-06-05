@@ -87,7 +87,7 @@ const WebcamDemo: React.FC<IProps> = ({
           if (recordedBlob.size > 0) {
             setRecordedChunks([...recordedChunks, recordedBlob]);
           } else {
-            console.error('Recorded blob is empty');
+            // console.error('Recorded blob is empty');
           }
           // @ts-ignore
           recorderRef.current.reset();
@@ -97,7 +97,6 @@ const WebcamDemo: React.FC<IProps> = ({
           setStep(step + 1);
         });
       } catch (error) {
-        console.error('Error stopping recording:', error);
         setCapturing(false);
       }
     }

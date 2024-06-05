@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ReactPlayer from 'react-player';
 import { MdOutlineReplay } from 'react-icons/md';
+import Spinner from '../spinner';
 
 interface IProps {
   url: string;
@@ -16,11 +17,13 @@ const VideoPlayer: React.FC<IProps> = ({
   const [isPaused, setIsPaused] = React.useState(true);
   const [showControls, setShowControls] = React.useState(true);
   const [endVideo, setEndVideo] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const playerRef = React.useRef<ReactPlayer>(null);
 
   const handleEndVideo = () => {
     setEndVideo(true);
     setShowControls(true);
+    setIsLoading(false);
   };
 
   const handleControls: () => void = (): void => {
@@ -51,6 +54,15 @@ const VideoPlayer: React.FC<IProps> = ({
     }
   };
 
+  const handleProgress = ({ played, loaded }: any) => {
+    // If the video is playing and the loaded fraction is less than a certain threshold, show the loading indicator
+    if (!isPaused && loaded - played < 0.05) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div
       className="relative h-[100%]"
@@ -66,6 +78,9 @@ const VideoPlayer: React.FC<IProps> = ({
         disablePictureInPicture
         className="custom-player !h-full !w-full"
         onEnded={handleEndVideo}
+        onBuffer={() => setIsLoading(true)}
+        onBufferEnd={() => setIsLoading(false)}
+        onProgress={handleProgress}
         playsinline
         controls={isControl}
         config={{
@@ -94,6 +109,12 @@ const VideoPlayer: React.FC<IProps> = ({
               />
             </button>
           )}
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center">
+          <Spinner variant="large" align="center" />
         </div>
       )}
     </div>

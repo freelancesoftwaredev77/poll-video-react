@@ -109,10 +109,11 @@ const Form: React.FC = () => {
                 className="h-10 w-10 accent-secondary"
               />
               <label className="ml-4 text-xs" htmlFor="checked">
-                Declar că sunt de acord cu înregistrarea răspunsurilor mele și
-                cu prelucrarea datelor mele personale în conformitate cu
-                politica de confidențialitate. Am citit și înțeles termenii și
-                condițiile referitoare la protecția datelor personale.
+                Declar că sunt de acord cu înregistrarea răspunsurilor mele text
+                și video și cu prelucrarea datelor mele personale în scopul
+                extragerii informațiilor necesare sondajului. Am citit și
+                înțeles termenii și condițiile și politica de confidențialitate
+                ale INTERSPECT.
               </label>
             </div>
 
