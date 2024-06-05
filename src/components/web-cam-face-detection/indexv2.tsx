@@ -30,9 +30,9 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
 }) => {
   const [cameraMode, setCameraMode] = React.useState('user');
   const [timer, setTimer] = useState(0);
-  // const [showControls, setShowControls] = useState(false);
+  // const [showControls, setShowControls] = useState(false); // Initially hide controls
   const webcamRef: any = React.useRef<Webcam | null>(null);
-  // const videoRef: any = useRef<HTMLVideoElement>(null);
+  // const videoRef: any = useRef<HTMLVideoElement>(null); // Reference to the video element
 
   const videoConstraints = {
     facingMode: cameraMode,
@@ -121,17 +121,15 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
         url={[
           {
             src: recordedChunks.length
-              ? URL.createObjectURL(
-                  new Blob(recordedChunks, { type: 'video/webm' })
-                )
+              ? URL.createObjectURL(new Blob(recordedChunks))
               : '',
+            type: 'video/webm',
           },
           {
             src: recordedChunks.length
-              ? URL.createObjectURL(
-                  new Blob(recordedChunks, { type: 'video/mp4' })
-                )
+              ? URL.createObjectURL(new Blob(recordedChunks))
               : '',
+            type: 'video/mp4',
           },
         ]}
       />
@@ -155,7 +153,15 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
               : ''
           }
         />
-        <source src={} />
+        <source
+          src={
+            recordedChunks.length
+              ? URL.createObjectURL(
+                  new Blob(recordedChunks, { type: 'video/mp4' })
+                )
+              : ''
+          }
+        />
       </video> */}
     </div>
   ) : (
