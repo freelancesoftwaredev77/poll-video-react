@@ -85,20 +85,17 @@ const WebcamDemo: React.FC<IProps> = ({
   const captureThumbnail = (videoUrl: string) => {
     const video = document.createElement('video');
     video.src = videoUrl;
-    video.currentTime = 2; // Capture a frame 2 seconds into the video
+    video.currentTime = 2;
     video.playsInline = true;
     video.muted = true;
     video.onloadeddata = () => {
-      setTimeout(() => {
-        // Ensure the video has rendered the frame
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const context = canvas.getContext('2d');
-        context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const thumbnailUrl = canvas.toDataURL('image/png');
-        setThumbnail(thumbnailUrl);
-      }, 500);
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const context = canvas.getContext('2d');
+      context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const thumbnailUrl = canvas.toDataURL('image/png');
+      setThumbnail(thumbnailUrl);
     };
     video.load();
   };
