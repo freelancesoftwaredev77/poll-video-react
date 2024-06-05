@@ -1,15 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
-import {
-  Link,
-  NavigateFunction,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import { v1 as uuidv1 } from 'uuid';
 import { Footer, Layout } from '@/container';
-import { Message, VideoBottomBar, VideoSkeleton } from '@/components';
+import { VideoBottomBar, VideoSkeleton } from '@/components';
 import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
 import useFetch from '@/hooks/useFetch';
@@ -19,7 +14,6 @@ import CompatibleWebcam from '@/components/web-cam-face-detection/web';
 const Question: React.FC = () => {
   const { data: videoQuestions, isLoading } = useFetch('video_questions');
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [isCompleted, setIsCompleted] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [showRecordingScreen, setShowRecordingScreen] = React.useState(false);
   const [recordedChunks, setRecordedChunks] = React.useState([]);
@@ -30,18 +24,6 @@ const Question: React.FC = () => {
   const [step, setStep] = React.useState(1);
   const navigate: NavigateFunction = useNavigate();
   const { state } = useLocation();
-
-  // const [showAlert, setShowAlert] = React.useState(false);
-
-  // const handleOpenAlert = () => {
-  //   setShowAlert(true);
-  //   window.history.pushState(null, '', window.location.href);
-  // };
-
-  // const handleCloseAlert = () => {
-  //   setShowAlert(false);
-  //   window.history.back();
-  // };
 
   React.useEffect(() => {
     if (!state?.userId) {
@@ -105,7 +87,7 @@ const Question: React.FC = () => {
               (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
             );
             if (currentIndex + 1 === videoQuestions?.length) {
-              setIsCompleted(true);
+              navigate('/thank-you');
             }
             setIsSubmitting(false);
           }
@@ -137,52 +119,35 @@ const Question: React.FC = () => {
   return (
     <>
       <Layout>
-        {isCompleted ? (
-          <div className="">
-            <Message
-              message="Sondajul a fost încheiat !"
-              title="Felicitări !"
-              imageUrl="/clap.png"
+        <>
+          <h1 className="my-5 text-[22px] font-bold text-primary">
+            {`Întrebarea ${currentIndex + 1}`}
+          </h1>
+
+          {isLoading ? (
+            <VideoSkeleton />
+          ) : showRecordingScreen ? (
+            <CompatibleWebcam
+              blockFace={blockface}
+              capturing={capture}
+              setCapturing={setCapturing}
+              isFinishedRecording={isFinishedRecording}
+              setIsFinishedRecording={setIsFinishedRecording}
+              recordedChunks={recordedChunks}
+              setRecordedChunks={setRecordedChunks}
+              step={step}
+              setStep={setStep}
             />
-
-            <Link
-              to="/terms-conditions"
-              className="block pb-10 text-center text-sm font-normal text-[blue]"
-            >
-              Termeni și condiții, Politica de confidențialitate INTERSPECT
-            </Link>
-          </div>
-        ) : (
-          <>
-            <h1 className="my-5 text-[22px] font-bold text-primary">
-              {`Întrebarea ${currentIndex + 1}`}
-            </h1>
-
-            {isLoading ? (
-              <VideoSkeleton />
-            ) : showRecordingScreen ? (
-              <CompatibleWebcam
-                blockFace={blockface}
-                capturing={capture}
-                setCapturing={setCapturing}
-                isFinishedRecording={isFinishedRecording}
-                setIsFinishedRecording={setIsFinishedRecording}
-                recordedChunks={recordedChunks}
-                setRecordedChunks={setRecordedChunks}
-                step={step}
-                setStep={setStep}
-              />
-            ) : (
-              <VideoPlayer
-                url={
-                  videoQuestions &&
-                  videoQuestions[currentIndex]?.question_video_url
-                }
-                setIsPlaying={setIsPlaying}
-              />
-            )}
-          </>
-        )}
+          ) : (
+            <VideoPlayer
+              url={
+                videoQuestions &&
+                videoQuestions[currentIndex]?.question_video_url
+              }
+              setIsPlaying={setIsPlaying}
+            />
+          )}
+        </>
       </Layout>
       <Footer>
         <VideoBottomBar

@@ -8,6 +8,7 @@ import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
 import RecordRTC from 'recordrtc';
 
+// Define the interface for the component's props
 interface IProps {
   capturing: boolean;
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +20,7 @@ interface IProps {
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
+// Define the functional component
 const WebcamDemo: React.FC<IProps> = ({
   capturing,
   setCapturing,
@@ -29,21 +31,28 @@ const WebcamDemo: React.FC<IProps> = ({
   setStep,
   step,
 }) => {
+  // State to manage the camera mode
   const [cameraMode, setCameraMode] = useState<'user' | 'environment'>('user');
+  // State to manage the timer
   const [timer, setTimer] = useState(0);
-  const [showControls, setShowControls] = useState(true); // State to manage controls visibility
+  // State to manage the visibility of controls
+  const [showControls, setShowControls] = useState(true);
+  // Reference for the webcam
   const webcamRef: MutableRefObject<Webcam | null> = useRef<Webcam | null>(
     null
   );
-
+  // Reference for the recorder
   const recorderRef: MutableRefObject<RecordRTC | null> =
     useRef<RecordRTC | null>(null);
+
+  // Define video constraints
   const videoConstraints = {
     facingMode: cameraMode,
     width: { ideal: 1920 },
     height: { ideal: 1080 },
   };
 
+  // Effect to manage the timer
   useEffect(() => {
     let intervalId: any;
     if (capturing) {
@@ -54,10 +63,10 @@ const WebcamDemo: React.FC<IProps> = ({
       clearInterval(intervalId);
       setTimer(0);
     }
-
     return () => clearInterval(intervalId);
   }, [capturing]);
 
+  // Start recording
   const handleStartCaptureClick = () => {
     if (webcamRef.current && webcamRef.current.stream) {
       setCapturing(true);
@@ -73,9 +82,8 @@ const WebcamDemo: React.FC<IProps> = ({
 
       try {
         recorderRef.current = new RecordRTC(stream, options);
-        recorderRef?.current?.startRecording();
+        recorderRef.current.startRecording();
         setTimer(0);
-
         setTimeout(() => {
           setShowControls(false);
         }, 2000);
@@ -87,6 +95,7 @@ const WebcamDemo: React.FC<IProps> = ({
     }
   };
 
+  // Stop recording
   const handleStopCaptureClick = () => {
     if (recorderRef.current) {
       try {
@@ -115,25 +124,6 @@ const WebcamDemo: React.FC<IProps> = ({
     }
   }, [timer]);
 
-  // useEffect(() => {
-  //   const videoElement = videoRef.current;
-  //   if (videoElement) {
-  //     const hideControlsTimeout = setTimeout(() => {
-  //       setShowControls(false);
-  //     }, 2000);
-
-  //     videoElement.addEventListener('play', () => {
-  //       clearTimeout(hideControlsTimeout);
-  //       setShowControls(false);
-  //     });
-
-  //     videoElement.addEventListener('ended', () => {
-  //       setShowControls(true);
-  //       console.log('Ended');
-  //     });
-  //   }
-  // }, [videoRef]);
-
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
@@ -151,7 +141,6 @@ const WebcamDemo: React.FC<IProps> = ({
     >
       {recordedChunks.length > 0 ? (
         <video
-          // ref={videoRef}
           autoPlay
           className="h-full w-full rounded-xl object-cover"
           playsInline
