@@ -9,7 +9,6 @@ import { FiRefreshCw } from 'react-icons/fi';
 import RecordRTC from 'recordrtc';
 
 interface IProps {
-  // blockFace: boolean;
   capturing: boolean;
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
@@ -21,7 +20,6 @@ interface IProps {
 }
 
 const WebcamDemo: React.FC<IProps> = ({
-  // blockFace,
   capturing,
   setCapturing,
   isFinishedRecording,
@@ -33,6 +31,7 @@ const WebcamDemo: React.FC<IProps> = ({
 }) => {
   const [cameraMode, setCameraMode] = useState<'user' | 'environment'>('user');
   const [timer, setTimer] = useState(0);
+  const [thumbnail, setThumbnail] = useState<string | null>(null);
   const webcamRef: MutableRefObject<Webcam | null> = useRef<Webcam | null>(
     null
   );
@@ -82,6 +81,22 @@ const WebcamDemo: React.FC<IProps> = ({
       alert('Webcam stream is not available');
     }
   };
+
+  const captureThumbnail = (videoUrl: string) => {
+    const video = document.createElement('video');
+    video.src = videoUrl;
+    video.currentTime = 2; // Capture a frame 2 seconds into the video
+    video.onloadeddata = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const context = canvas.getContext('2d');
+      context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const thumbnailUrl = canvas.toDataURL('image/png');
+      setThumbnail(thumbnailUrl);
+    };
+  };
+
   const handleStopCaptureClick = () => {
     if (recorderRef.current) {
       try {
@@ -89,9 +104,9 @@ const WebcamDemo: React.FC<IProps> = ({
           // @ts-ignore
           const recordedBlob: Blob = recorderRef.current.getBlob();
           if (recordedBlob.size > 0) {
+            const videoUrl = URL.createObjectURL(recordedBlob);
             setRecordedChunks([...recordedChunks, recordedBlob]);
-          } else {
-            // console.error('Recorded blob is empty');
+            captureThumbnail(videoUrl);
           }
           // @ts-ignore
           recorderRef.current.reset();
@@ -123,40 +138,38 @@ const WebcamDemo: React.FC<IProps> = ({
       aria-hidden="true"
     >
       {recordedChunks.length > 0 ? (
-        <video
-          autoPlay={false}
-          className="h-full w-full rounded-xl object-cover"
-          playsInline
-          controlsList="nodownload"
-          disableRemotePlayback
-          controls
-        >
-          <source
-            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type="video/mp4"
-          />
-          <source
-            src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
-            type="video/webm"
-          />
-        </video>
+        <>
+          <video
+            autoPlay={false}
+            className="h-full w-full rounded-xl object-cover"
+            playsInline
+            controlsList="nodownload"
+            disableRemotePlayback
+            controls
+          >
+            <source
+              src={URL.createObjectURL(
+                recordedChunks[recordedChunks.length - 1]
+              )}
+              type="video/webm"
+            />
+          </video>
+          {thumbnail && (
+            <img
+              src={thumbnail}
+              alt="Video thumbnail"
+              className="absolute bottom-2 right-2 h-32 w-32 object-cover"
+            />
+          )}
+        </>
       ) : (
         <p className="text-center font-semibold">
-          Please Open in safari browser for recording preview features.
+          Please open in a supported browser for recording preview features.
         </p>
       )}
     </div>
   ) : (
     <div className="relative h-[90%]">
-      {/* {blockFace && (
-        <div className="face-block">
-          <img
-            src="/face-cover.png"
-            alt="face-cover"
-            className="h-full w-full"
-          />
-        </div>
-      )} */}
       <Webcam
         ref={webcamRef}
         forceScreenshotSourceSize
