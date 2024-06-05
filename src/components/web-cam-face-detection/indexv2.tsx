@@ -1,7 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-// eslint-disable jsx-a11y/media-has-caption /
-// eslint-disable @typescript-eslint/no-unsafe-argument /
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
@@ -100,7 +98,7 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
       aria-hidden="true"
     >
       <video
-        autoPlay
+        autoPlay={false}
         className="h-full w-full rounded-xl object-cover"
         playsInline
         controlsList="nofullscreen nodownload"

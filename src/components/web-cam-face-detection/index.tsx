@@ -1,8 +1,8 @@
-/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
@@ -31,10 +31,11 @@ const WebcamDemo: React.FC<IProps> = ({
 }) => {
   const [cameraMode, setCameraMode] = useState<'user' | 'environment'>('user');
   const [timer, setTimer] = useState(0);
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
+  const [showControls, setShowControls] = useState(true); // State to manage controls visibility
   const webcamRef: MutableRefObject<Webcam | null> = useRef<Webcam | null>(
     null
   );
+
   const recorderRef: MutableRefObject<RecordRTC | null> =
     useRef<RecordRTC | null>(null);
   const videoConstraints = {
@@ -74,35 +75,16 @@ const WebcamDemo: React.FC<IProps> = ({
         recorderRef.current = new RecordRTC(stream, options);
         recorderRef?.current?.startRecording();
         setTimer(0);
+
+        setTimeout(() => {
+          setShowControls(false);
+        }, 2000);
       } catch (error) {
         setCapturing(false);
       }
     } else {
       alert('Webcam stream is not available');
     }
-  };
-
-  const captureThumbnail = (videoUrl: string) => {
-    const video = document.createElement('video');
-    video.src = videoUrl;
-    video.currentTime = 2;
-    video.playsInline = true;
-    video.muted = true;
-    video.onloadeddata = () => {
-      const timeoutId = setTimeout(() => {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const context = canvas.getContext('2d');
-        context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const thumbnailUrl = canvas.toDataURL('image/png');
-        setThumbnail(thumbnailUrl);
-      }, 500);
-      // Clear the timeout if the thumbnail is captured before the timeout fires
-      video.onloadeddata = null;
-      clearTimeout(timeoutId);
-    };
-    video.load();
   };
 
   const handleStopCaptureClick = () => {
@@ -112,9 +94,7 @@ const WebcamDemo: React.FC<IProps> = ({
           // @ts-ignore
           const recordedBlob: Blob = recorderRef.current.getBlob();
           if (recordedBlob.size > 0) {
-            const videoUrl = URL.createObjectURL(recordedBlob);
             setRecordedChunks([...recordedChunks, recordedBlob]);
-            captureThumbnail(videoUrl);
           }
           // @ts-ignore
           recorderRef.current.reset();
@@ -135,27 +115,52 @@ const WebcamDemo: React.FC<IProps> = ({
     }
   }, [timer]);
 
+  // useEffect(() => {
+  //   const videoElement = videoRef.current;
+  //   if (videoElement) {
+  //     const hideControlsTimeout = setTimeout(() => {
+  //       setShowControls(false);
+  //     }, 2000);
+
+  //     videoElement.addEventListener('play', () => {
+  //       clearTimeout(hideControlsTimeout);
+  //       setShowControls(false);
+  //     });
+
+  //     videoElement.addEventListener('ended', () => {
+  //       setShowControls(true);
+  //       console.log('Ended');
+  //     });
+  //   }
+  // }, [videoRef]);
+
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
+
+  const handleVideoTap = () => {
+    setShowControls((prev) => !prev);
+  };
 
   return isFinishedRecording ? (
     <div
       className="relative h-[90%] cursor-pointer"
       role="button"
       tabIndex={0}
-      aria-hidden="true"
+      aria-hidden
+      onClick={handleVideoTap}
     >
       {recordedChunks.length > 0 ? (
         <video
+          // ref={videoRef}
           autoPlay
           className="h-full w-full rounded-xl object-cover"
           playsInline
+          controls={showControls}
           controlsList="nodownload"
           disableRemotePlayback
-          controls
-          poster={thumbnail ?? ''}
-          onCanPlay={() => console.log('Video can play')}
-          onError={(e) => console.error('Error playing video', e)}
+          onEnded={() => {
+            setShowControls(!showControls);
+          }}
         >
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
