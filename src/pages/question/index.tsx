@@ -138,21 +138,20 @@ const Question: React.FC = () => {
     <>
       <Layout>
         {isCompleted ? (
-          <>
+          <div className="">
             <Message
               message="Sondajul a fost încheiat !"
               title="Felicitări !"
               imageUrl="/clap.png"
             />
-            <Footer>
-              <Link
-                to="/terms-conditions"
-                className="block text-center text-sm font-normal text-[blue]"
-              >
-                Termeni și Condiții pentru INTERSPECT
-              </Link>
-            </Footer>
-          </>
+
+            <Link
+              to="/terms-conditions"
+              className="block pb-10 text-center text-sm font-normal text-[blue]"
+            >
+              Termeni și Condiții pentru INTERSPECT
+            </Link>
+          </div>
         ) : (
           <>
             <h1 className="my-5 text-[22px] font-bold text-primary">
