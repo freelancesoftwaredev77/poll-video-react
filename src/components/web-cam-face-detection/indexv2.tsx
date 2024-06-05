@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-// eslint-disable jsx-a11y/media-has-caption /
-// eslint-disable @typescript-eslint/no-unsafe-argument /
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
 
 interface IProps {
+  // blockFace: boolean;
   capturing: boolean;
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
@@ -19,26 +17,25 @@ interface IProps {
 }
 
 const WebcamDemoForIosDevices: React.FC<IProps> = ({
+  // blockFace,
   capturing,
   setCapturing,
   isFinishedRecording,
   setIsFinishedRecording,
-  setRecordedChunks,
   recordedChunks,
-  step,
+  setRecordedChunks,
   setStep,
+  step,
 }) => {
-  const [cameraMode, setCameraMode] = useState('user');
+  const [cameraMode, setCameraMode] = React.useState('user');
   const [timer, setTimer] = useState(0);
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
-  const webcamRef = useRef<Webcam | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const webcamRef: any = React.useRef<Webcam | null>(null);
 
   const videoConstraints = {
     facingMode: cameraMode,
   };
 
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const mediaRecorderRef = useRef<any>(null);
 
   useEffect(() => {
     let intervalId: any;
@@ -62,15 +59,12 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
 
   const handleStartCaptureClick = () => {
     setCapturing(true);
-    // @ts-ignore
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current!.stream);
+    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream);
     mediaRecorderRef.current.addEventListener(
       'dataavailable',
       handleDataAvailable
     );
     mediaRecorderRef.current.start();
-    // Reset thumbnail when starting capture
-    setThumbnail(null);
   };
 
   const handleStopCaptureClick = useCallback(() => {
@@ -80,11 +74,11 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
     setStep(step + 1);
   }, [
     capturing,
+    isFinishedRecording,
     setCapturing,
     setIsFinishedRecording,
     setStep,
     step,
-    isFinishedRecording,
   ]);
 
   useEffect(() => {
@@ -96,35 +90,21 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
-  const handleVideoDataLoaded = () => {
-    if (!thumbnail && videoRef.current) {
-      // Capture frame from video stream and convert it to a data URL
-      const canvas = document.createElement('canvas');
-      canvas.width = videoRef.current.videoWidth;
-      canvas.height = videoRef.current.videoHeight;
-      canvas.getContext('2d')?.drawImage(videoRef.current, 0, 0);
-      const thumbnailDataUrl = canvas.toDataURL();
-      setThumbnail(thumbnailDataUrl);
-    }
-  };
-
   return isFinishedRecording ? (
     <div
       className="relative h-[90%] cursor-pointer"
       role="button"
       tabIndex={0}
-      aria-hidden
+      aria-hidden="true"
     >
       <video
-        autoPlay
+        autoPlay={false}
         className="h-full w-full rounded-xl object-cover"
         playsInline
-        controls
         controlsList="nofullscreen nodownload"
         disablePictureInPicture
         disableRemotePlayback
-        onEnded={handleVideoDataLoaded}
-        ref={videoRef}
+        controls
       >
         <source
           src={
@@ -145,13 +125,6 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
           }
         />
       </video>
-      {thumbnail && (
-        <img
-          src={thumbnail}
-          alt="Thumbnail"
-          className="absolute left-0 top-0 h-full w-full rounded-xl object-cover"
-        />
-      )}
     </div>
   ) : (
     <div className="relative h-[90%]">

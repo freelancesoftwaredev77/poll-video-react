@@ -161,7 +161,6 @@ const WebcamDemo: React.FC<IProps> = ({
           onEnded={() => {
             setShowControls(!showControls);
           }}
-          onError={(e) => console.error('Error playing video', e)}
         >
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
