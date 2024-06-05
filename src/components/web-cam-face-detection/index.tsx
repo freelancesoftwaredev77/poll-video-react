@@ -1,8 +1,8 @@
-/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
 import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
@@ -138,12 +138,20 @@ const WebcamDemo: React.FC<IProps> = ({
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
+  const handleVideoTap = () => {
+    const video = document.querySelector('video');
+    if (video && !video.controls) {
+      video.controls = true;
+    }
+  };
+
   return isFinishedRecording ? (
     <div
       className="relative h-[90%] cursor-pointer"
       role="button"
       tabIndex={0}
       aria-hidden="true"
+      onClick={handleVideoTap}
     >
       {recordedChunks.length > 0 ? (
         <video
@@ -154,8 +162,12 @@ const WebcamDemo: React.FC<IProps> = ({
           disableRemotePlayback
           controls
           poster={thumbnail ?? ''}
-          onCanPlay={() => console.log('Video can play')}
-          onError={(e) => console.error('Error playing video', e)}
+          onEnded={() => {
+            const video = document.querySelector('video');
+            if (video) {
+              video.controls = false;
+            }
+          }}
         >
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
