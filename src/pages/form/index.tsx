@@ -101,20 +101,27 @@ const Form: React.FC = () => {
               label="Care este cea mai înaltă formă de educație absolvită?"
               placeholder="Select"
             />
-            <div className="flex">
+            <div className="flex items-center">
               <Field
                 type="checkbox"
                 name="checked"
                 required
-                className="h-10 w-10 accent-secondary"
+                className="form-checkbox-custom peer"
               />
               <label className="ml-4 text-xs" htmlFor="checked">
-                Declar că sunt de acord cu înregistrarea răspunsurilor mele și
-                cu prelucrarea datelor mele personale în conformitate cu
-                politica de confidențialitate. Am citit și înțeles termenii și
-                condițiile referitoare la protecția datelor personale.
+                Declar că sunt de acord cu înregistrarea răspunsurilor mele text
+                și video și cu prelucrarea datelor mele personale în scopul
+                extragerii informațiilor necesare sondajului. Am citit și
+                înțeles termenii și condițiile și politica de confidențialitate
+                ale INTERSPECT.
               </label>
             </div>
+            <Link
+              to="/terms-conditions"
+              className="mt-5 block text-center text-sm font-normal text-[blue]"
+            >
+              Termeni și Condiții pentru INTERSPECT
+            </Link>
 
             <Footer>
               <div className="mt-4 flex items-center justify-end gap-3">

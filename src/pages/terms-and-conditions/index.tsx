@@ -38,7 +38,7 @@ const TermsAndCondition: React.FC = () => (
         aplicare a Regulamentului (UE) 2016/679 și de Legea nr. 506/2004 privind
         prelucrarea datelor cu caracter personal și protecția vieții private în
         sectorul comunicațiilor electronice. Orice litigii vor fi soluționate de
-        instanțele competente din România.
+        instanțele competente din România.”
       </p>
     </div>
   </Layout>

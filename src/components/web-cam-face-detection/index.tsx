@@ -65,6 +65,10 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
+        mimeType: 'video/webm;codecs=vp8',
+        bitsPerSecond: 2 * 1024 * 1024,
+        audioBitsPerSecond: 30000,
+        videoBitsPerSecond: 50000,
       };
 
       try {
@@ -87,7 +91,7 @@ const WebcamDemo: React.FC<IProps> = ({
           if (recordedBlob.size > 0) {
             setRecordedChunks([...recordedChunks, recordedBlob]);
           } else {
-            console.error('Recorded blob is empty');
+            // console.error('Recorded blob is empty');
           }
           // @ts-ignore
           recorderRef.current.reset();
@@ -97,7 +101,6 @@ const WebcamDemo: React.FC<IProps> = ({
           setStep(step + 1);
         });
       } catch (error) {
-        console.error('Error stopping recording:', error);
         setCapturing(false);
       }
     }

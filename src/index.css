@@ -169,13 +169,13 @@ video {
   height: auto;
 }
 
-.face-block {
+/* .face-block {
   position: absolute;
   top: 39%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 57%;
-}
+} */
 
 /* @media screen and (max-width: 868px) {
   .face-block {
@@ -185,7 +185,7 @@ video {
   }
 } */
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
   .face-block {
     width: 87%;
     height: 70%;
@@ -199,4 +199,6 @@ video {
     height: 74%;
     top: 40%;
   }
-}
+} */
+
+/* CSS Reset for form elements */
