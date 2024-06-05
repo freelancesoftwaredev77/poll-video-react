@@ -1,3 +1,4 @@
+import React from 'react';
 import { Message, MetaPixel } from '@/components';
 import { Link } from 'react-router-dom';
 
@@ -21,4 +22,4 @@ const ThankYouPage = () => (
   </>
 );
 
-export default ThankYouPage;
+export default React.memo(ThankYouPage);
