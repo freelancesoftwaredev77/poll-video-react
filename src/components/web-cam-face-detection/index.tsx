@@ -31,7 +31,7 @@ const WebcamDemo: React.FC<IProps> = ({
 }) => {
   const [cameraMode, setCameraMode] = useState<'user' | 'environment'>('user');
   const [timer, setTimer] = useState(0);
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
+  const [showControls, setShowControls] = useState(true); // State to manage controls visibility
   const webcamRef: MutableRefObject<Webcam | null> = useRef<Webcam | null>(
     null
   );
@@ -74,35 +74,17 @@ const WebcamDemo: React.FC<IProps> = ({
         recorderRef.current = new RecordRTC(stream, options);
         recorderRef?.current?.startRecording();
         setTimer(0);
+
+        // Hide controls after a brief delay when video starts playing
+        setTimeout(() => {
+          setShowControls(false);
+        }, 2000);
       } catch (error) {
         setCapturing(false);
       }
     } else {
       alert('Webcam stream is not available');
     }
-  };
-
-  const captureThumbnail = (videoUrl: string) => {
-    const video = document.createElement('video');
-    video.src = videoUrl;
-    video.currentTime = 2;
-    video.playsInline = true;
-    video.muted = true;
-    video.onloadeddata = () => {
-      const timeoutId = setTimeout(() => {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const context = canvas.getContext('2d');
-        context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const thumbnailUrl = canvas.toDataURL('image/png');
-        setThumbnail(thumbnailUrl);
-      }, 500);
-      // Clear the timeout if the thumbnail is captured before the timeout fires
-      video.onloadeddata = null;
-      clearTimeout(timeoutId);
-    };
-    video.load();
   };
 
   const handleStopCaptureClick = () => {
@@ -112,9 +94,7 @@ const WebcamDemo: React.FC<IProps> = ({
           // @ts-ignore
           const recordedBlob: Blob = recorderRef.current.getBlob();
           if (recordedBlob.size > 0) {
-            const videoUrl = URL.createObjectURL(recordedBlob);
             setRecordedChunks([...recordedChunks, recordedBlob]);
-            captureThumbnail(videoUrl);
           }
           // @ts-ignore
           recorderRef.current.reset();
@@ -139,10 +119,7 @@ const WebcamDemo: React.FC<IProps> = ({
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
   const handleVideoTap = () => {
-    const video = document.querySelector('video');
-    if (video && !video.controls) {
-      video.controls = true;
-    }
+    setShowControls((prev) => !prev);
   };
 
   return isFinishedRecording ? (
@@ -150,7 +127,7 @@ const WebcamDemo: React.FC<IProps> = ({
       className="relative h-[90%] cursor-pointer"
       role="button"
       tabIndex={0}
-      aria-hidden="true"
+      aria-hidden
       onClick={handleVideoTap}
     >
       {recordedChunks.length > 0 ? (
@@ -158,16 +135,10 @@ const WebcamDemo: React.FC<IProps> = ({
           autoPlay
           className="h-full w-full rounded-xl object-cover"
           playsInline
+          controls={showControls}
           controlsList="nodownload"
           disableRemotePlayback
-          controls
-          poster={thumbnail ?? ''}
-          onEnded={() => {
-            const video = document.querySelector('video');
-            if (video) {
-              video.controls = false;
-            }
-          }}
+          onError={(e) => console.error('Error playing video', e)}
         >
           <source
             src={URL.createObjectURL(recordedChunks[recordedChunks.length - 1])}
