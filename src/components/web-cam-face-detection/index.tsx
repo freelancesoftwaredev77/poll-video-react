@@ -147,7 +147,7 @@ const WebcamDemo: React.FC<IProps> = ({
     >
       {recordedChunks.length > 0 ? (
         <video
-          autoPlay={false}
+          autoPlay
           className="h-full w-full rounded-xl object-cover"
           playsInline
           controlsList="nodownload"

@@ -100,7 +100,7 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
       aria-hidden="true"
     >
       <video
-        autoPlay={false}
+        autoPlay
         className="h-full w-full rounded-xl object-cover"
         playsInline
         controlsList="nofullscreen nodownload"
