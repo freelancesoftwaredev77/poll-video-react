@@ -7,7 +7,6 @@ import Webcam from 'react-webcam';
 import { FiRefreshCw } from 'react-icons/fi';
 
 interface IProps {
-  // blockFace: boolean;
   capturing: boolean;
   setCapturing: React.Dispatch<React.SetStateAction<boolean>>;
   isFinishedRecording: boolean;
@@ -19,7 +18,6 @@ interface IProps {
 }
 
 const WebcamDemoForIosDevices: React.FC<IProps> = ({
-  // blockFace,
   capturing,
   setCapturing,
   isFinishedRecording,
@@ -31,7 +29,9 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
 }) => {
   const [cameraMode, setCameraMode] = React.useState('user');
   const [timer, setTimer] = useState(0);
+  const [showControls, setShowControls] = useState(false); // Initially hide controls
   const webcamRef: any = React.useRef<Webcam | null>(null);
+  const videoRef: any = useRef<HTMLVideoElement>(null); // Reference to the video element
 
   const videoConstraints = {
     facingMode: cameraMode,
@@ -92,21 +92,40 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
+  const handleVideoTap = () => {
+    setShowControls((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.addEventListener('play', () => {
+        setShowControls(false);
+      });
+
+      videoElement.addEventListener('ended', () => {
+        setShowControls(true);
+      });
+    }
+  }, []);
+
   return isFinishedRecording ? (
     <div
       className="relative h-[90%] cursor-pointer"
       role="button"
       tabIndex={0}
-      aria-hidden="true"
+      aria-hidden
+      onClick={handleVideoTap}
     >
       <video
+        ref={videoRef}
         autoPlay
         className="h-full w-full rounded-xl object-cover"
         playsInline
+        controls={showControls}
         controlsList="nofullscreen nodownload"
         disablePictureInPicture
         disableRemotePlayback
-        controls
       >
         <source
           src={

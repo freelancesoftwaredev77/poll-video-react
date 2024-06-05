@@ -35,6 +35,7 @@ const WebcamDemo: React.FC<IProps> = ({
   const webcamRef: MutableRefObject<Webcam | null> = useRef<Webcam | null>(
     null
   );
+
   const recorderRef: MutableRefObject<RecordRTC | null> =
     useRef<RecordRTC | null>(null);
   const videoConstraints = {
@@ -75,7 +76,6 @@ const WebcamDemo: React.FC<IProps> = ({
         recorderRef?.current?.startRecording();
         setTimer(0);
 
-        // Hide controls after a brief delay when video starts playing
         setTimeout(() => {
           setShowControls(false);
         }, 2000);
@@ -115,6 +115,25 @@ const WebcamDemo: React.FC<IProps> = ({
     }
   }, [timer]);
 
+  // useEffect(() => {
+  //   const videoElement = videoRef.current;
+  //   if (videoElement) {
+  //     const hideControlsTimeout = setTimeout(() => {
+  //       setShowControls(false);
+  //     }, 2000);
+
+  //     videoElement.addEventListener('play', () => {
+  //       clearTimeout(hideControlsTimeout);
+  //       setShowControls(false);
+  //     });
+
+  //     videoElement.addEventListener('ended', () => {
+  //       setShowControls(true);
+  //       console.log('Ended');
+  //     });
+  //   }
+  // }, [videoRef]);
+
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
 
@@ -132,12 +151,16 @@ const WebcamDemo: React.FC<IProps> = ({
     >
       {recordedChunks.length > 0 ? (
         <video
+          // ref={videoRef}
           autoPlay
           className="h-full w-full rounded-xl object-cover"
           playsInline
           controls={showControls}
           controlsList="nodownload"
           disableRemotePlayback
+          onEnded={() => {
+            setShowControls(!showControls);
+          }}
           onError={(e) => console.error('Error playing video', e)}
         >
           <source
