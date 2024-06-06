@@ -99,7 +99,7 @@ const Question: React.FC = () => {
               (prevIndex: number) => (prevIndex + 1) % videoQuestions.length
             );
             if (currentIndex + 1 === videoQuestions?.length) {
-              navigate('/thank-you');
+              window.location.href = '/thank-you';
             }
             setIsSubmitting(false);
           }
