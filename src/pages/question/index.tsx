@@ -37,6 +37,10 @@ const Question: React.FC = () => {
     }
   }, [navigate, state?.userId]);
 
+  React.useEffect(() => {
+    setEndVideo(false);
+  }, [currentIndex]);
+
   const blocker = useBlocker(true);
 
   const handleNext = async () => {
