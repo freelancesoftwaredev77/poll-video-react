@@ -125,7 +125,7 @@ const Form: React.FC = () => {
 
             <Footer>
               <div className="mt-4 flex items-center justify-end gap-3">
-                <Link to="/demo" className="w-full">
+                <Link to="/" className="w-full">
                   <Button
                     text="Înapoi"
                     type="button"
