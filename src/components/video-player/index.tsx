@@ -6,12 +6,14 @@ interface IProps {
   url: any;
   setIsPlaying?: React.Dispatch<React.SetStateAction<boolean>>;
   isControl?: boolean;
+  onEnded?: (end: boolean) => void;
 }
 
 const VideoPlayer: React.FC<IProps> = ({
   url,
   setIsPlaying,
   isControl = false,
+  onEnded,
 }) => {
   const [isPaused, setIsPaused] = React.useState(true);
   const [showControls, setShowControls] = React.useState(true);
@@ -19,6 +21,7 @@ const VideoPlayer: React.FC<IProps> = ({
   const playerRef = React.useRef<ReactPlayer>(null);
 
   const handleEndVideo = () => {
+    onEnded?.(true);
     setEndVideo(true);
     setShowControls(true);
   };
@@ -46,6 +49,7 @@ const VideoPlayer: React.FC<IProps> = ({
       playerRef.current.seekTo(0);
       setIsPaused(false);
       setEndVideo(false);
+      onEnded?.(false);
       setShowControls(true);
       setTimeout((): void => setShowControls(false), 3000);
     }

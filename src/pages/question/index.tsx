@@ -27,6 +27,7 @@ const Question: React.FC = () => {
   const [blockface, setBlockFace] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [step, setStep] = React.useState(1);
+  const [endVideo, setEndVideo] = React.useState(false);
   const navigate: NavigateFunction = useNavigate();
   const { state } = useLocation();
 
@@ -152,6 +153,7 @@ const Question: React.FC = () => {
                 videoQuestions[currentIndex]?.question_video_url
               }
               setIsPlaying={setIsPlaying}
+              onEnded={(end) => setEndVideo(end)}
             />
           )}
         </>
@@ -167,6 +169,7 @@ const Question: React.FC = () => {
           step={step}
           isSubmitting={isSubmitting}
           isPlaying={isPlaying}
+          hasEnded={endVideo}
         />
       </Footer>
       {blocker.state === 'blocked' ? (
