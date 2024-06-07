@@ -54,18 +54,11 @@ const Question: React.FC = () => {
       .from('videos/uploads')
       .upload(`${uuidv1()}.webm`, blob);
 
-    console.log('fddfdf', blob.size);
-    console.log('vvideo size', blob.size);
-
     if (videoUploadResponse) {
-      const pyaload = {
-        // @ts-ignore
-        response_video_url: videoUploadResponse?.fullPath,
-        question_id: videoQuestions[currentIndex]?.id,
-        user_id: state?.userId,
-        should_block_face: blockface,
-      };
-      console.log('fddfdf', pyaload);
+      if (!state?.userId) {
+        navigate('/form');
+        return;
+      }
 
       const { data: videoResponse, error: videoResponseError } = await supabase
         .from('video_responses')
