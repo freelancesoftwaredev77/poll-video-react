@@ -1,8 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import * as React from 'react';
 import * as Yup from 'yup';
 import { Field, Formik, Form as FormikForm } from 'formik';
-import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  NavigateFunction,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import { IoIosPlay } from 'react-icons/io';
 import { Button, DateInputMask, SearchSelect, TextField } from '@/components';
 import { Footer, Layout } from '@/container';
@@ -11,11 +17,16 @@ import { supabase } from '@/utils/supabase';
 import toastAlert from '@/utils/toastAlert';
 import calculateAge from '@/utils/calculate-age';
 
+interface Option {
+  label: string;
+  value: string;
+}
+
 interface FormValue {
   birthdate: string;
   location: string;
-  sex: string;
-  education: string;
+  sex: Option;
+  education: Option;
   checked: boolean;
 }
 
@@ -27,13 +38,27 @@ const FORM_VALIDATION = Yup.object().shape({
     )
     .required('Data nașterii este obligatorie'),
   location: Yup.string().required('Localitatea este necesară'),
-  sex: Yup.string().required(''),
-  education: Yup.string().required(''),
-  checked: Yup.bool().oneOf([true]),
+  sex: Yup.object()
+    .shape({
+      label: Yup.string().required('Sexul este necesar'),
+      value: Yup.string().required('Sexul este necesar'),
+    })
+    .required('Sexul este necesar'),
+  education: Yup.object()
+    .shape({
+      label: Yup.string().required('Educația este necesară'),
+      value: Yup.string().required('Educația este necesară'),
+    })
+    .required('Educația este necesară'),
+  checked: Yup.bool().oneOf(
+    [true],
+    'Trebuie să acceptați termenii și condițiile'
+  ),
 });
 
 const Form: React.FC = () => {
   const navigate: NavigateFunction = useNavigate();
+  const locationParams = useLocation();
 
   const initValues = {
     birthdate: '',
@@ -42,8 +67,23 @@ const Form: React.FC = () => {
     education: '',
     checked: false,
   };
+
+  const saveFormValues = (values: FormValue) => {
+    localStorage.setItem('formValues', JSON.stringify(values));
+  };
+
+  const loadFormValues = (): FormValue => {
+    const savedValues = localStorage.getItem('formValues');
+    return savedValues ? JSON.parse(savedValues) : initValues;
+  };
+
+  const clearFormValues = () => {
+    localStorage.removeItem('formValues');
+  };
+
   const handleSubmit = async (val: FormValue) => {
     const { birthdate, education, location, sex } = val;
+
     if (calculateAge(birthdate) < 18) {
       navigate('/age-error', { state: 'age-error' });
       return;
@@ -60,11 +100,12 @@ const Form: React.FC = () => {
       .insert({
         birthdate,
         location,
-        education,
-        sex,
+        education: education.value,
+        sex: sex.value,
       })
       .select();
     if (data) {
+      clearFormValues();
       navigate('/question', { state: { userId: data[0]?.id } });
     }
     if (error) {
@@ -72,15 +113,27 @@ const Form: React.FC = () => {
     }
   };
 
+  React.useEffect(() => {
+    if (locationParams.pathname === '/terms-conditions') {
+      const savedValues = loadFormValues();
+      if (savedValues) {
+        saveFormValues(savedValues);
+      }
+    } else {
+      clearFormValues();
+    }
+  }, [locationParams.pathname]);
+
   return (
     <Layout title="Formular">
       <Formik
-        initialValues={initValues}
+        initialValues={loadFormValues()}
         onSubmit={handleSubmit}
         validateOnMount
         validationSchema={FORM_VALIDATION}
+        enableReinitialize
       >
-        {({ isSubmitting, isValid }) => (
+        {({ values, isSubmitting, isValid }) => (
           <FormikForm>
             <DateInputMask name="birthdate" label="Data nasterii" isPrimary />
             <TextField
@@ -119,6 +172,7 @@ const Form: React.FC = () => {
             <Link
               to="/terms-conditions"
               className="mt-5 block text-center text-sm font-normal text-[blue]"
+              onClick={() => saveFormValues(values)}
             >
               Termeni și condiții, Politica de confidențialitate INTERSPECT
             </Link>

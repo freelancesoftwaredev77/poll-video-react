@@ -28,9 +28,8 @@ export function CustomSelect({
 }: CustomSelectProps) {
   const [field, meta, helpers] = useField(name);
 
-  const handleChange = (selectedOptions: SelectType) => {
-    const selectedValue = selectedOptions.value;
-    helpers.setValue(selectedValue);
+  const handleChange = (selectedOptions: any) => {
+    helpers.setValue(selectedOptions);
   };
 
   return (
@@ -46,11 +45,10 @@ export function CustomSelect({
       </div>
       <Select
         className="mt-2 flex-1"
-        options={options.map((option: SelectType) => ({
-          label: option.label,
-          value: option.value,
-        }))}
+        options={options}
+        {...field}
         onChange={onChange ?? handleChange}
+        value={field.value}
         isMulti={isMulti}
         placeholder={placeholder}
         classNamePrefix="react-select"
