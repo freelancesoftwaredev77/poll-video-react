@@ -45,15 +45,10 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
   };
 
   const handleStartCaptureClick = () => {
-    const options = {
+    setCapturing(true);
+    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
       bitsPerSecond: 200000,
-      bufferSize: 512,
-      numberOfAudioChannels: 1,
-    };
-    mediaRecorderRef.current = new MediaRecorder(
-      webcamRef.current.stream,
-      options
-    );
+    });
     mediaRecorderRef.current.addEventListener(
       'dataavailable',
       handleDataAvailable
