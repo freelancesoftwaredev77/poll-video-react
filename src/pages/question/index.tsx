@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
@@ -53,7 +54,19 @@ const Question: React.FC = () => {
       .from('videos/uploads')
       .upload(`${uuidv1()}.webm`, blob);
 
+    console.log('fddfdf', blob.size);
+    console.log('vvideo size', blob.size);
+
     if (videoUploadResponse) {
+      const pyaload = {
+        // @ts-ignore
+        response_video_url: videoUploadResponse?.fullPath,
+        question_id: videoQuestions[currentIndex]?.id,
+        user_id: state?.userId,
+        should_block_face: blockface,
+      };
+      console.log('fddfdf', pyaload);
+
       const { data: videoResponse, error: videoResponseError } = await supabase
         .from('video_responses')
         .insert([
@@ -68,7 +81,8 @@ const Question: React.FC = () => {
         .select();
 
       if (videoResponseError) {
-        toastAlert('error', 'Something went wrong');
+        setIsSubmitting(false);
+        toastAlert('error', videoResponseError.message + blob.size);
       }
 
       if (videoResponse) {
@@ -104,13 +118,14 @@ const Question: React.FC = () => {
             setIsSubmitting(false);
           }
         } catch (err: any) {
-          toastAlert('error', 'Something went wrong');
+          setIsSubmitting(false);
+          toastAlert('error', err);
         }
       }
     }
 
     if (error) {
-      toastAlert('error', 'Something went wrong');
+      toastAlert('error', error.message);
       setIsSubmitting(false);
     }
   };

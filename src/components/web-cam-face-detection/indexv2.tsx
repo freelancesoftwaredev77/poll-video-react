@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useRef, useState, useEffect, useCallback } from 'react';
@@ -37,20 +38,6 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
 
   const mediaRecorderRef = useRef<any>(null);
 
-  useEffect(() => {
-    let intervalId: any;
-    if (capturing) {
-      intervalId = setInterval(() => {
-        setTimer((prevTimer) => (prevTimer < 45 ? prevTimer + 1 : 45));
-      }, 1000);
-    } else {
-      clearInterval(intervalId);
-      setTimer(0);
-    }
-
-    return () => clearInterval(intervalId);
-  }, [capturing]);
-
   const handleDataAvailable = ({ data }: { data: any }) => {
     if (data.size > 0) {
       setRecordedChunks((prev) => prev.concat(data));
@@ -59,7 +46,9 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
 
   const handleStartCaptureClick = () => {
     setCapturing(true);
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream);
+    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+      bitsPerSecond: 200000,
+    });
     mediaRecorderRef.current.addEventListener(
       'dataavailable',
       handleDataAvailable
@@ -82,10 +71,23 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
   ]);
 
   useEffect(() => {
-    if (timer >= 46) {
-      handleStopCaptureClick();
+    let intervalId: any;
+    if (capturing) {
+      intervalId = setInterval(() => {
+        setTimer((prevTimer) => {
+          if (prevTimer < 44) {
+            return prevTimer + 1;
+          }
+          handleStopCaptureClick();
+          return 45;
+        });
+      }, 1000);
+    } else {
+      clearInterval(intervalId);
+      setTimer(0);
     }
-  }, [handleStopCaptureClick, timer]);
+    return () => clearInterval(intervalId);
+  }, [capturing]);
 
   const handleSwitchCamera = () =>
     setCameraMode((prev) => (prev === 'user' ? 'environment' : 'user'));
@@ -180,9 +182,13 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
         </div>
       </div>
       {capturing ? (
-        <p>Apasă STOP pentru a încheia</p>
+        <p className="mt-10 text-center text-secondary">
+          Apasă STOP pentru a încheia
+        </p>
       ) : (
-        <p>Apasă REC pentru înregistrare</p>
+        <p className="mt-10 text-center text-secondary">
+          Apasă REC pentru înregistrare
+        </p>
       )}
     </div>
   );
