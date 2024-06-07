@@ -54,6 +54,8 @@ const Question: React.FC = () => {
       .from('videos/uploads')
       .upload(`${uuidv1()}.webm`, blob);
 
+    console.log('fddfdf', blob.size);
+
     if (videoUploadResponse) {
       const pyaload = {
         // @ts-ignore
@@ -63,7 +65,7 @@ const Question: React.FC = () => {
         should_block_face: blockface,
       };
       console.log('fddfdf', pyaload);
-      console.log('fddfdf', blob.size);
+
       const { data: videoResponse, error: videoResponseError } = await supabase
         .from('video_responses')
         .insert([
