@@ -43,7 +43,7 @@ const WebcamDemo: React.FC<IProps> = ({
     facingMode: cameraMode,
     width: { ideal: 640 },
     height: { ideal: 480 },
-    frameRate: { ideal: 15 },
+    frameRate: { ideal: 8 },
   };
 
   const handleStartCaptureClick = () => {
@@ -53,10 +53,6 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
-        mimeType: 'video/mp4',
-        bitsPerSecond: 50000,
-        bufferSize: 512,
-        numberOfAudioChannels: 1,
       };
 
       try {
