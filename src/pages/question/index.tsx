@@ -55,6 +55,14 @@ const Question: React.FC = () => {
       .upload(`${uuidv1()}.webm`, blob);
 
     if (videoUploadResponse) {
+      const pyaload = {
+        // @ts-ignore
+        response_video_url: videoUploadResponse?.fullPath,
+        question_id: videoQuestions[currentIndex]?.id,
+        user_id: state?.userId,
+        should_block_face: blockface,
+      };
+      console.log('fddfdf', pyaload);
       const { data: videoResponse, error: videoResponseError } = await supabase
         .from('video_responses')
         .insert([
@@ -69,8 +77,8 @@ const Question: React.FC = () => {
         .select();
 
       if (videoResponseError) {
-        alert(videoResponseError);
-        toastAlert('error', videoResponseError.message);
+        setIsSubmitting(false);
+        toastAlert('error', videoResponseError.message + blob.size);
       }
 
       if (videoResponse) {
@@ -106,6 +114,7 @@ const Question: React.FC = () => {
             setIsSubmitting(false);
           }
         } catch (err: any) {
+          setIsSubmitting(false);
           toastAlert('error', err);
         }
       }
