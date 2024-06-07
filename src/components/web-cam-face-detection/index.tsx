@@ -53,9 +53,9 @@ const WebcamDemo: React.FC<IProps> = ({
       const options: RecordRTC.Options = {
         type: 'video',
         mimeType: 'video/webm;codecs=vp8',
-        bitsPerSecond: 512 * 1024,
-        audioBitsPerSecond: 16 * 1024,
-        videoBitsPerSecond: 496 * 1024,
+        bitsPerSecond: 250 * 1024, // Adjust video bitrate further
+        audioBitsPerSecond: 16 * 1024, // Adjust audio bitrate
+        videoBitsPerSecond: 234 * 1024, // Adjust video bitrate further
       };
 
       try {
