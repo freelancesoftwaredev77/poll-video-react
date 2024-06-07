@@ -187,9 +187,13 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
         </div>
       </div>
       {capturing ? (
-        <p>Apasă STOP pentru a încheia</p>
+        <p className="mt-10 text-center text-secondary">
+          Apasă STOP pentru a încheia
+        </p>
       ) : (
-        <p>Apasă REC pentru înregistrare</p>
+        <p className="mt-10 text-center text-secondary">
+          Apasă REC pentru înregistrare
+        </p>
       )}
     </div>
   );
