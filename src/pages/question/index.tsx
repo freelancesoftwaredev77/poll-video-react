@@ -55,6 +55,7 @@ const Question: React.FC = () => {
       .upload(`${uuidv1()}.webm`, blob);
 
     console.log('fddfdf', blob.size);
+    console.log('vvideo size', blob.size);
 
     if (videoUploadResponse) {
       const pyaload = {

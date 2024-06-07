@@ -41,8 +41,9 @@ const WebcamDemo: React.FC<IProps> = ({
 
   const videoConstraints = {
     facingMode: cameraMode,
-    width: { ideal: 1920 },
-    height: { ideal: 1080 },
+    width: { ideal: 640 },
+    height: { ideal: 480 },
+    frameRate: { ideal: 15 },
   };
 
   const handleStartCaptureClick = () => {
@@ -52,10 +53,10 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
-        mimeType: 'video/webm;codecs=vp8',
-        bitsPerSecond: 40000, // Adjust video bitrate for lower quality and smaller size
-        audioBitsPerSecond: 95000, // Adjust audio bitrate
-        videoBitsPerSecond: 200000,
+        mimeType: 'video/mp4',
+        bitsPerSecond: 50000,
+        bufferSize: 512,
+        numberOfAudioChannels: 1,
       };
 
       try {
