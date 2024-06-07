@@ -194,13 +194,13 @@ const WebcamDemo: React.FC<IProps> = ({
                   aria-label="stop"
                   className={capturing ? 'mr-8' : ''}
                 >
-                  <div className="h-16 w-16 rounded-full border-2 border-[#000000]">
+                  <div className="h-16 w-16 rounded-full border-2 border-white">
                     <div className="mx-auto mt-4 h-7 w-7 rounded bg-warning" />
                   </div>
                 </button>
               ) : (
                 <button onClick={handleStartCaptureClick} aria-label="start">
-                  <div className="h-16 w-16 rounded-full border-4 border-[#000000]">
+                  <div className="h-16 w-16 rounded-full border-4 border-white">
                     <div className="mx-auto mt-[1.3px] h-[54px] w-[54px] rounded-full bg-warning" />
                   </div>
                 </button>
@@ -220,21 +220,13 @@ const WebcamDemo: React.FC<IProps> = ({
         </div>
       </div>
       {capturing ? (
-        <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
-          <p>Apasă </p>
-          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
-            <div className="mx-auto mt-1.5 h-5 w-5 rounded bg-warning" />
-          </div>
-          <p>pentru a încheia</p>
-        </div>
+        <p className="mt-10 text-center text-secondary">
+          Apasă STOP pentru a încheia
+        </p>
       ) : (
-        <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
-          <p>Apasă </p>
-          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
-            <div className="mx-auto mt-0.5 h-7 w-7 rounded-full bg-warning" />
-          </div>
-          <p>pentru înregistrare</p>
-        </div>
+        <p className="mt-10 text-center text-secondary">
+          Apasă REC pentru înregistrare
+        </p>
       )}
     </div>
   );

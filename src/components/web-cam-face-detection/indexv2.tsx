@@ -180,21 +180,9 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
         </div>
       </div>
       {capturing ? (
-        <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
-          <p>Apasă </p>
-          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
-            <div className="mx-auto mt-1.5 h-5 w-5 rounded bg-warning" />
-          </div>
-          <p>pentru a încheia</p>
-        </div>
+        <p>Apasă STOP pentru a încheia</p>
       ) : (
-        <div className="mt-10 flex items-center justify-center gap-3 text-secondary">
-          <p>Apasă </p>
-          <div className="h-9 w-9 rounded-full border-2 border-[#000000]">
-            <div className="mx-auto mt-0.5 h-7 w-7 rounded-full bg-warning" />
-          </div>
-          <p>pentru înregistrare</p>
-        </div>
+        <p>Apasă REC pentru înregistrare</p>
       )}
     </div>
   );
