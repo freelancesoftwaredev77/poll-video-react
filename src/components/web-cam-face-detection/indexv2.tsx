@@ -46,8 +46,9 @@ const WebcamDemoForIosDevices: React.FC<IProps> = ({
 
   const handleStartCaptureClick = () => {
     const options = {
-      videoBitsPerSecond: 100 * 1024,
-      audioBitsPerSecond: 16 * 1024,
+      bitsPerSecond: 888.89 * 1024,
+      audioBitsPerSecond: 64 * 1024,
+      videoBitsPerSecond: 824.89 * 1024,
     };
     mediaRecorderRef.current = new MediaRecorder(
       webcamRef.current.stream,

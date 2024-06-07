@@ -53,9 +53,9 @@ const WebcamDemo: React.FC<IProps> = ({
       const options: RecordRTC.Options = {
         type: 'video',
         mimeType: 'video/webm;codecs=vp8',
-        bitsPerSecond: 1.86 * 1024 * 1024,
+        bitsPerSecond: 888.89 * 1024,
         audioBitsPerSecond: 64 * 1024,
-        videoBitsPerSecond: 1.8 * 1024 * 1024 - 64 * 1024,
+        videoBitsPerSecond: 824.89 * 1024,
       };
 
       try {
@@ -100,7 +100,7 @@ const WebcamDemo: React.FC<IProps> = ({
     if (capturing) {
       intervalId = setInterval(() => {
         setTimer((prevTimer) => {
-          if (prevTimer < 45) {
+          if (prevTimer <= 45) {
             return prevTimer + 1;
           }
           handleStopCaptureClick();
