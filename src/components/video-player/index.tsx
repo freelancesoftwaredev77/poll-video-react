@@ -78,24 +78,80 @@ const VideoPlayer: React.FC<IProps> = ({
       />
 
       {showControls && (
-        <div className="absolute left-[45%] top-[45%] z-50">
+        <div className="absolute left-[40%] top-[45%] z-50">
           {endVideo ? (
             <MdOutlineReplay size={50} color="#fff" onClick={handleReplay} />
           ) : isPaused ? (
-            <button onClick={handlePlayPause}>
-              <img
+            <button onClick={handlePlayPause} className="">
+              {/* <FaPlayCircle color="#" width={100} /> */}
+              {/* <img
                 src="/play.png"
                 alt="play-button"
                 className="h-16 w-16 object-cover"
-              />
+              /> */}
+              <svg
+                width="90"
+                height="90"
+                viewBox="0 0 90 90"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="45"
+                  cy="45"
+                  r="43.5"
+                  fill="#fff"
+                  fillOpacity="0.34"
+                  stroke="#fff"
+                  strokeWidth="3"
+                />
+                <path
+                  d="M59.9165 44.6967C60.4557 45.0965 60.4557 45.9035 59.9165 46.3033L33.5956 65.8171C32.9356 66.3063 32 65.8353 32 65.0138L32 25.9862C32 25.1647 32.9356 24.6937 33.5956 25.1829L59.9165 44.6967Z"
+                  fill="#D7005A"
+                />
+              </svg>
             </button>
           ) : (
             <button onClick={handlePlayPause}>
-              <img
+              {/* <img
                 src="/pause.png"
                 alt="pause-button"
                 className="h-16 w-16 object-cover"
-              />
+              /> */}
+
+              <svg
+                width="90"
+                height="90"
+                viewBox="0 0 90 90"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="45"
+                  cy="45"
+                  r="43.5"
+                  fill="white"
+                  fillOpacity="0.34"
+                  stroke="white"
+                  strokeWidth="3"
+                />
+                <rect
+                  x="32"
+                  y="25"
+                  width="6"
+                  height="41"
+                  rx="3"
+                  fill="#D7005A"
+                />
+                <rect
+                  x="54"
+                  y="25"
+                  width="6"
+                  height="41"
+                  rx="3"
+                  fill="#D7005A"
+                />
+              </svg>
             </button>
           )}
         </div>
