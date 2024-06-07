@@ -27,26 +27,14 @@ const Home: React.FC = () => {
       </Layout>
       <Footer>
         <h6 className="text-center font-bold">
-          {isPlaying ? (
-            <Link to="/form" className="w-full">
-              <Button
-                text="Începe sondajul"
-                type="submit"
-                variant="primary"
-                className="px-4 py-2"
-              />
-            </Link>
-          ) : (
-            <>
-              <p>{introData && introData[0]?.title}</p>
-              <Link
-                to="/terms-conditions"
-                className="text-sm font-normal text-[blue]"
-              >
-                Termeni și condiții, Politica de confidențialitate INTERSPECT
-              </Link>
-            </>
-          )}
+          <Link to="/form" className="w-full">
+            <Button
+              text="Începe sondajul"
+              type="submit"
+              variant="primary"
+              className="px-4 py-2"
+            />
+          </Link>
         </h6>
       </Footer>
     </>
