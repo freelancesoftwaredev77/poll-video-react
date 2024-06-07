@@ -53,6 +53,9 @@ const WebcamDemo: React.FC<IProps> = ({
 
       const options: RecordRTC.Options = {
         type: 'video',
+        bitsPerSecond: 200000,
+        bufferSize: 512,
+        numberOfAudioChannels: 1,
       };
 
       try {
