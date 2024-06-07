@@ -24,12 +24,12 @@ const VideoBottomBar: React.FC<IProps> = ({
   // handleBlockFace,
   handleRecordAgain,
   isSubmitting,
-  hasEnded,
+  // hasEnded,
 }) => {
   const renderBottomNavigation = () => {
     switch (step) {
       case 1:
-        return hasEnded ? (
+        return (
           <Button
             text="Răspunde"
             type="button"
@@ -37,8 +37,6 @@ const VideoBottomBar: React.FC<IProps> = ({
             className="px-4 py-2"
             onClick={handleShowRecordingScreen}
           />
-        ) : (
-          <div />
         );
       case 2: {
         // TODO: temporarily disable the block face
