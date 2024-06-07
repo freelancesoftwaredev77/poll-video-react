@@ -100,7 +100,7 @@ const WebcamDemo: React.FC<IProps> = ({
     if (capturing) {
       intervalId = setInterval(() => {
         setTimer((prevTimer) => {
-          if (prevTimer <= 45) {
+          if (prevTimer < 44) {
             return prevTimer + 1;
           }
           handleStopCaptureClick();
