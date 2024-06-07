@@ -176,14 +176,14 @@ const WebcamDemo: React.FC<IProps> = ({
             </p>
           )}
           <div className="flex items-center justify-between gap-5">
-            <div className="rounded-full px-3 py-1 font-bold text-white " />
+            <div className="" />
 
-            <div className="mt-3.5">
+            <div className="ml-8 mt-2">
               {capturing ? (
                 <button
                   onClick={handleStopCaptureClick}
                   aria-label="stop"
-                  className={capturing ? 'mr-8' : ''}
+                  className={capturing ? 'mr-[45px]' : ''}
                 >
                   <div className="h-16 w-16 rounded-full border-2 border-white">
                     <div className="mx-auto mt-4 h-7 w-7 rounded bg-warning" />
@@ -199,13 +199,17 @@ const WebcamDemo: React.FC<IProps> = ({
             </div>
 
             {!capturing ? (
-              <button onClick={handleSwitchCamera} aria-label="switch camera">
+              <button
+                onClick={handleSwitchCamera}
+                aria-label="switch camera"
+                className="mt-3"
+              >
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00000080]">
                   <FiRefreshCw color="#fff" className="hover:rotate-180" />
                 </div>
               </button>
             ) : (
-              <div />
+              <div className="" />
             )}
           </div>
         </div>
