@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
@@ -68,7 +69,8 @@ const Question: React.FC = () => {
         .select();
 
       if (videoResponseError) {
-        toastAlert('error', 'Something went wrong');
+        alert(videoResponseError);
+        toastAlert('error', videoResponseError.message);
       }
 
       if (videoResponse) {
@@ -104,13 +106,13 @@ const Question: React.FC = () => {
             setIsSubmitting(false);
           }
         } catch (err: any) {
-          toastAlert('error', 'Something went wrong');
+          toastAlert('error', err);
         }
       }
     }
 
     if (error) {
-      toastAlert('error', 'Something went wrong');
+      toastAlert('error', error.message);
       setIsSubmitting(false);
     }
   };
