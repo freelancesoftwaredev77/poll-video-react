@@ -81,12 +81,21 @@ const Question: React.FC = () => {
       if (videoResponse) {
         try {
           const data: Response = await fetch(
-            `${import.meta.env.VITE_APP_API_BASE_URL}/video-transcribe/`,
+            `${import.meta.env.VITE_APP_API_BASE_URL}process-video/`,
             {
               method: 'POST',
               body: JSON.stringify({
                 video_response_id: videoResponse[0]?.id,
+                // @ts-ignore
+                response_video_url: videoUploadResponse?.fullPath?.replace(
+                  'videos/',
+                  ''
+                ),
+                question_id: videoQuestions[currentIndex]?.id,
               }),
+              headers: {
+                'content-type': 'application/json',
+              },
             }
           );
           if (data?.status !== 200) {
