@@ -93,10 +93,6 @@ const Question: React.FC = () => {
                 ),
                 question_id: videoQuestions[currentIndex]?.id,
               }),
-              headers: {
-                'content-type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-              },
             }
           );
           if (data?.status !== 200) {
