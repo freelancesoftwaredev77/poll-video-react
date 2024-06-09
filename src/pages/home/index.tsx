@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button, VideoPlayer, VideoSkeleton } from '@/components';
 import { Footer, Layout } from '@/container';
-// import { IoIosPlay } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import useFetch from '@/hooks/useFetch';
 
